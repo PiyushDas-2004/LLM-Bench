@@ -1,0 +1,150 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "llmbench"
+version = "0.1.0"
+description = "Reproducible evaluation, benchmarking and regression-testing framework for non-deterministic LLM and RAG systems"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Piyush Pradeep Das" }]
+requires-python = ">=3.11"
+keywords = ["llm", "evaluation", "benchmarking", "rag", "llmops", "regression-testing"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Typing :: Typed",
+]
+dependencies = [
+  "typer>=0.12",
+  "rich>=13.7",
+  "pydantic>=2.7",
+  "pydantic-settings>=2.3",
+  "pyyaml>=6.0.1",
+  "jinja2>=3.1.4",
+  "httpx>=0.27",
+  "numpy>=1.26",
+  "scipy>=1.12",
+  "sqlalchemy>=2.0.30",
+  "alembic>=1.13",
+  "structlog>=24.1",
+  "jsonschema>=4.22",
+  "fastapi>=0.111",
+  "uvicorn>=0.30",
+  "prometheus-client>=0.20",
+]
+
+[project.optional-dependencies]
+openai = ["openai>=1.40"]
+gemini = ["google-genai>=1.0"]
+parquet = ["pyarrow>=16"]
+embeddings = ["sentence-transformers>=3.0"]
+otel = ["opentelemetry-api>=1.25", "opentelemetry-sdk>=1.25"]
+pgvector = ["psycopg[binary]>=3.2", "pgvector>=0.3"]
+pdf = ["pypdf>=4.2"]
+providers = ["llmbench[openai,gemini]"]
+all = ["llmbench[openai,gemini,parquet,otel,pdf]"]
+
+[dependency-groups]
+dev = [
+  "llmbench[openai,gemini,parquet,otel,pdf]",
+  "pytest>=8.2",
+  "pytest-asyncio>=0.23",
+  "pytest-cov>=5.0",
+  "hypothesis>=6.100",
+  "respx>=0.21",
+  "ruff>=0.6",
+  "mypy>=1.11",
+  "pre-commit>=3.7",
+  "bandit>=1.7.9",
+  "pip-audit>=2.7",
+  "types-PyYAML>=6.0",
+  "types-jsonschema>=4.22",
+]
+
+[project.scripts]
+llmbench = "llmbench.cli:main"
+
+[project.entry-points."llmbench.providers"]
+[project.entry-points."llmbench.metrics"]
+[project.entry-points."llmbench.tasks"]
+
+[project.urls]
+Homepage = "https://github.com/PiyushDas-2004/LLMBench"
+Repository = "https://github.com/PiyushDas-2004/LLMBench"
+Issues = "https://github.com/PiyushDas-2004/LLMBench/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/llmbench"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/llmbench", "README.md", "LICENSE", "CHANGELOG.md", "tests", "datasets", "examples", "prompts", "rubrics"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "UP", "SIM", "RUF", "N", "S", "C4", "PT", "RET", "PTH", "TID", "ASYNC"]
+ignore = ["S101", "RUF001", "RUF002", "RUF003"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S", "PT011", "N802"]
+"src/llmbench/tracking/migrations/**" = ["N999"]
+"src/llmbench/providers/openai_provider.py" = ["TID251"]
+"src/llmbench/providers/gemini_provider.py" = ["TID251"]
+"tests/**/test_*provider*.py" = ["TID251", "S", "PT011", "N802"]
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"openai".msg = "Import provider SDKs only inside llmbench.providers adapters."
+"google.genai".msg = "Import provider SDKs only inside llmbench.providers adapters."
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["pydantic.mypy"]
+warn_unreachable = true
+mypy_path = "src"
+
+[[tool.mypy.overrides]]
+module = ["scipy.*", "sentence_transformers.*", "pyarrow.*", "pgvector.*", "pypdf.*", "respx.*", "bert_score.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+addopts = "-ra --strict-markers -m 'not live'"
+markers = [
+  "live: exercises real provider APIs; requires API keys (deselected by default)",
+  "slow: slower statistical or integration tests",
+]
+filterwarnings = ["error::pytest.PytestUnraisableExceptionWarning"]
+
+[tool.coverage.run]
+source = ["llmbench"]
+branch = true
+omit = ["src/llmbench/tracking/migrations/*"]
+
+[tool.coverage.report]
+fail_under = 85
+show_missing = true
+skip_covered = true
+exclude_also = [
+  "if TYPE_CHECKING:",
+  "raise NotImplementedError",
+  "@overload",
+  "\\.\\.\\.$",
+]
+
+[tool.bandit]
+exclude_dirs = ["tests"]
