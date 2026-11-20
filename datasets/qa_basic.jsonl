@@ -1,0 +1,40 @@
+{"id": "qa-001", "input": "What is the capital of France?", "reference": "Paris", "tags": ["geography"], "difficulty": "easy", "metadata": {"aliases": ["paris"]}}
+{"id": "qa-002", "input": "What is the capital of Japan?", "reference": "Tokyo", "tags": ["geography"], "difficulty": "easy", "metadata": {"aliases": ["tokyo"]}}
+{"id": "qa-003", "input": "What is the capital of Australia?", "reference": "Canberra", "tags": ["geography"], "difficulty": "medium", "metadata": {"aliases": ["canberra"]}}
+{"id": "qa-004", "input": "What is the capital of Canada?", "reference": "Ottawa", "tags": ["geography"], "difficulty": "medium", "metadata": {"aliases": ["ottawa"]}}
+{"id": "qa-005", "input": "Which is the largest ocean on Earth?", "reference": "Pacific Ocean", "tags": ["geography"], "difficulty": "easy", "metadata": {"aliases": ["Pacific", "the Pacific", "the Pacific Ocean"]}}
+{"id": "qa-006", "input": "On which continent is Egypt located?", "reference": "Africa", "tags": ["geography"], "difficulty": "easy", "metadata": {"aliases": ["africa"]}}
+{"id": "qa-007", "input": "What is the longest river in South America?", "reference": "Amazon", "tags": ["geography"], "difficulty": "medium", "metadata": {"aliases": ["Amazon River", "the Amazon"]}}
+{"id": "qa-008", "input": "What is the capital of Mongolia?", "reference": "Ulaanbaatar", "tags": ["geography"], "difficulty": "hard", "metadata": {"aliases": ["Ulan Bator", "Ulaanbaatar City"]}}
+{"id": "qa-009", "input": "Which country has the city of Marrakesh?", "reference": "Morocco", "tags": ["geography"], "difficulty": "medium", "metadata": {"aliases": ["Kingdom of Morocco"]}}
+{"id": "qa-010", "input": "What is the chemical symbol for gold?", "reference": "Au", "tags": ["science"], "difficulty": "easy", "metadata": {"aliases": ["au"]}}
+{"id": "qa-011", "input": "What is the chemical formula for water?", "reference": "H2O", "tags": ["science"], "difficulty": "easy", "metadata": {"aliases": ["H₂O"]}}
+{"id": "qa-012", "input": "How many planets are in our solar system?", "reference": "8", "tags": ["science"], "difficulty": "easy", "metadata": {"aliases": ["eight"]}}
+{"id": "qa-013", "input": "What is the atomic number of carbon?", "reference": "6", "tags": ["science"], "difficulty": "medium", "metadata": {"aliases": ["six"]}}
+{"id": "qa-014", "input": "At what temperature in degrees Celsius does pure water boil at sea level?", "reference": "100", "tags": ["science"], "difficulty": "easy", "metadata": {"aliases": ["100 °C", "100 degrees Celsius", "one hundred"]}}
+{"id": "qa-015", "input": "Which planet is known as the Red Planet?", "reference": "Mars", "tags": ["science"], "difficulty": "easy", "metadata": {"aliases": ["mars"]}}
+{"id": "qa-016", "input": "What gas do plants primarily absorb from the atmosphere for photosynthesis?", "reference": "Carbon dioxide", "tags": ["science"], "difficulty": "easy", "metadata": {"aliases": ["CO2", "CO₂", "carbon dioxide"]}}
+{"id": "qa-017", "input": "What is the chemical symbol for sodium?", "reference": "Na", "tags": ["science"], "difficulty": "medium", "metadata": {"aliases": ["na"]}}
+{"id": "qa-018", "input": "Which noble gas has the atomic number 10?", "reference": "Neon", "tags": ["science"], "difficulty": "hard", "metadata": {"aliases": ["Ne"]}}
+{"id": "qa-019", "input": "What is the powerhouse organelle of the cell that produces most of its ATP?", "reference": "Mitochondrion", "tags": ["science"], "difficulty": "medium", "metadata": {"aliases": ["Mitochondria", "the mitochondria", "mitochondrion"]}}
+{"id": "qa-020", "input": "What is 7 multiplied by 8?", "reference": "56", "tags": ["math"], "difficulty": "easy", "metadata": {"aliases": ["fifty-six", "fifty six"]}}
+{"id": "qa-021", "input": "What is 144 divided by 12?", "reference": "12", "tags": ["math"], "difficulty": "easy", "metadata": {"aliases": ["twelve"]}}
+{"id": "qa-022", "input": "What is the square root of 169?", "reference": "13", "tags": ["math"], "difficulty": "medium", "metadata": {"aliases": ["thirteen"]}}
+{"id": "qa-023", "input": "What is 15% of 200?", "reference": "30", "tags": ["math"], "difficulty": "medium", "metadata": {"aliases": ["thirty"]}}
+{"id": "qa-024", "input": "What is 2 raised to the power of 10?", "reference": "1024", "tags": ["math"], "difficulty": "medium", "metadata": {"aliases": ["1,024", "one thousand twenty-four"]}}
+{"id": "qa-025", "input": "What is 17 multiplied by 23?", "reference": "391", "tags": ["math"], "difficulty": "hard", "metadata": {"aliases": ["three hundred ninety-one"]}}
+{"id": "qa-026", "input": "How many prime numbers are there between 1 and 20?", "reference": "8", "tags": ["math"], "difficulty": "hard", "metadata": {"aliases": ["eight"]}}
+{"id": "qa-027", "input": "What is the sum of the interior angles of a triangle, in degrees?", "reference": "180", "tags": ["math"], "difficulty": "easy", "metadata": {"aliases": ["180 degrees", "180°", "one hundred eighty"]}}
+{"id": "qa-028", "input": "In what year did humans first land on the Moon?", "reference": "1969", "tags": ["history"], "difficulty": "easy", "metadata": {"aliases": ["in 1969"]}}
+{"id": "qa-029", "input": "In what year did World War II end?", "reference": "1945", "tags": ["history"], "difficulty": "easy", "metadata": {"aliases": ["in 1945"]}}
+{"id": "qa-030", "input": "In what year did the Berlin Wall fall?", "reference": "1989", "tags": ["history"], "difficulty": "medium", "metadata": {"aliases": ["in 1989"]}}
+{"id": "qa-031", "input": "In what year was the United States Declaration of Independence adopted?", "reference": "1776", "tags": ["history"], "difficulty": "easy", "metadata": {"aliases": ["in 1776"]}}
+{"id": "qa-032", "input": "In what year did the French Revolution begin with the storming of the Bastille?", "reference": "1789", "tags": ["history"], "difficulty": "medium", "metadata": {"aliases": ["in 1789"]}}
+{"id": "qa-033", "input": "Who was the first person to walk on the Moon?", "reference": "Neil Armstrong", "tags": ["history"], "difficulty": "easy", "metadata": {"aliases": ["Armstrong"]}}
+{"id": "qa-034", "input": "In what year did the Titanic sink?", "reference": "1912", "tags": ["history"], "difficulty": "medium", "metadata": {"aliases": ["in 1912"]}}
+{"id": "qa-035", "input": "In what year did the Soviet Union launch Sputnik 1, the first artificial satellite?", "reference": "1957", "tags": ["history"], "difficulty": "hard", "metadata": {"aliases": ["in 1957"]}}
+{"id": "qa-036", "input": "How many centimeters are in one meter?", "reference": "100", "tags": ["units"], "difficulty": "easy", "metadata": {"aliases": ["one hundred"]}}
+{"id": "qa-037", "input": "How many seconds are in one hour?", "reference": "3600", "tags": ["units"], "difficulty": "medium", "metadata": {"aliases": ["3,600", "three thousand six hundred"]}}
+{"id": "qa-038", "input": "How many grams are in one kilogram?", "reference": "1000", "tags": ["units"], "difficulty": "easy", "metadata": {"aliases": ["1,000", "one thousand"]}}
+{"id": "qa-039", "input": "What is the plural of the English word 'mouse' when referring to the animal?", "reference": "mice", "tags": ["language"], "difficulty": "easy", "metadata": {"aliases": ["Mice"]}}
+{"id": "qa-040", "input": "What is the simple past tense of the English verb 'go'?", "reference": "went", "tags": ["language"], "difficulty": "medium", "metadata": {"aliases": ["Went"]}}

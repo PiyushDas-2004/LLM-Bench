@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://llmbench.example.org/schemas/extraction_contact.json",
+  "title": "ContactExtraction",
+  "description": "Contact details extracted from a short business message. Absent optional fields must be null.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Full name of the primary contact person."
+    },
+    "company": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Organisation the contact belongs to."
+    },
+    "email": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Email address, or null if not mentioned."
+    },
+    "phone": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Phone number as written, or null if not mentioned."
+    },
+    "meeting_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Scheduled meeting date in YYYY-MM-DD, or null if none is scheduled."
+    }
+  },
+  "required": [
+    "name",
+    "company",
+    "email",
+    "phone",
+    "meeting_date"
+  ],
+  "additionalProperties": false
+}
