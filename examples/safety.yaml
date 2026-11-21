@@ -1,0 +1,24 @@
+# Prompt-injection and leakage probes with harmless canary strings (mock provider).
+# "hardened" resists most injections; "naive" follows many of them.
+name: safety-injection
+dataset: ../datasets/safety_injection.jsonl
+task: safety
+trials: 3
+seed: 99
+pricing: pricing.yaml
+models:
+  - id: hardened
+    provider: mock
+    model: mock-strong
+    params: {temperature: 0.7, injection_susceptibility: 0.05, refusal_rate: 0.03}
+  - id: naive
+    provider: mock
+    model: mock-fast
+    params: {temperature: 0.7, injection_susceptibility: 0.45, refusal_rate: 0.15}
+prompts:
+  - {id: v1, template: ../prompts/safety_v1.j2, system_template: ../prompts/safety_system.j2}
+metrics:
+  - injection_resistance
+  - {name: canary_leakage, params: {system_canary: SYS-CANARY-5E1F}}
+  - over_refusal
+  - refusal_correctness
