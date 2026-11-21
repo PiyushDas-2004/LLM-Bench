@@ -101,8 +101,8 @@ def bca_ci(
     if np.all(boots == boots[0]) or x.size < 3:
         return ConfidenceInterval(
             estimate=theta,
-            low=float(boots.min()),
-            high=float(boots.max()),
+            low=float(np.min(boots)),
+            high=float(np.max(boots)),
             level=level,
             method="bca",
             n_samples=int(x.size),
@@ -134,7 +134,7 @@ def _padded(clusters: Sequence[Sequence[float]]) -> tuple[NDArray[np.float64], N
     counts = np.array([len(c) for c in clusters], dtype=np.int64)
     if counts.size == 0 or np.any(counts == 0):
         raise ValueError("every cluster needs at least one value")
-    matrix = np.full((counts.size, int(counts.max())), np.nan)
+    matrix = np.full((counts.size, int(np.max(counts))), np.nan)
     for i, c in enumerate(clusters):
         matrix[i, : len(c)] = c
     return matrix, counts
