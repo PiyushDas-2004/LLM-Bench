@@ -131,6 +131,9 @@ def test_cache_key_includes_trial_index_and_params() -> None:
     assert cache_key("p", req(0)) != cache_key("p", req(0, temp=0.6))
     assert cache_key("p", req(0)) != cache_key("p", req(0, text="ho"))
     assert cache_key("p", req(0)) != cache_key("q", req(0))
+    assert cache_key("p", req(0), {"params": {"accuracy": 0.9}}) != cache_key(
+        "p", req(0), {"params": {"accuracy": 0.3}}
+    )
 
 
 async def test_system_clock() -> None:

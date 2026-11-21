@@ -316,7 +316,8 @@ class Runner:
     ) -> TrialRecord:
         request = self._request_for(prepared, item)
         provider_name = item.model.provider
-        cached = cache.get(provider_name, request)
+        model_config = {"params": item.model.params, "base_url": item.model.base_url}
+        cached = cache.get(provider_name, request, model_config)
         attempts = 0
         queue_wait = 0.0
         if cached is not None:
@@ -334,7 +335,7 @@ class Runner:
                 provider_name, item.model.model_name, result.input_tokens, result.output_tokens
             )
             budget.settle(est_cost or 0.0, actual if result.ok else 0.0)
-            cache.put(provider_name, request, result)
+            cache.put(provider_name, request, result, model_config)
         return self._to_trial(
             prepared, run_id, item, request, result, attempts, queue_wait, cached is not None
         )
