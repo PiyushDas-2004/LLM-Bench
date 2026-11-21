@@ -26,7 +26,8 @@ Simulation knobs (set in a model's ``params`` in the experiment YAML):
 ``latency_sigma``           Log-normal sigma of latency (0.35).
 ``time_scale``              Fraction of simulated latency actually slept (0.0).
 ``position_bias``           Judge mode: probability of picking answer "A" regardless (0.0).
-``mock_seed``               Seed mixed into every decision (0).
+``mock_seed``               Seed for sampling noise; change it to simulate a re-run (0).
+``difficulty_seed``         Seed for the fixed per-sample difficulty (0).
 ==========================  ============================================================
 """
 
@@ -81,6 +82,7 @@ class MockConfig(BaseModel):
     latency_sigma: float = Field(default=0.35, ge=0)
     time_scale: float = Field(default=0.0, ge=0)
     mock_seed: int = 0
+    difficulty_seed: int = 0
     position_bias: float = Field(default=0.0, ge=0, le=1)
     temperature: float | None = None
 
@@ -135,7 +137,8 @@ class MockProvider:
         acc = min(max(self.config.accuracy, 1e-4), 1 - 1e-4)
         logit = math.log(acc / (1 - acc))
         logit += {"easy": 1.0, "hard": -1.0}.get(str(oracle.get("difficulty")), 0.0)
-        z = _rng("difficulty", self.config.mock_seed, oracle.get("sample_id"), model).gauss(0, 1)
+        seed = self.config.difficulty_seed
+        z = _rng("difficulty", seed, oracle.get("sample_id"), model).gauss(0, 1)
         logit += self.config.sample_spread * z
         return 1 / (1 + math.exp(-logit))
 
