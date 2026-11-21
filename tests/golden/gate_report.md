@@ -2,6 +2,8 @@
 
 Baseline `<run-id>` vs candidate `<run-id>`
 
+> Mock provider: numbers are illustrative, not measurements of a real model.
+
 | gate | configuration | result | reason |
 |---|---|---|---|
 | pass | `assistant/v1` | **FAIL** | regressed by 0.2417 (> max_drop 0.02); p_adj=0.0003 < 0.05 with paired-permutation |

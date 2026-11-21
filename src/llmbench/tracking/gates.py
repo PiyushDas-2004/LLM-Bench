@@ -3,7 +3,8 @@
 A gate fails only when BOTH hold:
 
 1. the change goes in the bad direction by more than ``max_drop`` (absolute)
-   or ``max_relative_drop`` (relative to the baseline), and
+   and, when ``max_relative_drop`` is set, also by more than that fraction of
+   the baseline value, and
 2. it is statistically significant (multiple-comparison adjusted p < alpha,
    with a delta CI that excludes zero).
 
@@ -17,7 +18,7 @@ from pathlib import Path
 from typing import Literal
 
 import yaml
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from llmbench.errors import ConfigError
 from llmbench.stats.compare import MetricComparison, Verdict
@@ -53,7 +54,10 @@ class GateConfig(BaseModel):
         file = Path(path)
         if not file.is_file():
             raise ConfigError(f"gates file not found: {file}")
-        return cls.model_validate(yaml.safe_load(file.read_text(encoding="utf-8")))
+        try:
+            return cls.model_validate(yaml.safe_load(file.read_text(encoding="utf-8")))
+        except (yaml.YAMLError, ValidationError) as exc:
+            raise ConfigError(f"invalid gates file {file}:\n{exc}") from exc
 
     @classmethod
     def default(cls) -> GateConfig:
@@ -78,6 +82,7 @@ class GateReport(BaseModel):
     candidate_run: str
     results: list[GateResult]
     comparison: RunComparison
+    uses_mock: bool = False
 
     @property
     def passed(self) -> bool:
@@ -128,16 +133,17 @@ def evaluate_gate(
         and (cmp.delta_low > 0 or cmp.delta_high < 0)
     )
     significant = p is not None and p < threshold and excludes_zero
+    p_text = "n/a" if p is None else f"{p:.4g}"
     if too_big and significant:
         reason = (
             f"regressed by {drop:.4f} (> max_drop {gate.max_drop}); "
-            f"p_adj={p:.4g} < {threshold} with {cmp.test}"
+            f"p_adj={p_text} < {threshold} with {cmp.test}"
         )
         return GateResult(
             metric=gate.metric, config=config, passed=False, reason=reason, comparison=cmp
         )
     if too_big:
-        reason = f"drop {drop:.4f} exceeds tolerance but is not significant (p_adj={p:.4g})"
+        reason = f"drop {drop:.4f} exceeds tolerance but is not significant (p_adj={p_text})"
     else:
         reason = f"change {cmp.delta:+.4f} within tolerance"
     return GateResult(metric=gate.metric, config=config, passed=True, reason=reason, comparison=cmp)
@@ -170,9 +176,15 @@ def check(
         for group in comparison.groups
         for gate in gates.gates
     ]
+    uses_mock = any(
+        m.get("provider") == "mock"
+        for ref in (comparison.baseline_run, comparison.candidate_run)
+        for m in store.get_run(ref).manifest.get("models", [])
+    )
     return GateReport(
         baseline_run=comparison.baseline_run,
         candidate_run=comparison.candidate_run,
         results=results,
         comparison=comparison,
+        uses_mock=uses_mock,
     )

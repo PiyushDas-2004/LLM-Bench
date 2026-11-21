@@ -6,7 +6,7 @@ from typing import Any
 
 import pytest
 
-from llmbench.errors import DatasetDriftError, LLMBenchError
+from llmbench.errors import ConfigError, DatasetDriftError, LLMBenchError
 from llmbench.metrics.engine import evaluate_run
 from llmbench.runner import FakeClock, Runner
 from llmbench.stats import Verdict
@@ -144,6 +144,10 @@ def test_gate_config_and_edge_cases(tmp_path: Path) -> None:
     assert cfg.gates[1].direction == "lower_is_better"
     with pytest.raises(Exception, match="not found"):
         GateConfig.from_yaml(tmp_path / "missing.yaml")
+    broken = tmp_path / "broken.yaml"
+    broken.write_text("gates: [{metric: pass, max_drop: -1}]\n")
+    with pytest.raises(ConfigError, match="invalid gates file"):
+        GateConfig.from_yaml(broken)
     missing = evaluate_gate(Gate(metric="x"), None, 0.05, "c")
     assert not missing.passed
 

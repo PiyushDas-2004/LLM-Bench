@@ -146,6 +146,11 @@ def gate_markdown(report: GateReport) -> str:
         "",
         f"Baseline `{report.baseline_run}` vs candidate `{report.candidate_run}`",
         "",
+        *(
+            ["> Mock provider: numbers are illustrative, not measurements of a real model.", ""]
+            if report.uses_mock
+            else []
+        ),
         "| gate | configuration | result | reason |",
         "|---|---|---|---|",
     ]
