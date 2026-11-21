@@ -65,11 +65,19 @@ def run_markdown(summary: RunSummary) -> str:
     return "\n".join(lines) + "\n"
 
 
+def _v(value: float, sign: bool = False) -> str:
+    """3 decimals, or 3 significant digits for very small magnitudes (e.g. per-call cost)."""
+    fmt = "+" if sign else ""
+    if value != 0 and abs(value) < 0.01:
+        return f"{value:{fmt}.3g}"
+    return f"{value:{fmt}.3f}"
+
+
 def _metric_row(m: MetricComparison) -> str:
-    base = f"{m.baseline.estimate:.3f}" if m.baseline else "n/a"
-    cand = f"{m.candidate.estimate:.3f}" if m.candidate else "n/a"
+    base = _v(m.baseline.estimate) if m.baseline else "n/a"
+    cand = _v(m.candidate.estimate) if m.candidate else "n/a"
     delta = (
-        f"{m.delta:+.3f} [{m.delta_low:+.3f}, {m.delta_high:+.3f}]"
+        f"{_v(m.delta, True)} [{_v(m.delta_low, True)}, {_v(m.delta_high, True)}]"
         if m.delta is not None and m.delta_low is not None and m.delta_high is not None
         else "n/a"
     )
