@@ -1,0 +1,22 @@
+# RAG configuration sweep on the bundled rag_mini corpus. Runs fully offline:
+# the mock generator answers from the retrieved context (so retrieval quality
+# propagates to answer quality) and the lexical verifier checks groundedness.
+# Swap `generator` for a real model and `verifier: judge` for a real evaluation.
+name: rag-mini-sweep
+corpus: ../datasets/rag_mini/corpus
+questions: ../datasets/rag_mini/questions.jsonl
+prompt: ../prompts/rag_v1.j2
+generator:
+  id: generator
+  provider: mock
+  model: mock-rag
+  params: {accuracy: 0.92, temperature: 0.0, sample_spread: 0.5}
+verifier: lexical
+sweep:
+  chunk_strategy: [fixed, recursive]
+  chunk_size: [250, 700]
+  chunk_overlap: [0, 80]
+  top_k: [2, 5]
+  retrieval: [bm25, vector, hybrid]
+  reranker: [none, llm]
+  embedder: [hash]
