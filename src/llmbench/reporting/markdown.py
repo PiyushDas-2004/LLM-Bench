@@ -41,7 +41,8 @@ def run_markdown(summary: RunSummary) -> str:
     ]
     if mock:
         lines += [
-            "> Mock provider: numbers are illustrative, not measurements of a real model.",
+            "> Mock provider: numbers are illustrative, not measurements of a real model; "
+            "mock costs use fictional prices and nothing was billed.",
             "",
         ]
     lines.append("| configuration | " + " | ".join(headline) + " | p50 latency | cost / 1k req |")
@@ -147,7 +148,11 @@ def gate_markdown(report: GateReport) -> str:
         f"Baseline `{report.baseline_run}` vs candidate `{report.candidate_run}`",
         "",
         *(
-            ["> Mock provider: numbers are illustrative, not measurements of a real model.", ""]
+            [
+                "> Mock provider: numbers are illustrative, not measurements of a real model; "
+                "mock costs use fictional prices and nothing was billed.",
+                "",
+            ]
             if report.uses_mock
             else []
         ),

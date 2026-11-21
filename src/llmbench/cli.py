@@ -270,10 +270,17 @@ def _progress_runner(store: RunStore, total_hint: int) -> tuple[Runner, Progress
 
 def _finish(store: RunStore, outcome: RunOutcome, report: Path | None) -> None:
     style = "green" if outcome.status == "completed" else "yellow"
+    manifest = store.get_run(outcome.run_id).manifest
+    all_mock = all(m.get("provider") == "mock" for m in manifest.get("models", []))
+    spent = (
+        f"simulated cost ${outcome.spent_usd:.4f} (fictional mock prices; nothing billed)"
+        if all_mock
+        else f"spent ${outcome.spent_usd:.4f}"
+    )
     console.print(
         f"[{style}]{outcome.status}[/] run [bold]{outcome.run_id}[/]: {outcome.n_done}/"
         f"{outcome.n_expected} trials, {outcome.n_failed} failed, {outcome.cache_hits} cache hits, "
-        f"spent ${outcome.spent_usd:.4f}"
+        f"{spent}"
     )
     if outcome.stop_reason:
         console.print(f"stop reason: {outcome.stop_reason}")

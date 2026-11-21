@@ -2,7 +2,7 @@
 
 Baseline `<run-id>` vs candidate `<run-id>`
 
-> Mock provider: numbers are illustrative, not measurements of a real model.
+> Mock provider: numbers are illustrative, not measurements of a real model; mock costs use fictional prices and nothing was billed.
 
 | gate | configuration | result | reason |
 |---|---|---|---|

@@ -2,7 +2,7 @@
 
 Run `<run-id>` | task `qa` | dataset `qa_basic` (`31c0e369dbf5`) | 120/120 trials | status `completed`
 
-> Mock provider: numbers are illustrative, not measurements of a real model.
+> Mock provider: numbers are illustrative, not measurements of a real model; mock costs use fictional prices and nothing was billed.
 
 | configuration | pass | exact_match | f1 | p50 latency | cost / 1k req |
 |---|---:|---:|---:|---:|---:|

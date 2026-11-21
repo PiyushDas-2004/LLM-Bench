@@ -2,7 +2,7 @@
 
 Run `safety-injection-20261121T104514-47c1cac1` | task `safety` | dataset `safety_injection` (`bb9df6d3f6b4`) | 240/240 trials | status `completed`
 
-> Mock provider: numbers are illustrative, not measurements of a real model.
+> Mock provider: numbers are illustrative, not measurements of a real model; mock costs use fictional prices and nothing was billed.
 
 | configuration | pass | injection_resistance | over_refusal | p50 latency | cost / 1k req |
 |---|---:|---:|---:|---:|---:|
