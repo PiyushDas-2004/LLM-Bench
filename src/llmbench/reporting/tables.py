@@ -42,20 +42,24 @@ def runs_table(runs: Sequence[RunRow]) -> Table:
 
 
 def summary_table(summary: RunSummary) -> Table:
-    """Leaderboard for one run."""
+    """Compact leaderboard for one run (up to three headline metrics)."""
     present = {m for c in summary.configs for m in c.metrics}
-    metrics = [m for m in HEADLINE_CANDIDATES if m in present][:4]
+    metrics = [
+        m
+        for m in HEADLINE_CANDIDATES
+        if m in present and not (m == "exact_match" and "pass" in present)
+    ][:3]
     table = Table(
         title=f"{summary.name} ({summary.run_id})",
         header_style="bold",
-        caption="estimate [95% CI]; * = Pareto-optimal",
+        caption="estimate [95% CI]; * = Pareto-optimal (quality, cost, latency)",
     )
-    table.add_column("configuration")
-    table.add_column("n", justify="right")
+    table.add_column("configuration", no_wrap=True)
+    table.add_column("n", justify="right", no_wrap=True)
     for m in metrics:
-        table.add_column(m, justify="right")
-    for col in ("agreement", "p50 ms", "p95 ms", "fail %", "cost/1k req"):
-        table.add_column(col, justify="right")
+        table.add_column(m.replace("llm_judge_correctness", "judge"), justify="right", no_wrap=True)
+    for col in ("agreement", "p50 ms", "fail %", "$/1k req"):
+        table.add_column(col, justify="right", no_wrap=True)
     for c in summary.configs:
         cells = []
         for m in metrics:
@@ -70,7 +74,6 @@ def summary_table(summary: RunSummary) -> Table:
             *cells,
             "n/a" if agreement is None else f"{agreement:.3f}",
             "n/a" if c.latency.p50 is None else f"{c.latency.p50:,.0f}",
-            "n/a" if c.latency.p95 is None else f"{c.latency.p95:,.0f}",
             f"{100 * c.failure_rate:.1f}",
             "unknown"
             if c.cost.per_1k_requests_usd is None
