@@ -25,6 +25,7 @@ Simulation knobs (set in a model's ``params`` in the experiment YAML):
 ``latency_ms``              Median simulated latency (400).
 ``latency_sigma``           Log-normal sigma of latency (0.35).
 ``time_scale``              Fraction of simulated latency actually slept (0.0).
+``position_bias``           Judge mode: probability of picking answer "A" regardless (0.0).
 ``mock_seed``               Seed mixed into every decision (0).
 ==========================  ============================================================
 """
@@ -215,8 +216,9 @@ class MockProvider:
         if spec.get("mode") == "pairwise":
             fa = _token_f1(str(spec.get("candidate_a", "")), reference) + rng.gauss(0, 0.05)
             fb = _token_f1(str(spec.get("candidate_b", "")), reference) + rng.gauss(0, 0.05)
-            fa += self.config.position_bias
             winner = "tie" if abs(fa - fb) < 0.05 else ("A" if fa > fb else "B")
+            if rng.random() < self.config.position_bias:
+                winner = "A"
             return json.dumps({"winner": winner, "reasoning": "mock pairwise judgment"})
         f1 = _token_f1(str(spec.get("candidate", "")), reference)
         noisy = min(1.0, max(0.0, f1 + rng.gauss(0, 0.08)))
