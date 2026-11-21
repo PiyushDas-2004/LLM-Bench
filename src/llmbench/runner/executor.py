@@ -4,9 +4,9 @@ Design (see ``docs/adr/0002-async-runner.md``):
 
 * A fixed pool of ``concurrency`` workers pulls from a lazily expanded grid,
   so memory stays flat for very large grids.
-* Each provider gets its own token-bucket :class:`RateLimiter` and
-  :class:`CircuitBreaker`; retries use full-jitter backoff honouring
-  ``Retry-After``.
+* Each provider endpoint gets one token-bucket :class:`RateLimiter` and one
+  :class:`CircuitBreaker`, shared by the models that use it; retries use
+  full-jitter backoff honouring ``Retry-After``.
 * Every finished trial is written to the store immediately; ``resume`` skips
   trials already present, so an interrupted run continues exactly where it
   stopped and produces the same final results.
@@ -92,10 +92,16 @@ class RunOutcome:
 
 @dataclass
 class _ProviderSlot:
+    """A model's provider plus the limiter and breaker of its endpoint (shared across models)."""
+
     provider: Provider
     limiter: RateLimiter
     breaker: CircuitBreaker
-    abandoned: bool = False
+
+    @property
+    def abandoned(self) -> bool:
+        """True once the endpoint's breaker has tripped too often to keep trying this run."""
+        return self.breaker.trips >= MAX_BREAKER_TRIPS
 
 
 class Runner:
@@ -184,6 +190,13 @@ class Runner:
                 f"dataset changed since run {run_id} started "
                 f"({row.dataset_hash[:12]} -> {prepared.evaluated_hash[:12]}); cannot resume"
             )
+        changed = sorted(
+            pid
+            for pid, digest in manifest.get("prompts", {}).items()
+            if pid in prepared.prompts and prepared.prompts[pid].content_hash != digest
+        )
+        if changed:
+            raise ConfigError(f"cannot resume: prompt templates changed since the run: {changed}")
         expected_models = {m["id"] for m in manifest["models"]}
         missing = expected_models - {m.id for m in prepared.models}
         if missing:
@@ -197,18 +210,33 @@ class Runner:
 
     # --------------------------------------------------------------- internals
     def _build_slots(self, prepared: PreparedExperiment) -> dict[str, _ProviderSlot]:
+        """One provider per model; limiter and breaker shared per endpoint.
+
+        Models that hit the same endpoint (same provider, base_url and API-key
+        variable) share one token bucket and one circuit breaker, because the
+        provider enforces its limits per account and endpoint, not per model entry.
+        A model's own ``rate_limit`` overrides the experiment-wide limits; the first
+        model seen for an endpoint decides that endpoint's limits.
+        """
         config = prepared.config
+        endpoints: dict[tuple[str, str | None, str | None], tuple[RateLimiter, CircuitBreaker]] = {}
         slots: dict[str, _ProviderSlot] = {}
         for spec in prepared.models:
-            limits = spec.rate_limit or config.rate_limit
+            key = (spec.provider, spec.base_url, spec.api_key_env)
+            if key not in endpoints:
+                endpoints[key] = (
+                    RateLimiter(spec.rate_limit or config.rate_limit, self.clock),
+                    CircuitBreaker(
+                        config.circuit_breaker.failure_threshold,
+                        config.circuit_breaker.reset_timeout_s,
+                        self.clock,
+                    ),
+                )
+            limiter, breaker = endpoints[key]
             slots[spec.id] = _ProviderSlot(
                 provider=self.provider_factory(spec, self.settings),
-                limiter=RateLimiter(limits, self.clock),
-                breaker=CircuitBreaker(
-                    config.circuit_breaker.failure_threshold,
-                    config.circuit_breaker.reset_timeout_s,
-                    self.clock,
-                ),
+                limiter=limiter,
+                breaker=breaker,
             )
         return slots
 
@@ -376,8 +404,6 @@ class Runner:
                     ErrorClass.CONTENT_FILTERED,
                 ):
                     slot.breaker.record_failure()
-                    if slot.breaker.trips >= MAX_BREAKER_TRIPS:
-                        slot.abandoned = True
                 if policy.should_retry(error, attempt) and not slot.abandoned:
                     await self.clock.sleep(policy.delay(attempt, error, rng))
                     continue

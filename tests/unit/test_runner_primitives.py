@@ -36,6 +36,13 @@ async def test_token_bucket_waits_for_refill() -> None:
         TokenBucket(0, 1)
 
 
+async def test_token_bucket_makes_progress_at_large_clock_values() -> None:
+    clock = FakeClock(start=1e12)  # float spacing here is ~1e-4 s
+    bucket = TokenBucket(rate_per_s=3.0, capacity=3.0, clock=clock)
+    for _ in range(50):
+        await asyncio.wait_for(bucket.acquire(1.7), timeout=1)
+
+
 async def test_rate_limiter_enforces_rpm() -> None:
     clock = FakeClock()
     limiter = RateLimiter(RateLimitConfig(requests_per_minute=60, tokens_per_minute=6000), clock)

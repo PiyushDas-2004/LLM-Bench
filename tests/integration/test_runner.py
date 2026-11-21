@@ -278,3 +278,39 @@ def test_migrations_match_models(tmp_path: Path) -> None:
         tables = set(inspect(conn).get_table_names())
     assert diff == []
     assert {"runs", "trials", "metric_values", "judge_calls", "baselines"} <= tables
+
+
+async def test_resume_refuses_changed_prompt(tmp_path: Path, store: RunStore) -> None:
+    template = tmp_path / "p.j2"
+    template.write_text("Q: {{ input }}")
+    cfg = make_config(tmp_path, concurrency=1, prompts=[{"id": "v1", "template": str(template)}])
+    runner: Runner
+
+    def stop(progress: object) -> None:
+        runner.request_stop()
+
+    runner = Runner(store, clock=FakeClock(), progress=stop)
+    outcome = await runner.run(cfg)
+    _edit(template)
+    with pytest.raises(ConfigError, match="prompt templates changed"):
+        await Runner(store, clock=FakeClock()).resume(outcome.run_id)
+
+
+def _edit(path: Path) -> None:
+    path.write_text("Question: {{ input }}")
+
+
+async def test_models_on_one_endpoint_share_a_circuit_breaker(
+    tmp_path: Path, store: RunStore
+) -> None:
+    cfg = make_config(
+        tmp_path,
+        models=[{"id": "a", "provider": "mock"}, {"id": "b", "provider": "mock"}],
+        circuit_breaker={"failure_threshold": 2, "reset_timeout_s": 1},
+        concurrency=1,
+    )
+    outcome = await Runner(
+        store, provider_factory=lambda s, st: _AuthFailProvider(), clock=FakeClock()
+    ).run(cfg)
+    assert outcome.stop_reason is not None
+    assert "['a', 'b']" in outcome.stop_reason

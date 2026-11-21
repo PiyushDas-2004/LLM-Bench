@@ -7,6 +7,10 @@ import asyncio
 from llmbench.config.models import RateLimitConfig
 from llmbench.runner.clock import Clock, SystemClock
 
+_EPSILON = 1e-9
+#: Smallest wait; guarantees progress even when float time stops advancing by tiny steps.
+_MIN_SLEEP_S = 1e-3
+
 
 class TokenBucket:
     """Classic token bucket.
@@ -49,10 +53,11 @@ class TokenBucket:
         async with self._lock:
             while True:
                 self._refill()
-                if self._tokens >= amount:
-                    self._tokens -= amount
+                # Tolerance: float rounding can leave the bucket a hair short forever.
+                if self._tokens >= amount - _EPSILON:
+                    self._tokens = max(0.0, self._tokens - amount)
                     return waited
-                delay = (amount - self._tokens) / self.rate
+                delay = max((amount - self._tokens) / self.rate, _MIN_SLEEP_S)
                 waited += delay
                 await self.clock.sleep(delay)
 
