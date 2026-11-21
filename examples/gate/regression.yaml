@@ -1,0 +1,15 @@
+# Eval-gate demo, candidate with a seeded regression (accuracy 0.85 -> 0.60) (mock provider, offline).
+name: gate-demo
+dataset: ../../datasets/qa_basic.jsonl
+task: qa
+trials: 3
+seed: 2026
+pricing: ../pricing.yaml
+models:
+  - id: assistant
+    provider: mock
+    model: mock-strong
+    params: {temperature: 0.7, accuracy: 0.60, latency_ms: 500, mock_seed: 2}
+prompts:
+  - {id: v1, template: ../../prompts/qa_v1.j2}
+metrics: [exact_match, f1, consistency, latency]

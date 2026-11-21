@@ -1,0 +1,14 @@
+# Intent classification at temperature 0 vs 0.9: shows how sampling temperature
+# affects consistency (exact agreement, entropy, flip rate). Mock provider.
+name: intent-temperature
+dataset: ../datasets/classification_intent.jsonl
+task: classification
+trials: 5
+seed: 11
+pricing: pricing.yaml
+models:
+  - {id: greedy, provider: mock, model: mock-fast, params: {temperature: 0.0, accuracy: 0.75}}
+  - {id: sampled, provider: mock, model: mock-fast, params: {temperature: 0.9, accuracy: 0.75}}
+prompts:
+  - {id: v1, template: ../prompts/classification_v1.j2}
+metrics: [exact_match, consistency]

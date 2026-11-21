@@ -1,0 +1,32 @@
+# Offline quickstart: two simulated models x two prompt versions on the QA set,
+# 5 repeated trials each. Needs no API keys. All numbers it produces come from
+# the deterministic MOCK provider and are illustrative only.
+name: quickstart
+description: Mock-provider comparison of two models and two prompts on qa_basic.
+dataset: ../datasets/qa_basic.jsonl
+task: qa
+trials: 5
+seed: 1234
+concurrency: 8
+pricing: pricing.yaml
+cost_confirm_threshold_usd: 1.0
+rate_limit: {requests_per_minute: 6000, tokens_per_minute: 2000000}
+budget: {max_usd: 1.00, max_requests: 5000}
+models:
+  - id: mock-strong
+    provider: mock
+    model: mock-strong
+    params: {temperature: 0.7, max_tokens: 64, accuracy: 0.85, latency_ms: 650, failure_rate: 0.02, stream: true}
+  - id: mock-fast
+    provider: mock
+    model: mock-fast
+    params: {temperature: 0.7, max_tokens: 64, accuracy: 0.65, latency_ms: 180, failure_rate: 0.02, stream: true}
+prompts:
+  - {id: v1, template: ../prompts/qa_v1.j2}
+  - {id: v2, template: ../prompts/qa_v2.j2}
+metrics: [exact_match, f1, rouge_l, semantic_similarity, llm_judge_correctness, consistency, latency, cost]
+judge:
+  provider: mock
+  model: mock-judge
+  rubric: ../rubrics/correctness.yaml
+  swap_order: true

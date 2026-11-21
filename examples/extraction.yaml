@@ -1,0 +1,20 @@
+# Structured JSON extraction with schema validation (offline, mock provider).
+name: extraction-json
+dataset: ../datasets/extraction_json.jsonl
+task: extraction
+trials: 3
+seed: 7
+pricing: pricing.yaml
+models:
+  - id: mock-strong
+    provider: mock
+    model: mock-strong
+    params: {temperature: 0.5, accuracy: 0.8, malformed_rate: 0.05}
+prompts:
+  - {id: v1, template: ../prompts/extraction_v1.j2}
+metrics:
+  - json_valid
+  - {name: json_schema, params: {schema: ../datasets/extraction_schema.json}}
+  - field_accuracy
+  - consistency
+  - reliability

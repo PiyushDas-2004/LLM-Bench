@@ -1,0 +1,23 @@
+# Multi-provider comparison. Fill in the "<set me>" model names and export
+# OPENAI_API_KEY / GEMINI_API_KEY to include the real providers; any model that
+# cannot run here (missing key, placeholder name) is skipped with a warning, so
+# this file also runs offline using only the mock model.
+name: qa-model-comparison
+dataset: ../datasets/qa_basic.jsonl
+task: qa
+trials: 5                 # repeated trials per (sample, model, prompt)
+seed: 1234
+concurrency: 8
+pricing: pricing.yaml
+rate_limit: {requests_per_minute: 120, tokens_per_minute: 200000}
+budget: {max_usd: 5.00, max_requests: 5000}
+models:
+  - {id: gpt-main, provider: openai, model: "<set me>", params: {temperature: 0.7, max_tokens: 256}}
+  - {id: gemini-main, provider: gemini, model: "<set me>", params: {temperature: 0.7, max_tokens: 256}}
+  - {id: local-small, provider: openai_compat, model: "<set me>", base_url: "http://localhost:11434/v1"}
+  - {id: mock, provider: mock, params: {failure_rate: 0.05, temperature: 0.7}}
+prompts:
+  - {id: v1, template: ../prompts/qa_v1.j2}
+  - {id: v2, template: ../prompts/qa_v2.j2}
+metrics: [exact_match, f1, rouge_l, semantic_similarity, llm_judge_correctness, consistency, latency, cost]
+judge: {provider: openai, model: "<set me>", rubric: ../rubrics/correctness.yaml, swap_order: true}
