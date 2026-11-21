@@ -221,7 +221,8 @@ class Runner:
         cache = ResponseCache(self.store, enabled=use_cache)
         budget = BudgetGuard(config.budget)
         policy = RetryPolicy.from_config(config.retry)
-        rng = random.Random(config.seed)  # noqa: S311 - jitter only
+        # Seeded, non-cryptographic RNG: only used for retry jitter.
+        rng = random.Random(config.seed)  # noqa: S311  # nosec B311
         progress = RunProgress(run_id=run_id, total=prepared.grid_size, done=len(done_keys))
         progress.skipped_existing = len(done_keys)
         items: Iterator[WorkItem] = (i for i in prepared.iter_items() if i.key not in done_keys)

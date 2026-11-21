@@ -25,7 +25,8 @@ def stratified_sample(
     """
     if n >= len(samples):
         return list(samples)
-    rng = random.Random(seed)  # noqa: S311 - reproducible sampling, not cryptography
+    # Seeded, non-cryptographic RNG: reproducibility is the point.
+    rng = random.Random(seed)  # noqa: S311  # nosec B311
     if not stratify:
         chosen = {id(s) for s in rng.sample(samples, n)}
         return [s for s in samples if id(s) in chosen]
@@ -49,7 +50,8 @@ def train_dev_split(
     """Split into (train, dev) stratified by primary tag; used for judge calibration."""
     if not 0 < dev_fraction < 1:
         raise ValueError("dev_fraction must be in (0, 1)")
-    rng = random.Random(seed)  # noqa: S311 - reproducible split
+    # Seeded, non-cryptographic RNG: reproducibility is the point.
+    rng = random.Random(seed)  # noqa: S311  # nosec B311
     dev_ids: set[str] = set()
     for items in _group_by_tag(samples).values():
         shuffled = list(items)

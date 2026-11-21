@@ -89,7 +89,7 @@ class MockConfig(BaseModel):
 
 def _rng(*parts: object) -> random.Random:
     digest = hashlib.sha256("\x1f".join(map(str, parts)).encode()).digest()
-    return random.Random(int.from_bytes(digest[:8], "big"))  # noqa: S311 - simulation only
+    return random.Random(int.from_bytes(digest[:8], "big"))  # noqa: S311  # nosec B311
 
 
 def _token_count(text: str) -> int:

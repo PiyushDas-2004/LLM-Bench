@@ -148,3 +148,6 @@ exclude_also = [
 
 [tool.bandit]
 exclude_dirs = ["tests"]
+# B615 is a false positive: llmbench.datasets.load_dataset reads local JSONL/YAML files;
+# bandit mistakes it for Hugging Face's datasets.load_dataset.
+skips = ["B615"]

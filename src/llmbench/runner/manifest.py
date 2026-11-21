@@ -7,7 +7,7 @@ import hashlib
 import platform
 import re
 import shutil
-import subprocess  # nosec B404 - used only to read the git SHA with a fixed argv
+import subprocess  # nosec B404
 import sys
 from pathlib import Path
 from typing import Any
@@ -28,7 +28,8 @@ def git_sha(cwd: Path | None = None) -> str | None:
     if git is None:
         return None
     try:
-        out = subprocess.run(  # noqa: S603  # nosec B603 - fixed argv, no shell
+        # Fixed argv (resolved git binary + constant args), no shell.
+        out = subprocess.run(  # noqa: S603  # nosec B603
             [git, "rev-parse", "HEAD"],
             cwd=cwd,
             capture_output=True,
