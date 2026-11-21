@@ -38,6 +38,15 @@ Rules:
 - Never commit secrets, `.env`, or `*.db` files. Keys come only from the environment.
 - Numbers in docs must come from real runs; label mock-provider numbers as illustrative.
 
+## Useful facts
+- Run store defaults to `sqlite:///.llmbench/llmbench.db` (override with `--db` / `LLMBENCH_DB_URL`).
+- `LLMBENCH_PLUGINS=mod1,mod2` imports custom metric/provider/task modules at CLI startup.
+- The mock provider's knobs live in `providers/mock.py`; `difficulty_seed` fixes per-sample
+  difficulty, `mock_seed` changes only sampling noise (use it to simulate a re-run).
+- Golden Markdown reports live in `tests/golden/`; regenerate with `UPDATE_GOLDEN=1 pytest tests/integration/test_reporting.py`.
+- The CI eval-gate baseline is `baselines/gate-demo.json` (`llmbench export <run> --output ...`).
+- Rate limiters and circuit breakers are shared per provider endpoint (provider, base_url, api_key_env).
+
 ## Conventions
 - Conventional Commits (`feat:`, `fix:`, `test:`, `docs:`, `ci:`, `chore:`), one module per commit.
 - Type hints everywhere, `mypy --strict` clean, ruff clean, docstrings on public APIs.
