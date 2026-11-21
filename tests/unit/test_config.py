@@ -136,3 +136,24 @@ def test_settings_reads_provider_keys(monkeypatch: pytest.MonkeyPatch) -> None:
     assert settings.openai_api_key.get_secret_value() == "sk-test-not-real"
     assert "sk-test" not in repr(settings)
     assert settings.db_url == "sqlite://"
+
+
+def test_load_plugin_modules(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    from llmbench.errors import RegistryError
+    from llmbench.metrics import METRICS
+    from llmbench.plugins import load_plugin_modules
+
+    (tmp_path / "plugin_mod_for_test.py").write_text(
+        "from llmbench.metrics import trial_metric\n"
+        "@trial_metric('plugin_metric_for_test')\n"
+        "def m(trial, sample):\n    return 1.0\n"
+    )
+    monkeypatch.chdir(tmp_path)
+    try:
+        assert load_plugin_modules(" plugin_mod_for_test , ") == ["plugin_mod_for_test"]
+        assert "plugin_metric_for_test" in METRICS
+    finally:
+        METRICS.unregister("plugin_metric_for_test")
+    assert load_plugin_modules("") == []
+    with pytest.raises(RegistryError, match="cannot import"):
+        load_plugin_modules("definitely_missing_module_xyz")

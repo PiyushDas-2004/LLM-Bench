@@ -24,6 +24,7 @@ from llmbench.errors import LLMBenchError
 from llmbench.metrics.base import METRICS, create_metric
 from llmbench.metrics.engine import config_from_run, evaluate_run, resolve_metric_specs
 from llmbench.observability import configure_logging
+from llmbench.plugins.registry import load_plugin_modules
 from llmbench.providers.registry import PROVIDERS
 from llmbench.reporting import (
     comparison_markdown,
@@ -129,6 +130,10 @@ def main_callback(
         redact_prompts=settings.redact_prompts,
         otel=settings.otel_enabled,
     )
+    try:
+        load_plugin_modules(settings.plugins)
+    except LLMBenchError as exc:
+        raise _fail(str(exc)) from exc
 
 
 # --------------------------------------------------------------------------- init

@@ -29,6 +29,11 @@ class Settings(BaseSettings):
     otel_enabled: bool = False
     workspace: str = "."
     api_workers: int = Field(default=2, ge=1, le=64)
+    plugins: str = Field(
+        default="",
+        description="Comma-separated Python modules to import at startup (custom metrics, "
+        "providers or tasks), e.g. LLMBENCH_PLUGINS=my_project.metrics",
+    )
 
     openai_api_key: SecretStr | None = Field(
         default=None, validation_alias=AliasChoices("OPENAI_API_KEY", "LLMBENCH_OPENAI_API_KEY")

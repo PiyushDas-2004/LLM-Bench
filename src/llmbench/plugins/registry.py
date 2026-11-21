@@ -8,8 +8,11 @@ which are loaded the first time a name is not found.
 
 from __future__ import annotations
 
+import importlib
+import sys
 from collections.abc import Callable, Iterator
 from importlib.metadata import entry_points
+from pathlib import Path
 from typing import Generic, TypeVar
 
 from llmbench.errors import RegistryError
@@ -75,3 +78,20 @@ class Registry(Generic[T]):
         """Sorted names of all registered items, including entry-point plugins."""
         self.load_entry_points()
         return sorted(self._items)
+
+
+def load_plugin_modules(spec: str) -> list[str]:
+    """Import comma-separated modules (from ``LLMBENCH_PLUGINS``) so they can register plugins.
+
+    The current working directory is put on ``sys.path`` first, so a local
+    ``my_metrics.py`` next to your experiment works without packaging.
+    """
+    names = [name.strip() for name in spec.split(",") if name.strip()]
+    if names and str(Path.cwd()) not in sys.path:
+        sys.path.insert(0, str(Path.cwd()))
+    for name in names:
+        try:
+            importlib.import_module(name)
+        except ImportError as exc:
+            raise RegistryError(f"cannot import plugin module {name!r}: {exc}") from exc
+    return names
