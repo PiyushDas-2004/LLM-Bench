@@ -22,11 +22,15 @@ from llmbench.metrics.base import (
     create_metric,
     expand_metric_names,
 )
+from llmbench.rag import metrics as rag_metrics
 from llmbench.runner.prepare import load_pricing
 from llmbench.tasks.base import get_task
 from llmbench.tracking.store import RunStore
 
 log = structlog.get_logger(__name__)
+
+#: Modules whose import registers extra metrics (judge- and RAG-backed).
+PLUGIN_METRIC_MODULES = (rag_metrics,)
 
 #: Metrics computed for every run because reports depend on them.
 ALWAYS_COMPUTED: tuple[str, ...] = (

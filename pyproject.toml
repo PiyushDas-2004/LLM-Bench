@@ -116,7 +116,7 @@ warn_unreachable = true
 mypy_path = "src"
 
 [[tool.mypy.overrides]]
-module = ["scipy.*", "sentence_transformers.*", "pyarrow.*", "pgvector.*", "pypdf.*", "respx.*", "bert_score.*"]
+module = ["psycopg.*", "scipy.*", "sentence_transformers.*", "pyarrow.*", "pgvector.*", "pypdf.*", "respx.*", "bert_score.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]

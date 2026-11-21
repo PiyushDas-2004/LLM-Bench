@@ -10,7 +10,7 @@ from typing import Any
 
 _ARTICLES = re.compile(r"\b(a|an|the)\b", re.IGNORECASE)
 _PUNCT = str.maketrans("", "", string.punctuation)
-_CITATION = re.compile(r"\[(\d+)\]")
+CITATION_RE = re.compile(r"\[(\d+)\]")
 
 
 def normalize_answer(text: str) -> str:
@@ -96,13 +96,13 @@ def extract_json(text: str) -> Any:
 
 def strip_citations(text: str) -> str:
     """Remove ``[n]`` citation markers."""
-    return " ".join(_CITATION.sub(" ", text).split())
+    return " ".join(CITATION_RE.sub(" ", text).split())
 
 
 def citations(text: str) -> list[int]:
     """Citation numbers ``[n]`` in order of appearance (duplicates removed)."""
     seen: list[int] = []
-    for match in _CITATION.findall(text):
+    for match in CITATION_RE.findall(text):
         number = int(match)
         if number not in seen:
             seen.append(number)
