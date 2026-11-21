@@ -1,0 +1,50 @@
+# docker compose up            -> REST API on http://localhost:8000 (set LLMBENCH_API_KEY first)
+# docker compose run --rm bench run examples/quickstart.yaml --yes
+# docker compose --profile postgres up -d postgres   -> optional pgvector backend for RAG
+services:
+  api:
+    build: .
+    image: llmbench:local
+    command: ["serve", "--host", "0.0.0.0", "--port", "8000"]
+    environment:
+      LLMBENCH_API_KEY: ${LLMBENCH_API_KEY:?set LLMBENCH_API_KEY (any random string) before starting the API}
+      LLMBENCH_DB_URL: sqlite:////data/llmbench.db
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+    ports:
+      - "8000:8000"
+    volumes:
+      - llmbench-data:/data
+    restart: unless-stopped
+
+  bench:
+    image: llmbench:local
+    build: .
+    profiles: ["cli"]
+    environment:
+      LLMBENCH_DB_URL: sqlite:////data/llmbench.db
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+    volumes:
+      - llmbench-data:/data
+      - ./reports:/app/reports
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    profiles: ["postgres"]
+    environment:
+      POSTGRES_USER: llmbench
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-llmbench-local-only}
+      POSTGRES_DB: llmbench
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U llmbench"]
+      interval: 5s
+      retries: 10
+
+volumes:
+  llmbench-data:
+  pgdata:
