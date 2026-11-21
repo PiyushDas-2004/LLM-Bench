@@ -60,7 +60,12 @@ class LLMJudgeCorrectness(Metric):
                     self.name,
                     trial,
                     verdict.normalized,
-                    {"score": verdict.score, "passed": verdict.passed, "error": verdict.error},
+                    {
+                        "score": verdict.score,
+                        "passed": verdict.passed,
+                        "error": verdict.error,
+                        "length": len(trial.output_text),
+                    },
                 )
             )
             if verdict.normalized is not None:

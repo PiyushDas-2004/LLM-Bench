@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import datetime as dt
+import json
 from collections.abc import Iterable, Sequence
 from typing import Any
 
@@ -301,6 +302,21 @@ class RunStore:
         return int(getattr(result, "rowcount", 0) or 0)
 
     # -------------------------------------------------------------- artifacts
+    def latest_artifact_json(self, run_id: str, kind: str) -> dict[str, Any] | None:
+        """Most recent artifact of ``kind`` for a run, decoded as JSON (``None`` if absent)."""
+        stmt = (
+            select(ArtifactRow)
+            .where(ArtifactRow.run_id == run_id, ArtifactRow.kind == kind)
+            .order_by(ArtifactRow.id.desc())
+            .limit(1)
+        )
+        with self._session() as session:
+            row = session.scalars(stmt).first()
+        if row is None:
+            return None
+        data = json.loads(row.content)
+        return data if isinstance(data, dict) else None
+
     def add_artifact(self, run_id: str, kind: str, name: str, content: str) -> None:
         """Attach a generated artifact (e.g. a rendered report) to a run."""
         with self._session.begin() as session:

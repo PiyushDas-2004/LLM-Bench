@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLMBench report: {{ s.name }}</title>
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+  --grid: #e1e0d9; --baseline: #c3c2b7; --series-1: #2a78d6; --good: #006300; --critical: #d03b3b;
+  --warning-bg: #fff4d6; --border: #e1e0d9;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --baseline: #383835; --series-1: #3987e5; --good: #0ca30c; --critical: #e66767;
+    --warning-bg: #3a2f12; --border: #2c2c2a;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781;
+  --grid: #2c2c2a; --baseline: #383835; --series-1: #3987e5; --good: #0ca30c; --critical: #e66767;
+  --warning-bg: #3a2f12; --border: #2c2c2a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 1080px; margin: 0 auto; padding: 24px 16px 64px; }
+h1 { font-size: 26px; margin: 0 0 4px; }
+h2 { font-size: 19px; margin: 36px 0 10px; }
+h3 { font-size: 15px; margin: 18px 0 6px; color: var(--ink-2); }
+p.sub, .muted { color: var(--ink-2); }
+section { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin-top: 14px; overflow-x: auto; }
+.banner { background: var(--warning-bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin: 14px 0; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-top: 14px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+.card .k { color: var(--ink-2); font-size: 13px; }
+.card .v { font-size: 22px; font-variant-numeric: tabular-nums; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; font-size: 14px; }
+th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+th { color: var(--ink-2); font-weight: 600; }
+tbody td:first-child { white-space: nowrap; }
+td.num, th.num { text-align: right; white-space: nowrap; }
+.ci { color: var(--muted); font-size: 12px; }
+.tag { display: inline-block; padding: 0 6px; border-radius: 4px; border: 1px solid var(--border); font-size: 12px; color: var(--ink-2); margin-right: 4px; }
+.front { font-weight: 600; }
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+pre { background: var(--page); padding: 12px; border-radius: 8px; overflow-x: auto; font-size: 12px; max-height: 420px; }
+code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.out { max-width: 340px; white-space: pre-wrap; word-break: break-word; font-size: 13px; }
+svg.chart { width: 100%; height: auto; max-width: 720px; display: block; }
+svg.chart.small { max-width: 320px; }
+svg .grid { stroke: var(--grid); stroke-width: 1; }
+svg .baseline { stroke: var(--baseline); stroke-width: 1; }
+svg .axis { fill: var(--muted); font-size: 11px; }
+svg .axis-title { fill: var(--ink-2); font-size: 12px; }
+svg .label { fill: var(--ink-2); font-size: 12px; }
+svg .value { fill: var(--ink); font-size: 12px; }
+svg .bar { fill: var(--series-1); }
+svg .whisker { stroke: var(--ink); stroke-width: 1.5; }
+svg .marker { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 3 3; }
+svg .frontier { fill: none; stroke: var(--series-1); stroke-width: 2; stroke-dasharray: 5 4; }
+svg .dot.front { fill: var(--series-1); stroke: var(--surface); stroke-width: 2; }
+svg .dot.dominated { fill: var(--muted); stroke: var(--surface); stroke-width: 2; }
+svg .hit { fill: transparent; }
+svg .mark:hover .bar, svg .mark:hover .dot { opacity: .8; }
+.ok { color: var(--good); } .bad { color: var(--critical); }
+footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>{{ s.name }}</h1>
+  <p class="sub">Run <code>{{ s.run_id }}</code> &middot; {{ s.created_at.strftime("%Y-%m-%d %H:%M UTC") }} &middot; task <b>{{ s.task }}</b> &middot; dataset <b>{{ s.dataset_name }}</b> <span class="muted">({{ s.dataset_hash[:12] }})</span> &middot; status <b>{{ s.status }}</b></p>
+</header>
+{% if mock %}<div class="banner"><b>Mock provider.</b> One or more configurations use LLMBench's deterministic mock provider; their numbers demonstrate the tooling and are illustrative only, not measurements of any real model.</div>{% endif %}
+{% if s.stop_reason %}<div class="banner"><b>Stopped early:</b> {{ s.stop_reason }}</div>{% endif %}
+{% if s.skipped_models %}<div class="banner"><b>Skipped models:</b> {% for k, v in s.skipped_models.items() %}<code>{{ k }}</code> ({{ v }}){% if not loop.last %}; {% endif %}{% endfor %}</div>{% endif %}
+
+<div class="cards">
+  <div class="card"><div class="k">Configurations</div><div class="v">{{ s.configs|length }}</div></div>
+  <div class="card"><div class="k">Trials</div><div class="v">{{ s.n_done }} / {{ s.n_expected }}</div></div>
+  <div class="card"><div class="k">Trials per sample</div><div class="v">{{ s.manifest.config.trials }}</div></div>
+  <div class="card"><div class="k">Total cost</div><div class="v">{{ money(s.total_cost_usd) }}</div></div>
+  <div class="card"><div class="k">Best {{ s.quality_metric }}</div><div class="v">{{ best_label }}</div></div>
+</div>
+
+<h2>Leaderboard</h2>
+<section>
+  <p class="muted">Point estimates with 95% cluster-bootstrap confidence intervals (samples resampled, then trials within samples). n = samples &times; trials.</p>
+  {{ leaderboard_svg|safe }}
+  <table>
+    <thead><tr><th>Configuration</th><th class="num">n</th>{% for m in headline %}<th class="num">{{ m }}</th>{% endfor %}<th class="num">p50 latency</th><th class="num">cost / 1k req</th></tr></thead>
+    <tbody>
+    {% for c in s.configs %}
+      <tr><td class="{{ 'front' if c.key in s.pareto else '' }}">{{ c.key }}{% if c.key in s.pareto %} &#9733;{% endif %}</td>
+      <td class="num">{{ c.n_samples }}&times;{{ (c.n_trials / c.n_samples)|round|int if c.n_samples else 0 }}</td>
+      {% for m in headline %}<td class="num">{{ ci_cell(c.metrics.get(m)) }}</td>{% endfor %}
+      <td class="num">{{ ms(c.latency.p50) }}</td><td class="num">{{ money(c.cost.per_1k_requests_usd) }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<h2>Quality vs cost vs latency (Pareto frontier)</h2>
+<section>
+  <p class="muted">&#9733; in the tables marks configurations that are Pareto-optimal on all objectives together ({{ s.pareto_objectives|join(", ") }}): no other configuration is at least as good on every objective and strictly better on one. Each chart highlights (blue, dashed line) the frontier of its own two axes; grey points are dominated in that view.</p>
+  {{ pareto_svg|safe }}
+  {% if pareto_latency_svg %}<h3>Quality vs p50 latency</h3>{{ pareto_latency_svg|safe }}{% endif %}
+</section>
+
+<h2>Consistency across trials</h2>
+<section>
+  <p class="muted">How stable are answers when the same input is sent {{ s.manifest.config.trials }} times? Agreement = share of trials matching the modal answer; entropy in bits (0 = deterministic); pass@k / pass^k use the unbiased estimators; flip rate = share of items that both pass and fail.</p>
+  <table>
+    <thead><tr><th>Configuration</th>{% for m in consistency %}<th class="num">{{ m }}</th>{% endfor %}</tr></thead>
+    <tbody>{% for c in s.configs %}<tr><td>{{ c.key }}</td>{% for m in consistency %}<td class="num">{{ ci_cell(c.metrics.get(m)) }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+  </table>
+</section>
+
+<h2>Latency</h2>
+<section>
+  <div class="grid-2">
+  {% for c in s.configs %}<div><h3>{{ c.key }}</h3>{{ latency_svgs[c.key]|safe }}</div>{% endfor %}
+  </div>
+  <table>
+    <thead><tr><th>Configuration</th><th class="num">calls</th><th class="num">p50</th><th class="num">p90</th><th class="num">p95</th><th class="num">p99</th><th class="num">TTFT p50</th><th class="num">tokens/s</th></tr></thead>
+    <tbody>{% for c in s.configs %}<tr><td>{{ c.key }}</td><td class="num">{{ c.latency.n }}</td><td class="num">{{ ms(c.latency.p50) }}</td><td class="num">{{ ms(c.latency.p90) }}</td><td class="num">{{ ms(c.latency.p95) }}</td><td class="num">{{ ms(c.latency.p99) }}</td><td class="num">{{ ms(c.latency.ttft_p50) }}</td><td class="num">{{ num(c.latency.tokens_per_second) }}</td></tr>{% endfor %}</tbody>
+  </table>
+</section>
+
+<h2>Reliability and cost</h2>
+<section>
+  <table>
+    <thead><tr><th>Configuration</th><th class="num">failure rate</th><th>failures by class</th><th class="num">malformed</th><th class="num">refusals</th><th>attempts distribution</th><th class="num">cost / correct</th><th class="num">quality per $</th><th class="num">cached</th></tr></thead>
+    <tbody>{% for c in s.configs %}<tr><td>{{ c.key }}</td><td class="num">{{ pct(c.failure_rate) }}</td>
+      <td>{% for k, v in c.failures.items() %}<span class="tag">{{ k }} {{ v }}</span>{% else %}<span class="muted">none</span>{% endfor %}</td>
+      <td class="num">{{ pct(c.malformed_rate) }}</td><td class="num">{{ pct(c.refusal_rate) }}</td>
+      <td>{% for k, v in c.retry_distribution.items() %}<span class="tag">{{ k }}&times; {{ v }}</span>{% endfor %}</td>
+      <td class="num">{{ money(c.cost.per_correct_usd) }}</td><td class="num">{{ big(c.cost.quality_per_dollar) }}</td><td class="num">{{ pct(c.cost.cached_fraction) }}</td></tr>{% endfor %}</tbody>
+  </table>
+  {% if pricing_as_of %}<p class="muted">Costs use the pricing table dated {{ pricing_as_of }}; verify prices against the provider before relying on them.</p>{% endif %}
+</section>
+
+<h2>Per-tag breakdown ({{ s.quality_metric }})</h2>
+<section>
+  <table>
+    <thead><tr><th>Tag</th>{% for c in s.configs %}<th class="num">{{ c.key }}</th>{% endfor %}</tr></thead>
+    <tbody>{% for tag in tags %}<tr><td>{{ tag }}</td>{% for c in s.configs %}<td class="num">{{ tag_cell(c, tag) }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+  </table>
+</section>
+
+<h2>Worst-performing samples</h2>
+<section>
+  {% for c in s.configs %}{% if c.worst %}
+  <h3>{{ c.key }}</h3>
+  <table>
+    <thead><tr><th>Sample</th><th class="num">pass rate</th><th>Input</th><th>Reference</th><th>Output (trial 0)</th></tr></thead>
+    <tbody>{% for w in c.worst %}<tr><td>{{ w.sample_id }}<br>{% for t in w.tags %}<span class="tag">{{ t }}</span>{% endfor %}</td><td class="num">{{ pct(w.pass_rate) }}</td><td class="out">{{ w.input|truncate(220) }}</td><td class="out">{{ w.reference|truncate(160) }}</td><td class="out">{{ w.output|truncate(220) }}</td></tr>{% endfor %}</tbody>
+  </table>
+  {% endif %}{% endfor %}
+</section>
+
+<h2>LLM judge</h2>
+<section>
+  {% if s.judge %}
+  <table><tbody>
+    <tr><th>Judge</th><td><code>{{ s.judge.model }}</code>{% if s.judge.candidate_overlap %} <span class="bad">&#9888; also a candidate model (self-preference bias risk)</span>{% endif %}</td></tr>
+    <tr><th>Calls (audited)</th><td>{{ s.judge.calls }} ({{ s.judge.malformed }} malformed, repaired or reported)</td></tr>
+    <tr><th>Judge cost</th><td>{{ money(s.judge.cost_usd) }}</td></tr>
+    <tr><th>Length bias</th><td>{% if s.judge.length_bias_spearman is not none %}Spearman &rho;(answer length, score) = {{ num(s.judge.length_bias_spearman) }}{% else %}<span class="muted">not enough variation to estimate</span>{% endif %}</td></tr>
+  </tbody></table>
+  {% else %}<p class="muted">No judge metric in this run.</p>{% endif %}
+  <h3>Calibration against human labels</h3>
+  {% if s.calibration %}
+  <table><tbody>
+    <tr><th>Judge</th><td><code>{{ s.calibration.judge }}</code>, rubric <code>{{ s.calibration.rubric }}</code></td></tr>
+    <tr><th>Labelled examples</th><td>{{ s.calibration.n_scored }} / {{ s.calibration.n }}</td></tr>
+    <tr><th>Accuracy</th><td>{{ pct(s.calibration.accuracy) }}</td></tr>
+    <tr><th>Cohen's &kappa; (pass/fail)</th><td>{{ num(s.calibration.cohen_kappa) }}</td></tr>
+    <tr><th>Weighted &kappa; (1-5, quadratic)</th><td>{{ num(s.calibration.weighted_kappa_quadratic) }}</td></tr>
+  </tbody></table>
+  <table><thead><tr><th>human \ judge</th><th class="num">pass</th><th class="num">fail</th></tr></thead>
+  <tbody>{% for h, row in s.calibration.confusion.items() %}<tr><th>{{ h }}</th><td class="num">{{ row.pass }}</td><td class="num">{{ row.fail }}</td></tr>{% endfor %}</tbody></table>
+  {% else %}<p class="muted">No calibration attached. Run <code>llmbench judge calibrate datasets/judge_calibration.jsonl --config &lt;experiment&gt; --attach {{ s.run_id }}</code>.</p>{% endif %}
+</section>
+
+<h2>Run manifest</h2>
+<section>
+  <p class="muted">Everything needed to reproduce this run: full config, dataset and prompt hashes, seeds, package version and git SHA.</p>
+  <pre>{{ manifest_json }}</pre>
+</section>
+<footer>Generated by LLMBench {{ version }} on {{ generated }}. Self-contained: this file makes no network requests.</footer>
+</main>
+</body>
+</html>

@@ -1,4 +1,4 @@
-# Eval-gate demo, candidate with a seeded regression (accuracy 0.85 -> 0.60) (mock provider, offline).
+# Eval-gate demo, candidate with a seeded regression (accuracy 0.85 -> 0.40) (mock provider, offline).
 name: gate-demo
 dataset: ../../datasets/qa_basic.jsonl
 task: qa
@@ -9,7 +9,7 @@ models:
   - id: assistant
     provider: mock
     model: mock-strong
-    params: {temperature: 0.7, accuracy: 0.60, latency_ms: 500, mock_seed: 2}
+    params: {temperature: 0.7, accuracy: 0.40, latency_ms: 500, mock_seed: 2}
 prompts:
   - {id: v1, template: ../../prompts/qa_v1.j2}
 metrics: [exact_match, f1, consistency, latency]
