@@ -22,6 +22,27 @@ It runs fully offline with a deterministic mock provider (no API keys needed), a
 same configs run unchanged against OpenAI, Gemini or any OpenAI-compatible server
 (Ollama, vLLM, LM Studio).
 
+## Zero cost by default
+
+Nothing in this repository spends money unless you explicitly opt in:
+
+- The quickstart, every example, the whole test suite and both CI workflows (`ci.yml`,
+  `eval-gate.yml`) use the built-in **mock provider**: no API keys, no network calls to
+  model providers, $0. The dollar figures they print come from *fictional* mock prices in
+  `examples/pricing.yaml` (to demonstrate cost accounting) and are labelled
+  "simulated; nothing billed".
+- Real providers run only when you export a key **and** fill in a model name. Models
+  without a key are skipped, not failed. Every experiment can also set a hard
+  `budget: {max_usd: ...}`, and `llmbench run` refuses runs whose estimate exceeds
+  `cost_confirm_threshold_usd` unless you pass `--yes`.
+- **Free real-model evaluation:** run an open model locally with [Ollama](https://ollama.com)
+  and point an `openai_compat` model at `http://localhost:11434/v1`. No key, no bill.
+- **CI**: GitHub Actions is free for public repositories. The only workflow that could
+  ever cost money is `live-benchmark.yml`, which is manual-only and needs API-key secrets
+  you would have to add yourself (capped at $1.00 per run).
+- Docker, docker-compose, the API and the optional Postgres/pgvector backend all run
+  locally.
+
 ## Features
 
 - **Experiments as YAML**: models × prompts × samples × repeated trials, validated with

@@ -1,5 +1,9 @@
 # Manually triggered benchmark against real providers. Uses repository secrets
 # OPENAI_API_KEY / GEMINI_API_KEY when present; models without a key are skipped.
+#
+# COST: this is the ONLY workflow that can spend money, and only if you (1) add provider
+# API keys as repository secrets AND (2) start it by hand with a model name. Without both,
+# it runs the free mock model only. A hard budget of $1.00 per run caps spend regardless.
 name: Live benchmark
 
 on:
