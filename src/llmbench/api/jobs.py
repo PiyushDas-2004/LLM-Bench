@@ -103,6 +103,9 @@ class JobQueue:
         runner = self._runner_factory(progress)
         try:
             outcome = await runner.run(job.config, use_cache=job.use_cache, tags=job.tags)
+        except asyncio.CancelledError:
+            status.status, status.error = "failed", "cancelled at server shutdown (resumable)"
+            raise
         except LLMBenchError as exc:
             status.status, status.error = "failed", str(exc)
             log.warning("job_failed", job_id=status.job_id, error=str(exc))

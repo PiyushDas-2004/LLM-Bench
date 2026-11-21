@@ -38,7 +38,6 @@ from llmbench.tracking.db import RunRow
 from llmbench.tracking.store import RunStore
 
 log = structlog.get_logger(__name__)
-OPEN_PATHS = frozenset({"/health", "/metrics", "/docs", "/openapi.json", "/redoc"})
 
 
 def _run_info(row: RunRow) -> RunInfo:
