@@ -1,0 +1,69 @@
+# Manually triggered benchmark against real providers. Uses repository secrets
+# OPENAI_API_KEY / GEMINI_API_KEY when present; models without a key are skipped.
+name: Live benchmark
+
+on:
+  workflow_dispatch:
+    inputs:
+      openai_model:
+        description: OpenAI model name (leave empty to skip OpenAI)
+        required: false
+      gemini_model:
+        description: Gemini model name (leave empty to skip Gemini)
+        required: false
+      samples:
+        description: Number of dataset samples
+        default: "15"
+
+permissions:
+  contents: read
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      LLMBENCH_DB_URL: sqlite:///${{ github.workspace }}/.llmbench/live.db
+      COLUMNS: "160"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --python 3.12 --locked
+      - name: Provider contract tests
+        env:
+          LLMBENCH_LIVE_OPENAI_MODEL: ${{ inputs.openai_model }}
+          LLMBENCH_LIVE_GEMINI_MODEL: ${{ inputs.gemini_model }}
+        run: uv run pytest -m live -o addopts="" tests/live -v || [ $? -eq 5 ]
+      - name: Write experiment
+        env:
+          OPENAI_MODEL: ${{ inputs.openai_model }}
+          GEMINI_MODEL: ${{ inputs.gemini_model }}
+          SAMPLES: ${{ inputs.samples }}
+        run: |
+          python - <<'PY'
+          import os, yaml
+          models = [{"id": "mock", "provider": "mock", "params": {"temperature": 0.7}}]
+          if os.environ.get("OPENAI_MODEL"):
+              models.append({"id": "openai", "provider": "openai", "model": os.environ["OPENAI_MODEL"],
+                             "params": {"temperature": 0.7, "max_tokens": 64}})
+          if os.environ.get("GEMINI_MODEL"):
+              models.append({"id": "gemini", "provider": "gemini", "model": os.environ["GEMINI_MODEL"],
+                             "params": {"temperature": 0.7, "max_tokens": 64}})
+          config = {
+              "name": "live-benchmark", "dataset": "datasets/qa_basic.jsonl", "task": "qa", "trials": 3,
+              "sampling": {"n": int(os.environ.get("SAMPLES") or 15)}, "budget": {"max_usd": 1.0},
+              "rate_limit": {"requests_per_minute": 60}, "models": models,
+              "prompts": [{"id": "v1", "template": "prompts/qa_v1.j2"}],
+              "metrics": ["exact_match", "f1", "consistency", "latency", "cost"],
+          }
+          open("live.yaml", "w").write(yaml.safe_dump(config, sort_keys=False))
+          PY
+      - name: Run
+        run: uv run llmbench run live.yaml --yes --report reports/live.html
+      - name: Markdown summary
+        run: uv run llmbench report latest --format md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: live-report
+          path: reports/

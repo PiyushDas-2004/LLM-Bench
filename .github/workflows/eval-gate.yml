@@ -1,0 +1,43 @@
+# Dogfooding: LLMBench gates its own changes with LLMBench.
+# Imports the committed baseline bundle, re-runs the gate demo with only
+# sampling noise (must pass) and with a seeded regression (must be caught).
+name: Eval gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    env:
+      LLMBENCH_DB_URL: sqlite:///${{ github.workspace }}/.llmbench/gate.db
+      COLUMNS: "160"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --python 3.12 --locked
+      - name: Import stored baseline
+        run: uv run llmbench import baselines/gate-demo.json --as-baseline main
+      - name: Candidate run (mock provider, offline)
+        run: uv run llmbench run examples/gate/noise.yaml --yes
+      - name: Gate must pass on noise-only differences
+        run: uv run llmbench check --baseline main --gates examples/gates.yaml --output gate.md
+      - name: Seeded regression must be caught
+        run: |
+          uv run llmbench run examples/gate/regression.yaml --yes
+          set +e
+          uv run llmbench check --baseline main --gates examples/gates.yaml --output regression.md
+          code=$?
+          set -e
+          if [ "$code" -ne 1 ]; then echo "expected the gate to fail (exit 1), got $code"; exit 1; fi
+          echo "Gate correctly rejected the seeded regression."
+      - name: Job summary
+        if: always()
+        run: |
+          [ -f gate.md ] && cat gate.md >> "$GITHUB_STEP_SUMMARY" || true
+          [ -f regression.md ] && { echo; echo "### Seeded regression (expected failure)"; cat regression.md; } >> "$GITHUB_STEP_SUMMARY" || true
