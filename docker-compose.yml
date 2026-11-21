@@ -34,7 +34,7 @@ services:
     profiles: ["postgres"]
     environment:
       POSTGRES_USER: llmbench
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-llmbench-local-only}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-llmbench}  # local development default only
       POSTGRES_DB: llmbench
     ports:
       - "5432:5432"
