@@ -174,6 +174,11 @@ async def test_pipeline_and_metrics(repo_root: Path) -> None:
     for fn in (rm.context_precision, rm.context_recall, rm.hit_at_k, rm.mrr, rm.ndcg_at_k):
         assert fn(answer.retrieved, unanswerable) is None
     assert rm.mrr([], s) == 0.0
+    duplicate = [
+        RetrievedChunk(Chunk("a", "d", "The pump station opened in 1972.", 0), 1.0, 1),
+        RetrievedChunk(Chunk("b", "d", "In 1972 the pump station opened.", 1), 0.9, 2),
+    ]
+    assert rm.ndcg_at_k(duplicate, s) == pytest.approx(1.0)
     assert rm.ndcg_at_k([], s) is None
     assert rm.context_precision([], s) is None
     failed = await RAGPipeline(BM25Retriever(chunks), _Broken(), "gen", prompt).answer(s)

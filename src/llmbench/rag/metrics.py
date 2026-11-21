@@ -86,13 +86,19 @@ def mrr(retrieved: Sequence[RetrievedChunk], sample: Sample) -> float | None:
 
 
 def ndcg_at_k(retrieved: Sequence[RetrievedChunk], sample: Sample) -> float | None:
-    """Binary-relevance nDCG@k; the ideal ranking places min(k, #evidence) relevant chunks first."""
+    """Binary-relevance nDCG@k, bounded in [0, 1].
+
+    The ideal ranking places every relevant item first, where the number of
+    relevant items is the larger of the gold passage count and the relevant
+    chunks actually retrieved (several chunks may cover one passage), capped at k.
+    """
     evidence = _evidence(sample)
     if not evidence or not retrieved:
         return None
     rel = relevance_vector(retrieved, sample)
     dcg = sum(1.0 / math.log2(i + 2) for i, r in enumerate(rel) if r)
-    ideal = sum(1.0 / math.log2(i + 2) for i in range(min(len(rel), len(evidence))))
+    n_ideal = min(len(rel), max(len(evidence), sum(rel)))
+    ideal = sum(1.0 / math.log2(i + 2) for i in range(n_ideal))
     return dcg / ideal if ideal else 0.0
 
 
