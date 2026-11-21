@@ -1,0 +1,29 @@
+name: correctness
+description: >
+  Is the candidate answer factually correct and complete with respect to the question
+  and the reference answer?
+scale_min: 1
+scale_max: 5
+pass_threshold: 4
+criteria:
+  - name: factual_accuracy
+    description: The key facts agree with the reference; no contradictions or invented details.
+    weight: 2
+  - name: completeness
+    description: Every part of the question is answered.
+  - name: concision
+    description: No irrelevant or padded content (length alone must not raise the score).
+    weight: 0.5
+anchors:
+  - score: 5
+    description: Fully correct and complete.
+    example: "Q: Capital of France? Reference: Paris. Candidate: Paris."
+  - score: 4
+    description: Correct, with minor imprecision or unnecessary verbosity.
+  - score: 3
+    description: Partially correct; an important detail is missing or vague.
+  - score: 2
+    description: Mostly incorrect but contains a relevant fragment.
+  - score: 1
+    description: Wrong, hallucinated, off-topic, or a refusal.
+    example: "Q: Capital of France? Reference: Paris. Candidate: Lyon."

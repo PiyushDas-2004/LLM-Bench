@@ -1,0 +1,15 @@
+# Starter experiment created by `llmbench init`. Runs offline with the mock provider.
+# Replace the mock models with real ones (provider: openai | gemini | openai_compat).
+name: my-first-benchmark
+dataset: datasets/qa_sample.jsonl
+task: qa
+trials: 3
+seed: 42
+pricing: pricing.yaml
+models:
+  - {id: strong, provider: mock, model: mock-strong, params: {temperature: 0.7, accuracy: 0.85}}
+  - {id: fast, provider: mock, model: mock-fast, params: {temperature: 0.7, accuracy: 0.65, latency_ms: 150}}
+prompts:
+  - {id: v1, template: prompts/qa_v1.j2}
+  - {id: v2, template: prompts/qa_v2.j2}
+metrics: [exact_match, f1, consistency, latency, cost]

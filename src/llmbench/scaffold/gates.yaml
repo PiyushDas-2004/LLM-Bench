@@ -1,0 +1,9 @@
+# Regression gates for `llmbench check`. A gate fails only if the metric moves in
+# the bad direction by more than max_drop AND the change is statistically
+# significant after multiple-comparison correction.
+alpha: 0.05
+correction: holm
+gates:
+  - {metric: pass, max_drop: 0.02}
+  - {metric: f1, max_drop: 0.03}
+  - {metric: latency_ms, direction: lower_is_better, max_drop: 100}

@@ -1,0 +1,7 @@
+# USD per 1M tokens, keyed "<provider>/<model>". Verify prices with your provider before use.
+# The mock/* entries are FICTIONAL so the offline example exercises cost metrics.
+as_of: 2026-11-20
+currency: USD
+models:
+  mock/mock-strong: {input_per_1m: 0.50, output_per_1m: 1.50}
+  mock/mock-fast: {input_per_1m: 0.10, output_per_1m: 0.30}
