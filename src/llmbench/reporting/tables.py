@@ -82,8 +82,15 @@ def summary_table(summary: RunSummary) -> Table:
     return table
 
 
+def _num(value: float, sign: bool = False) -> str:
+    fmt = "+" if sign else ""
+    if value != 0 and abs(value) < 0.01:
+        return f"{value:{fmt}.3g}"
+    return f"{value:{fmt}.3f}"
+
+
 def comparison_tables(cmp: RunComparison) -> list[Table]:
-    """One table per configuration pair."""
+    """One compact table per configuration pair."""
     tables = []
     for group in cmp.groups:
         table = Table(
@@ -91,33 +98,13 @@ def comparison_tables(cmp: RunComparison) -> list[Table]:
             header_style="bold",
             caption=f"alpha={cmp.alpha}, {cmp.correction} correction; delta = candidate - baseline",
         )
-        for col in (
-            "metric",
-            "baseline [95% CI]",
-            "candidate [95% CI]",
-            "delta [95% CI]",
-            "test",
-            "p adj.",
-            "effect",
-            "n",
-            "verdict",
-        ):
-            table.add_column(
-                col, justify="left" if col in {"metric", "test", "verdict"} else "right"
-            )
+        table.add_column("metric", no_wrap=True)
+        for col in ("baseline", "candidate", "delta [95% CI]", "test", "p adj.", "effect", "n"):
+            table.add_column(col, justify="left" if col == "test" else "right", no_wrap=True)
+        table.add_column("verdict", no_wrap=True, min_width=21)
         for m in group.metrics:
-            b = (
-                f"{m.baseline.estimate:.3f} [{m.baseline.low:.3f}, {m.baseline.high:.3f}]"
-                if m.baseline
-                else "n/a"
-            )
-            c = (
-                f"{m.candidate.estimate:.3f} [{m.candidate.low:.3f}, {m.candidate.high:.3f}]"
-                if m.candidate
-                else "n/a"
-            )
             d = (
-                f"{m.delta:+.3f} [{m.delta_low:+.3f}, {m.delta_high:+.3f}]"
+                f"{_num(m.delta, True)} [{_num(m.delta_low, True)}, {_num(m.delta_high, True)}]"
                 if m.delta is not None and m.delta_low is not None and m.delta_high is not None
                 else "n/a"
             )
@@ -126,19 +113,16 @@ def comparison_tables(cmp: RunComparison) -> list[Table]:
                 if m.p_adjusted is None
                 else ("<0.001" if m.p_adjusted < 0.001 else f"{m.p_adjusted:.3f}")
             )
-            effect = (
-                "n/a" if m.effect_size is None else f"{m.effect_size_name} {m.effect_size:+.2f}"
-            )
-            n = f"{m.n_samples}x{m.n_trials_candidate // max(m.n_samples, 1)}"
+            effect = "n/a" if m.effect_size is None else f"{m.effect_size:+.2f}"
             table.add_row(
                 m.metric,
-                b,
-                c,
+                _num(m.baseline.estimate) if m.baseline else "n/a",
+                _num(m.candidate.estimate) if m.candidate else "n/a",
                 d,
-                m.test,
+                m.test.replace("paired-", ""),
                 p,
                 effect,
-                n,
+                f"{m.n_samples}x{m.n_trials_candidate // max(m.n_samples, 1)}",
                 f"[{_STYLE[m.verdict]}]{m.verdict.value}[/]",
             )
         tables.append(table)
