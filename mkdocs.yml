@@ -1,0 +1,23 @@
+site_name: LLMBench
+site_description: Reproducible evaluation, benchmarking and regression testing for LLM and RAG systems
+repo_url: https://github.com/PiyushDas-2004/LLMBench
+docs_dir: docs
+nav:
+  - Methodology: METHODOLOGY.md
+  - Architecture: ARCHITECTURE.md
+  - RAG evaluation: RAG_EVALUATION.md
+  - CI eval gate: CI_EVAL_GATE.md
+  - Example report: example-report/README.md
+  - Decisions (ADRs): adr/README.md
+theme:
+  name: material
+markdown_extensions:
+  - admonition
+  - tables
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+plugins:
+  - search
