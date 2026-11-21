@@ -161,9 +161,10 @@ async def test_gate_tolerance_and_relative_drop(tmp_path: Path, store: RunStore)
 
 async def test_bundle_round_trip(tmp_path: Path, store: RunStore) -> None:
     run_id = await _run(store, tmp_path, 0.8, seed=0, n_samples=6)
-    path = write_bundle(store, run_id, tmp_path / "out" / "bundle.json")
+    path = write_bundle(store, run_id, tmp_path / "out" / "bundle.json", root=tmp_path)
     data = read_bundle(path)
     assert data["run"]["manifest"]["base_dir"] == "."
+    assert data["run"]["manifest"]["dataset"]["path"] == "qa.jsonl"
     other = RunStore(f"sqlite:///{tmp_path / 'other.db'}")
     imported = import_bundle(other, data, base_dir=tmp_path)
     assert imported == run_id

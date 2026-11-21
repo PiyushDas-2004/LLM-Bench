@@ -25,14 +25,14 @@ def _relative(path: str, base: str) -> str:
         return path
 
 
-def export_bundle(store: RunStore, run_ref: str) -> dict[str, Any]:
-    """Serialise a run; absolute paths inside the project become project-relative."""
+def export_bundle(store: RunStore, run_ref: str, root: str | Path | None = None) -> dict[str, Any]:
+    """Serialise a run; paths under ``root`` (default: cwd) are stored relative to it."""
     run = store.resolve_run(run_ref)
     manifest = json.loads(json.dumps(run.manifest))
-    base = manifest.get("base_dir", "")
-    if base and "dataset" in manifest:
+    base = str(root or Path.cwd())
+    if "dataset" in manifest:
         manifest["dataset"]["path"] = _relative(manifest["dataset"]["path"], base)
-    manifest["base_dir"] = "."
+    manifest["base_dir"] = _relative(manifest.get("base_dir", "."), base)
     return {
         "format": BUNDLE_FORMAT,
         "run": {
@@ -56,7 +56,7 @@ def export_bundle(store: RunStore, run_ref: str) -> dict[str, Any]:
 def import_bundle(
     store: RunStore, data: dict[str, Any], *, base_dir: str | Path = ".", replace: bool = False
 ) -> str:
-    """Load a bundle into ``store``; relative paths resolve against ``base_dir``."""
+    """Load a bundle into ``store``; relative paths resolve against ``base_dir`` (project root)."""
     if data.get("format") != BUNDLE_FORMAT:
         raise LLMBenchError(f"not an LLMBench run bundle (format={data.get('format')!r})")
     run = data["run"]
@@ -68,7 +68,7 @@ def import_bundle(
         store.delete_run(run_id)
     manifest = dict(run["manifest"])
     root = Path(base_dir).resolve()
-    manifest["base_dir"] = str(root)
+    manifest["base_dir"] = str((root / manifest.get("base_dir", ".")).resolve())
     if "dataset" in manifest and not Path(manifest["dataset"]["path"]).is_absolute():
         manifest["dataset"]["path"] = str(root / manifest["dataset"]["path"])
     store.create_run(
@@ -95,13 +95,14 @@ def import_bundle(
     return run_id
 
 
-def write_bundle(store: RunStore, run_ref: str, path: str | Path) -> Path:
-    """Export a run bundle to a JSON file."""
+def write_bundle(
+    store: RunStore, run_ref: str, path: str | Path, root: str | Path | None = None
+) -> Path:
+    """Export a run bundle to a JSON file (paths relative to ``root``, default cwd)."""
     out = Path(path)
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(
-        json.dumps(export_bundle(store, run_ref), indent=1, sort_keys=True), encoding="utf-8"
-    )
+    bundle = export_bundle(store, run_ref, root)
+    out.write_text(json.dumps(bundle, indent=1, sort_keys=True), encoding="utf-8")
     return out
 
 
