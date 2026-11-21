@@ -119,7 +119,7 @@ def prepare(
             raise ConfigError(f"model {spec.id!r} cannot run: {availability.reason}")
         else:
             skipped[spec.id] = availability.reason
-            log.warning("model_skipped", model_id=spec.id, reason=availability.reason)
+            log.debug("model_skipped", model_id=spec.id, reason=availability.reason)
     if not models:
         reasons = "; ".join(f"{k}: {v}" for k, v in skipped.items())
         raise ConfigError(f"no runnable models ({reasons})")

@@ -68,10 +68,15 @@ def configure_logging(
             renderer,
         ],
         wrapper_class=structlog.make_filtering_bound_logger(numeric),
-        logger_factory=structlog.PrintLoggerFactory(file=sys.stderr),
+        logger_factory=_stderr_logger,
         cache_logger_on_first_use=False,
     )
     _state["tracer"] = _make_tracer() if otel else None
+
+
+def _stderr_logger(*_args: Any) -> structlog.PrintLogger:
+    """Resolve ``sys.stderr`` at call time (it may be swapped, e.g. by test capture)."""
+    return structlog.PrintLogger(file=sys.stderr)
 
 
 def _make_tracer() -> Any:
