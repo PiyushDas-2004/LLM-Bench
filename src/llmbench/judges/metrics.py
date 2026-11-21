@@ -24,8 +24,10 @@ def length_bias(lengths: Sequence[int], scores: Sequence[float]) -> float | None
 class LLMJudgeCorrectness(Metric):
     """Rubric-based correctness from the configured LLM judge, normalised to [0, 1].
 
-    Result metadata reports the judge's self-consistency (when ``samples`` > 1),
-    the length-bias correlation, and whether the judge equals a candidate model.
+    Result metadata reports the judge's self-consistency (when ``samples`` > 1) and
+    the length-bias correlation; each value's details keep the raw score and answer
+    length so reports can recompute bias. Judge-equals-candidate is flagged by
+    :func:`llmbench.judges.factory.build_judge` (warning) and in run summaries.
     """
 
     name = "llm_judge_correctness"

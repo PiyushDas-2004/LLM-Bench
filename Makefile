@@ -8,7 +8,7 @@ help: ## Show available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-12s %s\n", $$1, $$2}'
 
 install: ## Install the package with dev tooling (uv if available, else pip)
-	@if command -v uv >/dev/null 2>&1; then uv sync; else $(PY) -m pip install -e ".[all]" pytest pytest-asyncio pytest-cov hypothesis respx ruff mypy bandit pip-audit types-PyYAML types-jsonschema pre-commit; fi
+	@if command -v uv >/dev/null 2>&1; then uv sync; else $(PY) -m pip install -e ".[all]" pytest pytest-asyncio pytest-cov hypothesis httpx2 ruff mypy bandit pip-audit types-PyYAML types-jsonschema pre-commit; fi
 
 lint: ## Ruff lint and format check
 	ruff check $(SRC)
