@@ -1,0 +1,14 @@
+# Pricing table used for cost accounting and `llmbench plan` estimates.
+# Prices are USD per 1M tokens, keyed by "<provider>/<model>" ("<provider>/*" = provider default).
+as_of: 2026-11-20
+currency: USD
+note: >
+  Verify every price against the provider's official pricing page before trusting cost numbers;
+  prices change often and LLMBench never hardcodes them. The mock/* entries are FICTIONAL and
+  exist only so the offline quickstart exercises the cost metrics.
+models:
+  mock/mock-strong: {input_per_1m: 0.50, output_per_1m: 1.50}
+  mock/mock-fast: {input_per_1m: 0.10, output_per_1m: 0.30}
+  mock/mock-judge: {input_per_1m: 0.20, output_per_1m: 0.60}
+  # Add real models here, e.g.:
+  # openai/<model-name>: {input_per_1m: <verify>, output_per_1m: <verify>}
