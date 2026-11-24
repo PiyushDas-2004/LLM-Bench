@@ -18,7 +18,7 @@ jobs:
       LLMBENCH_DB_URL: sqlite:///${{ github.workspace }}/.llmbench/gate.db
       COLUMNS: "160"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v5
       - run: uv sync --python 3.12 --locked
       - name: Import stored baseline
