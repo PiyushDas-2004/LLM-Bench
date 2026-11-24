@@ -522,10 +522,10 @@ def import_(
 @app.command()
 def report(
     run_id: RunArg,
-    fmt: Annotated[str, typer.Option("--format", help="html or md.")] = "html",
+    fmt: Annotated[str, typer.Option("--format", help="html, md or json.")] = "html",
     output: OutputOpt = None,
 ) -> None:
-    """Render a self-contained HTML report or a Markdown summary."""
+    """Render a self-contained HTML report, a Markdown summary, or the summary as JSON."""
     store = _store()
     try:
         summary = summarize_run(store, run_id)
@@ -534,8 +534,11 @@ def report(
     if fmt == "md":
         _write_or_print(run_markdown(summary), output)
         return
+    if fmt == "json":
+        _write_or_print(summary.model_dump_json(indent=1), output)
+        return
     if fmt != "html":
-        raise _fail("--format must be html or md")
+        raise _fail("--format must be html, md or json")
     html = render_html(summary)
     path = output or Path("reports") / f"{summary.run_id}.html"
     _write_or_print(html, path)
@@ -588,6 +591,9 @@ def check_cmd(
     output: Annotated[
         Path | None, typer.Option("--output", "-o", help="Write a Markdown report.")
     ] = None,
+    json_output: Annotated[
+        Path | None, typer.Option("--json", help="Also write the full gate report as JSON.")
+    ] = None,
 ) -> None:
     """CI eval gate: exit 1 if any gated metric regresses beyond tolerance with significance."""
     try:
@@ -603,6 +609,8 @@ def check_cmd(
     except LLMBenchError as exc:
         raise _fail(str(exc), code=2) from exc
     console.print(gate_table(result))
+    if json_output is not None:
+        _write_or_print(result.model_dump_json(indent=1), json_output)
     if output is not None:
         _write_or_print(gate_markdown(result), output)
     raise typer.Exit(result.exit_code)

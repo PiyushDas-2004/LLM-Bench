@@ -99,6 +99,8 @@ def test_validate_plan_run_show_report_export(db: str, tmp_path: Path, repo_root
     code, out = invoke("report", "latest", "--format", "md")
     assert code == 0
     assert "## LLMBench: cli-test" in out
+    code, out = invoke("report", "latest", "--format", "json")
+    assert json.loads(out)["configs"][0]["model_id"] == "bot"
     code, _ = invoke("report", "latest", "--format", "pdf")
     assert code == 1
     for fmt in ("json", "csv", "parquet"):
@@ -132,8 +134,11 @@ def test_gate_flow_with_baseline_and_bundle(db: str, tmp_path: Path, repo_root: 
     assert code == 0, out
     assert "PASSED" in out
     invoke("run", str(_small_config(tmp_path, repo_root, 0.35, 2)))
-    code, out = invoke("check", "--baseline", "main", "--gates", str(gates))
+    code, out = invoke(
+        "check", "--baseline", "main", "--gates", str(gates), "--json", str(tmp_path / "gate.json")
+    )
     assert code == 1, out
+    assert json.loads((tmp_path / "gate.json").read_text())["results"][0]["passed"] is False
     assert "FAIL" in out
     code, out = invoke("compare", "main", "latest")
     assert code == 0
