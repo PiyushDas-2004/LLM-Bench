@@ -8,8 +8,11 @@
 ![python](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-**Live docs and demo report:** https://piyushdas-2004.github.io/LLM-Bench/ (rebuilt by CI on
+**Live dashboard:** https://piyushdas-2004.github.io/LLM-Bench/app/ ·
+**Docs and demo report:** https://piyushdas-2004.github.io/LLM-Bench/ (both rebuilt by CI on
 every push; mock provider, $0).
+
+![LLMBench web dashboard](docs/example-report/dashboard.png)
 
 ## Why this exists
 
@@ -382,9 +385,16 @@ to a real queue.
 | What | Where | Cost |
 |---|---|---|
 | Docs site + live demo report | GitHub Pages, published by [`pages.yml`](.github/workflows/pages.yml) on every push to `main` | $0 (public repo) |
+| Web dashboard (React + TypeScript, `frontend/`) | Same GitHub Pages site at `/app/`; any static host also works (`npm run build`, serve `frontend/dist`) | $0 |
 | REST API | Render free plan via the [`render.yaml`](render.yaml) Blueprint | $0 |
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/PiyushDas-2004/LLM-Bench)
+
+The dashboard has two modes. **Demo mode** (always on) shows CI-generated results; **Live
+mode** connects to your API (paste its URL and `LLMBENCH_API_KEY`) to launch benchmarks,
+watch progress and compare runs. Allow the dashboard's origin with
+`LLMBENCH_CORS_ORIGINS` (the Render blueprint already allows
+`https://piyushdas-2004.github.io`).
 
 The Docker image serves the API on `0.0.0.0:$PORT` by default, so any container host
 works. Render generates `LLMBENCH_API_KEY`, which you'll find in the service's

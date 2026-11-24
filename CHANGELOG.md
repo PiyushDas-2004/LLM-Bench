@@ -6,6 +6,15 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- Web dashboard (`frontend/`, React + TypeScript, no chart libraries): overview, run reports
+  with CI bars, Pareto and latency charts, statistical comparison with a forest plot, eval
+  gate, safety suite, RAG sweep main effects, judge calibration, and a live API console to
+  launch and compare benchmarks. Published to GitHub Pages at `/app/`.
+- GitHub Pages site (docs + CI-generated live demo) via `pages.yml` and `scripts/build_site.sh`.
+- Render free-plan blueprint (`render.yaml`); the Docker image serves the API on `$PORT` by default.
+- `llmbench report --format json`, `llmbench check --json`, and `LLMBENCH_CORS_ORIGINS` for the API.
+
 ## [0.1.0] - 2026-11-21
 
 ### Added

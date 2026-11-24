@@ -15,6 +15,7 @@ relative to `src/llmbench/` unless stated otherwise.
 | [0006](0006-plugin-system.md) | Typed registries with lazy entry-point discovery for plugins | Accepted | `plugins/registry.py`, `metrics/base.py`, `providers/registry.py`, `tasks/base.py` |
 | [0007](0007-deterministic-mock-provider.md) | A deterministic, oracle-driven mock provider | Accepted | `providers/mock.py` |
 | [0008](0008-chat-completions-and-sdk-retries.md) | Chat Completions for OpenAI-style servers, google-genai for Gemini, SDK retries off | Accepted | `providers/openai_provider.py`, `providers/gemini_provider.py`, `providers/_http.py` |
+| [0009](0009-web-dashboard.md) | Static web dashboard with demo (CI JSON) and live (REST API + CORS) modes | Accepted | `frontend/`, `scripts/build_site.sh`, `api/app.py` |
 
 ## How the records relate
 
