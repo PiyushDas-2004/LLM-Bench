@@ -8,6 +8,9 @@
 ![python](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
+**Live docs and demo report:** https://piyushdas-2004.github.io/LLM-Bench/ (rebuilt by CI on
+every push; mock provider, $0).
+
 ## Why this exists
 
 Send the same prompt to the same model twice and you can get two different answers.
@@ -373,6 +376,22 @@ Endpoints: `POST /runs`, `GET /runs`, `GET /runs/{id}` (job or run status), `GET
 (Prometheus). Submitted configs may only reference relative paths inside the server
 workspace. Runs execute on an in-process worker pool; ARCHITECTURE.md describes moving
 to a real queue.
+
+## Free deployment
+
+| What | Where | Cost |
+|---|---|---|
+| Docs site + live demo report | GitHub Pages, published by [`pages.yml`](.github/workflows/pages.yml) on every push to `main` | $0 (public repo) |
+| REST API | Render free plan via the [`render.yaml`](render.yaml) Blueprint | $0 |
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/PiyushDas-2004/LLM-Bench)
+
+The Docker image serves the API on `0.0.0.0:$PORT` by default, so any container host
+works. Render generates `LLMBENCH_API_KEY`, which you'll find in the service's
+**Environment** tab; send it as the `X-API-Key` header. Free Render services spin down
+after 15 minutes idle (about a minute to wake) and lose the SQLite run store on restart,
+which is fine for a demo but not for production. The API runs the mock provider unless
+you add provider keys yourself.
 
 ## Limitations and honest caveats
 
