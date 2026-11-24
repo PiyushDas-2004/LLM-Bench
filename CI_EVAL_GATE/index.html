@@ -1,0 +1,1448 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Reproducible evaluation, benchmarking and regression testing for LLM and RAG systems">
+      
+      
+      
+        <link rel="canonical" href="https://piyushdas-2004.github.io/LLM-Bench/CI_EVAL_GATE/">
+      
+      
+        <link rel="prev" href="../RAG_EVALUATION/">
+      
+      
+        <link rel="next" href="../example-report/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
+    
+    
+      
+        <title>CI eval gate - LLMBench</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ci-eval-gate" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="LLMBench" class="md-header__button md-logo" aria-label="LLMBench" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLMBench
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CI eval gate
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/PiyushDas-2004/LLM-Bench" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    PiyushDas-2004/LLM-Bench
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="LLMBench" class="md-nav__button md-logo" aria-label="LLMBench" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LLMBench
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/PiyushDas-2004/LLM-Bench" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    PiyushDas-2004/LLM-Bench
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://piyushdas-2004.github.io/LLM-Bench/app/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dashboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Live demo
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Live demo
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../demo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../demo/report.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTML report
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../demo/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Leaderboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../demo/comparison/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../demo/gate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Eval gate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../demo/safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Safety suite
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../demo/rag_sweep/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RAG sweep
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../demo/calibration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Judge calibration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../METHODOLOGY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methodology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ARCHITECTURE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RAG_EVALUATION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RAG evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI eval gate
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI eval gate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-gate-decides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the gate decides
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatesyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        gates.yaml
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llmbench-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llmbench check
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stored-baseline-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stored-baseline workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stored-baseline workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#refreshing-the-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Refreshing the baseline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-max_drop-tolerance-versus-detectability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing max_drop: tolerance versus detectability
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-dataset-changes-fail-the-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why dataset changes fail the gate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#github-actions-example-another-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitHub Actions example (another repository)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GitHub Actions example (another repository)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#real-providers-and-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real providers and secrets
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gitlab-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitLab CI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dogfooding-this-repositorys-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dogfooding: this repository's gate
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../example-report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Example report
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisions (ADRs)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-gate-decides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the gate decides
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gatesyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        gates.yaml
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llmbench-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llmbench check
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stored-baseline-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stored-baseline workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stored-baseline workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#refreshing-the-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Refreshing the baseline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-max_drop-tolerance-versus-detectability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing max_drop: tolerance versus detectability
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-dataset-changes-fail-the-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why dataset changes fail the gate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#github-actions-example-another-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitHub Actions example (another repository)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GitHub Actions example (another repository)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#real-providers-and-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real providers and secrets
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gitlab-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitLab CI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dogfooding-this-repositorys-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dogfooding: this repository's gate
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="ci-eval-gate">CI eval gate</h1>
+<p><code>llmbench check</code> compares a candidate run against a stored baseline and fails the CI job when a
+gated metric regresses by more than a tolerance <strong>and</strong> the regression is statistically
+significant. This page explains the gate, the baseline workflow built on run bundles, and how to
+wire it into GitHub Actions or GitLab CI. Statistical details are in
+<a href="../METHODOLOGY/">METHODOLOGY.md</a> and <a href="../adr/0004-bootstrap-design/">ADR 0004</a>.</p>
+<h2 id="how-the-gate-decides">How the gate decides</h2>
+<p><code>tracking/gates.py::check</code> calls <code>compare_runs</code> restricted to the gated metrics, then evaluates
+every gate on every configuration pair. Configurations are <code>(model_id, prompt_id)</code> pairs; by
+default the gate compares configurations present in both runs, or the single configuration of
+each run when both have exactly one. <code>--pair base_model/prompt=cand_model/prompt</code> (repeatable)
+pairs them explicitly.</p>
+<p>For each gate and pair, the comparison reduces both runs to per-sample means on their common
+samples, computes a paired-bootstrap CI for the delta, runs the paired test (sign-flip
+permutation by default, McNemar for single-trial binary metrics) and adjusts p-values across the
+gated metrics with the configured correction. A gate <strong>fails</strong> when:</p>
+<ol>
+<li>the metric moved in the bad direction by more than <code>max_drop</code> (absolute units of the metric),
+   and, if <code>max_relative_drop</code> is set and the baseline value is non-zero, also by more than
+   <code>max_relative_drop</code> relative to the baseline; and</li>
+<li>the adjusted p-value is below <code>alpha</code> and the delta CI excludes zero.</li>
+</ol>
+<p>A gate also fails when the metric is missing from either run or fewer than two samples align
+("insufficient aligned data"). A drop beyond tolerance that is not significant passes, with
+the reason recorded. The direction comes from the gate's <code>direction</code> or, if omitted, from the
+metric's registered <code>higher_is_better</code>.</p>
+<h2 id="gatesyaml">gates.yaml</h2>
+<p>Schema (<code>GateConfig</code>, <code>Gate</code>; unknown keys are rejected):</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>alpha</code></td>
+<td>float in (0, 1)</td>
+<td><code>0.05</code></td>
+<td>Significance level for every gate.</td>
+</tr>
+<tr>
+<td><code>correction</code></td>
+<td><code>holm</code>, <code>bh</code>, <code>none</code></td>
+<td><code>holm</code></td>
+<td>Multiple-comparison adjustment across gated metrics.</td>
+</tr>
+<tr>
+<td><code>allow_dataset_drift</code></td>
+<td>bool</td>
+<td><code>false</code></td>
+<td>Compare runs with different dataset hashes (on common sample ids).</td>
+</tr>
+<tr>
+<td><code>gates</code></td>
+<td>list, at least one</td>
+<td>required</td>
+<td>Gated metrics.</td>
+</tr>
+<tr>
+<td><code>gates[].metric</code></td>
+<td>string</td>
+<td>required</td>
+<td>Registered metric name, e.g. <code>pass</code>, <code>f1</code>, <code>latency_ms</code>.</td>
+</tr>
+<tr>
+<td><code>gates[].direction</code></td>
+<td><code>higher_is_better</code>, <code>lower_is_better</code></td>
+<td>from registry</td>
+<td>Override the metric's direction.</td>
+</tr>
+<tr>
+<td><code>gates[].max_drop</code></td>
+<td>float &gt;= 0</td>
+<td><code>0.0</code></td>
+<td>Absolute tolerance in the metric's units.</td>
+</tr>
+<tr>
+<td><code>gates[].max_relative_drop</code></td>
+<td>float &gt;= 0</td>
+<td>unset</td>
+<td>Additional relative tolerance (both must be exceeded).</td>
+</tr>
+<tr>
+<td><code>gates[].alpha</code></td>
+<td>float in (0, 1)</td>
+<td>unset</td>
+<td>Per-gate significance level.</td>
+</tr>
+</tbody>
+</table>
+<p><code>examples/gates.yaml</code> (also scaffolded by <code>llmbench init</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="nt">alpha</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span>
+<span class="nt">correction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">holm</span>
+<span class="nt">gates</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">metric</span><span class="p">:</span><span class="w"> </span><span class="nv">pass</span><span class="p p-Indicator">,</span><span class="nt"> max_drop</span><span class="p">:</span><span class="w"> </span><span class="nv">0.02</span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">metric</span><span class="p">:</span><span class="w"> </span><span class="nv">f1</span><span class="p p-Indicator">,</span><span class="nt"> max_drop</span><span class="p">:</span><span class="w"> </span><span class="nv">0.03</span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">metric</span><span class="p">:</span><span class="w"> </span><span class="nv">latency_ms</span><span class="p p-Indicator">,</span><span class="nt"> direction</span><span class="p">:</span><span class="w"> </span><span class="nv">lower_is_better</span><span class="p p-Indicator">,</span><span class="nt"> max_drop</span><span class="p">:</span><span class="w"> </span><span class="nv">100</span><span class="p p-Indicator">}</span>
+</code></pre></div>
+<p>Without <code>--gates</code>, <code>check</code> uses a single gate: <code>pass</code> with <code>max_drop: 0.02</code>. Every run computes
+<code>pass</code>, the reliability metrics, <code>latency_ms</code>, <code>ttft_ms</code>, <code>tokens_per_second</code>, <code>queue_wait_ms</code>
+and <code>cost_usd</code> (<code>metrics/engine.py::ALWAYS_COMPUTED</code>); other gated metrics must be listed in the
+experiment's <code>metrics</code>.</p>
+<h2 id="llmbench-check"><code>llmbench check</code></h2>
+<div class="highlight"><pre><span></span><code>llmbench<span class="w"> </span>check<span class="w"> </span>--baseline<span class="w"> </span>main<span class="w"> </span>--candidate<span class="w"> </span>latest<span class="w"> </span>--gates<span class="w"> </span>gates.yaml<span class="w"> </span>--output<span class="w"> </span>gate.md
+</code></pre></div>
+<p><code>--baseline</code> (default <code>main</code>) and <code>--candidate</code> (default <code>latest</code>) accept a baseline name, run
+id, unique id prefix or <code>latest</code>. The command prints a table and, with <code>--output</code>, writes
+Markdown: the gate results followed by the full comparison (estimates, delta CIs, tests,
+adjusted p-values, effect sizes, per-sample regressions, tag breakdown).</p>
+<table>
+<thead>
+<tr>
+<th>Exit code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Every gate passed.</td>
+</tr>
+<tr>
+<td>1</td>
+<td>At least one gate failed (regression, missing metric or insufficient data).</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Configuration or lookup error: gates file not found, run or baseline not found, ambiguous run prefix, runs with no common configuration, dataset hash mismatch without <code>--allow-dataset-drift</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>A gates file that exists but fails schema validation, or is not valid YAML, is reported as a
+configuration error (exit code 2), so it can never be mistaken for a regression.</p>
+<h2 id="stored-baseline-workflow">Stored-baseline workflow</h2>
+<p>CI jobs start with an empty database, so the baseline travels with the repository as a run
+bundle (<code>tracking/bundle.py</code>, format <code>llmbench-run/1</code>): run metadata, manifest, every trial and
+every metric value. Paths in the manifest are stored relative to the project root (the working
+directory at export time) and resolved against <code>--base-dir</code> (default <code>.</code>) on import, so run
+both commands from the repository root.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># once, locally or in a trusted job: produce and commit the baseline</span>
+llmbench<span class="w"> </span>run<span class="w"> </span>evals/experiment.yaml<span class="w"> </span>--yes<span class="w"> </span>--no-cache
+llmbench<span class="w"> </span><span class="nb">export</span><span class="w"> </span>latest<span class="w"> </span>--output<span class="w"> </span>baselines/main.json
+git<span class="w"> </span>add<span class="w"> </span>baselines/main.json
+
+<span class="c1"># in every CI job</span>
+llmbench<span class="w"> </span>import<span class="w"> </span>baselines/main.json<span class="w"> </span>--as-baseline<span class="w"> </span>main
+llmbench<span class="w"> </span>run<span class="w"> </span>evals/experiment.yaml<span class="w"> </span>--yes
+llmbench<span class="w"> </span>check<span class="w"> </span>--baseline<span class="w"> </span>main<span class="w"> </span>--gates<span class="w"> </span>evals/gates.yaml<span class="w"> </span>--output<span class="w"> </span>gate.md
+</code></pre></div>
+<p><code>export</code> defaults to the JSON bundle format (<code>--format csv</code> or <code>parquet</code> produce flat trial
+tables instead, which cannot be imported). <code>import</code> refuses a run id that already exists unless
+<code>--replace</code>. The gate reads the baseline's stored trials and metric values; it does not
+re-execute or re-score the baseline. The imported run keeps its original <code>created_at</code>, so the
+candidate run is <code>latest</code> after it executes.</p>
+<h3 id="refreshing-the-baseline">Refreshing the baseline</h3>
+<p>Refresh after an intentional change (new prompt, new model, updated dataset) has been reviewed:</p>
+<ol>
+<li>On the default branch, run the experiment with <code>--no-cache</code> so the baseline reflects the
+   provider's current behaviour rather than cached responses.</li>
+<li><code>llmbench export latest --output baselines/main.json</code>.</li>
+<li>Open a pull request with the new bundle; the diff shows changed outputs per trial. Reviewers
+   can run <code>llmbench compare</code> between the old and new bundle (import both with distinct
+   baseline names) to see exactly what moved.</li>
+</ol>
+<p>A dataset change always requires a refresh, because the gate refuses to compare runs with
+different dataset hashes (below).</p>
+<h2 id="choosing-max_drop-tolerance-versus-detectability">Choosing <code>max_drop</code>: tolerance versus detectability</h2>
+<p><code>max_drop</code> says how large a regression matters; significance says whether the benchmark can
+tell it from noise. Every comparison reports the minimum detectable effect (<code>mde</code>, two-sided
+paired test at power 0.8, from the observed per-sample differences) and warns below 30 paired
+samples. Run the experiment twice with no change (for example two runs with caching disabled)
+and inspect the MDE with <code>llmbench compare &lt;run1&gt; &lt;run2&gt; --format md</code>:</p>
+<ul>
+<li>If <code>max_drop</code> is well below the MDE, regressions between the two values will often be
+  non-significant and pass. The gate is then effectively set at roughly the MDE, not at
+  <code>max_drop</code>. Either accept that, or lower the MDE with more samples (largest effect) or more
+  trials per sample (reduces within-sample noise).</li>
+<li>If <code>max_drop</code> is above the MDE, small but real changes are detected statistically but
+  tolerated by design. This is usually the right setting for noisy metrics such as
+  <code>latency_ms</code>.</li>
+<li><code>stats.power.required_samples(sd_diff, effect)</code> estimates how many samples are needed to
+  detect a given effect.</li>
+</ul>
+<h2 id="why-dataset-changes-fail-the-gate">Why dataset changes fail the gate</h2>
+<p>Each run stores the content hash of the samples actually evaluated (after sampling). Different
+samples have different difficulty, so a metric difference between two datasets cannot be
+attributed to the system under test. <code>check</code> therefore exits 2 on a hash mismatch. Passing
+<code>--allow-dataset-drift</code> (or <code>allow_dataset_drift: true</code>) compares on the intersection of sample
+ids and adds a note to the report; use it deliberately, for example when samples were only
+appended, and refresh the baseline afterwards.</p>
+<h2 id="github-actions-example-another-repository">GitHub Actions example (another repository)</h2>
+<p>The repository under test commits <code>evals/experiment.yaml</code>, <code>evals/gates.yaml</code>, the dataset and
+prompts it references, and <code>baselines/main.json</code>. Pin LLMBench to a commit so the gate's
+statistics do not change underneath you.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LLM eval gate</span>
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span>
+<span class="nt">permissions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read</span>
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">eval-gate</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">env</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">LLMBENCH_DB_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sqlite:///${{ github.workspace }}/.llmbench/ci.db</span>
+<span class="w">      </span><span class="nt">OPENAI_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.OPENAI_API_KEY }}</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v5</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="s">"3.12"</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install LLMBench</span>
+<span class="w">        </span><span class="c1"># or, for a vendored copy: pip install "./tools/llmbench[openai]"</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install "llmbench[openai] @ git+https://github.com/PiyushDas-2004/LLM-Bench@&lt;commit-sha&gt;"</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Import stored baseline</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llmbench import baselines/main.json --as-baseline main</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run candidate experiment</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llmbench run evals/experiment.yaml --yes --strict-models</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Eval gate</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llmbench check --baseline main --gates evals/gates.yaml --output gate.md</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Publish gate report</span>
+<span class="w">        </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always()</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="s">'[</span><span class="nv"> </span><span class="s">-f</span><span class="nv"> </span><span class="s">gate.md</span><span class="nv"> </span><span class="s">]</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">cat</span><span class="nv"> </span><span class="s">gate.md</span><span class="nv"> </span><span class="s">&gt;&gt;</span><span class="nv"> </span><span class="s">"$GITHUB_STEP_SUMMARY"</span><span class="nv"> </span><span class="s">||</span><span class="nv"> </span><span class="s">true'</span>
+</code></pre></div>
+<p>Notes:</p>
+<ul>
+<li><code>llmbench run</code> exits 2 if the cost estimate exceeds <code>cost_confirm_threshold_usd</code> without
+  <code>--yes</code>, and 3 if the run ended <code>budget_exceeded</code> or <code>partial</code>; either stops the job before
+  the gate, which is intended.</li>
+<li><code>--strict-models</code> turns a missing key or placeholder model name into an error instead of a
+  silently skipped model.</li>
+</ul>
+<h3 id="real-providers-and-secrets">Real providers and secrets</h3>
+<ul>
+<li>Store keys as repository or environment secrets (<code>OPENAI_API_KEY</code>, <code>GEMINI_API_KEY</code>, or the
+  variable named by a model's <code>api_key_env</code>). Keys are read only from the environment.</li>
+<li>Pull requests from forks do not receive secrets; restrict the job to same-repository pull
+  requests or run the mock-provider variant for forks.</li>
+<li>Set <code>budget.max_usd</code> and <code>budget.max_requests</code> in the experiment; <code>llmbench plan</code> prints an
+  upper-bound estimate (it needs a <code>pricing.yaml</code> entry for each model).</li>
+<li>Pin dated model snapshots in the experiment YAML where the provider offers them; an alias
+  that moves will register as a regression or improvement unrelated to your change.</li>
+<li>Set <code>rate_limit</code> to your account limits. Limits apply per provider endpoint (provider,
+  <code>base_url</code>, <code>api_key_env</code>), shared by all models that use it.</li>
+</ul>
+<h2 id="gitlab-ci">GitLab CI</h2>
+<div class="highlight"><pre><span></span><code><span class="nt">eval-gate</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python:3.12-slim</span>
+<span class="w">  </span><span class="nt">variables</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">LLMBENCH_DB_URL</span><span class="p">:</span><span class="w"> </span><span class="s">"sqlite:///$CI_PROJECT_DIR/.llmbench/ci.db"</span>
+<span class="w">  </span><span class="nt">script</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install "llmbench[openai] @ git+https://github.com/PiyushDas-2004/LLM-Bench@&lt;commit-sha&gt;"</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llmbench import baselines/main.json --as-baseline main</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llmbench run evals/experiment.yaml --yes --strict-models</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llmbench check --baseline main --gates evals/gates.yaml --output gate.md</span>
+<span class="w">  </span><span class="nt">artifacts</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
+<span class="w">    </span><span class="nt">paths</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">gate.md</span><span class="p p-Indicator">]</span>
+</code></pre></div>
+<p><code>python:3.12-slim</code> has no <code>git</code>; install it first or use a full Python image. Define
+<code>OPENAI_API_KEY</code> as a masked CI/CD variable.</p>
+<h2 id="dogfooding-this-repositorys-gate">Dogfooding: this repository's gate</h2>
+<p><code>.github/workflows/eval-gate.yml</code> gates LLMBench with LLMBench, fully offline on the mock
+provider:</p>
+<ol>
+<li>imports <code>baselines/gate-demo.json</code> (a bundle of <code>examples/gate/baseline.yaml</code>) as <code>main</code>;</li>
+<li>runs <code>examples/gate/noise.yaml</code>, which changes only <code>mock_seed</code> (sampling noise), and
+   requires <code>llmbench check --baseline main --gates examples/gates.yaml</code> to pass;</li>
+<li>runs <code>examples/gate/regression.yaml</code>, which lowers the mock <code>accuracy</code> from 0.85 to 0.40,
+   and requires the same check to exit 1;</li>
+<li>appends both Markdown reports to the job summary.</li>
+</ol>
+<p>Mock-provider numbers are illustrative and say nothing about any real model. The gate Markdown
+does not carry the mock banner that the HTML and run reports show, so label such summaries in
+the workflow when publishing them.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>

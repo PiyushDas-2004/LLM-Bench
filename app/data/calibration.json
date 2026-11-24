@@ -1,0 +1,1 @@
+{"judge": "mock/mock-judge", "rubric": "correctness", "n": 40, "n_scored": 40, "accuracy": 0.65, "cohen_kappa": 0.33333333333333337, "weighted_kappa_quadratic": 0.584070796460177, "spearman_scores": 0.7339468081761932, "confusion": {"pass": {"pass": 9, "fail": 13}, "fail": {"pass": 1, "fail": 17}}, "mean_self_consistency": null}

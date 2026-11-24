@@ -1,0 +1,1086 @@
+{
+  "baseline_run": "quickstart-20261124T150617-b188c330",
+  "candidate_run": "quickstart-20261124T150617-b188c330",
+  "dataset_match": true,
+  "alpha": 0.05,
+  "correction": "holm",
+  "groups": [
+    {
+      "baseline_config": "mock-fast/v1",
+      "candidate_config": "mock-fast/v2",
+      "metrics": [
+        {
+          "metric": "pass",
+          "higher_is_better": true,
+          "kind": "binary",
+          "n_samples": 40,
+          "n_trials_baseline": 200,
+          "n_trials_candidate": 200,
+          "baseline": {
+            "estimate": 0.705,
+            "low": 0.595,
+            "high": 0.8099999999999999,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "candidate": {
+            "estimate": 0.765,
+            "low": 0.67,
+            "high": 0.86,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "delta": 0.06000000000000005,
+          "delta_low": -0.010124999999999794,
+          "delta_high": 0.135,
+          "relative_delta": 0.08510638297872349,
+          "test": "paired-permutation",
+          "p_value": 0.1506849315068493,
+          "p_adjusted": 0.6713328667133287,
+          "effect_size_name": "cliffs_delta",
+          "effect_size": 0.095625,
+          "effect_magnitude": null,
+          "mde": 0.10463355562525996,
+          "alpha": 0.05,
+          "verdict": "no significant change",
+          "warning": null
+        },
+        {
+          "metric": "f1",
+          "higher_is_better": true,
+          "kind": "continuous",
+          "n_samples": 40,
+          "n_trials_baseline": 200,
+          "n_trials_candidate": 200,
+          "baseline": {
+            "estimate": 0.7058333333333333,
+            "low": 0.595,
+            "high": 0.8100000000000002,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "candidate": {
+            "estimate": 0.7675000000000001,
+            "low": 0.675,
+            "high": 0.8649999999999999,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "delta": 0.06166666666666676,
+          "delta_low": -0.007499999999999998,
+          "delta_high": 0.135,
+          "relative_delta": 0.08736717827626932,
+          "test": "paired-permutation",
+          "p_value": 0.11188881111888811,
+          "p_adjusted": 0.6713328667133287,
+          "effect_size_name": "cohens_dz",
+          "effect_size": 0.26581320866821734,
+          "effect_magnitude": "small",
+          "mde": 0.102765598860854,
+          "alpha": 0.05,
+          "verdict": "no significant change",
+          "warning": null
+        },
+        {
+          "metric": "llm_judge_correctness",
+          "higher_is_better": true,
+          "kind": "continuous",
+          "n_samples": 40,
+          "n_trials_baseline": 200,
+          "n_trials_candidate": 200,
+          "baseline": {
+            "estimate": 0.63375,
+            "low": 0.5212187500000001,
+            "high": 0.7425312499999998,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "candidate": {
+            "estimate": 0.66625,
+            "low": 0.5650000000000001,
+            "high": 0.76625,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "delta": 0.03249999999999997,
+          "delta_low": -0.04128124999999994,
+          "delta_high": 0.10500000000000001,
+          "relative_delta": 0.05128205128205124,
+          "test": "paired-permutation",
+          "p_value": 0.39566043395660433,
+          "p_adjusted": 1.0,
+          "effect_size_name": "cohens_dz",
+          "effect_size": 0.13914107836944917,
+          "effect_magnitude": "negligible",
+          "mde": 0.10346699540272482,
+          "alpha": 0.05,
+          "verdict": "no significant change",
+          "warning": null
+        },
+        {
+          "metric": "exact_agreement",
+          "higher_is_better": true,
+          "kind": "continuous",
+          "n_samples": 40,
+          "n_trials_baseline": 40,
+          "n_trials_candidate": 40,
+          "baseline": {
+            "estimate": 0.665,
+            "low": 0.6,
+            "high": 0.735,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 40
+          },
+          "candidate": {
+            "estimate": 0.665,
+            "low": 0.5900000000000001,
+            "high": 0.7449999999999999,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 40
+          },
+          "delta": 0.0,
+          "delta_low": -0.06999999999999999,
+          "delta_high": 0.075,
+          "relative_delta": 0.0,
+          "test": "paired-permutation",
+          "p_value": 1.0,
+          "p_adjusted": 1.0,
+          "effect_size_name": "cohens_dz",
+          "effect_size": 2.948462951564414e-17,
+          "effect_magnitude": "negligible",
+          "mde": 0.10424816368730751,
+          "alpha": 0.05,
+          "verdict": "no significant change",
+          "warning": null
+        },
+        {
+          "metric": "pass_hat_k",
+          "higher_is_better": true,
+          "kind": "continuous",
+          "n_samples": 40,
+          "n_trials_baseline": 40,
+          "n_trials_candidate": 40,
+          "baseline": {
+            "estimate": 0.48250000000000004,
+            "low": 0.3524375,
+            "high": 0.6174999999999999,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 40
+          },
+          "candidate": {
+            "estimate": 0.5425000000000001,
+            "low": 0.41243750000000007,
+            "high": 0.68,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 40
+          },
+          "delta": 0.06000000000000005,
+          "delta_low": -0.0675,
+          "delta_high": 0.19249999999999998,
+          "relative_delta": 0.12435233160621771,
+          "test": "paired-permutation",
+          "p_value": 0.385961403859614,
+          "p_adjusted": 1.0,
+          "effect_size_name": "cohens_dz",
+          "effect_size": 0.1467888324293332,
+          "effect_magnitude": "negligible",
+          "mde": 0.18106398562496237,
+          "alpha": 0.05,
+          "verdict": "no significant change",
+          "warning": null
+        },
+        {
+          "metric": "latency_ms",
+          "higher_is_better": false,
+          "kind": "continuous",
+          "n_samples": 40,
+          "n_trials_baseline": 200,
+          "n_trials_candidate": 200,
+          "baseline": {
+            "estimate": 199.2656,
+            "low": 186.219839625,
+            "high": 212.72125937500002,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "candidate": {
+            "estimate": 187.51817999999997,
+            "low": 176.88069375,
+            "high": 199.06848037499998,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "delta": -11.747420000000034,
+          "delta_low": -26.058189375,
+          "delta_high": 2.7412531249999894,
+          "relative_delta": -0.058953577536714985,
+          "test": "paired-permutation",
+          "p_value": 0.11968803119688032,
+          "p_adjusted": 0.6713328667133287,
+          "effect_size_name": "cohens_dz",
+          "effect_size": -0.24754700818398798,
+          "effect_magnitude": "small",
+          "mde": 21.021255746309258,
+          "alpha": 0.05,
+          "verdict": "no significant change",
+          "warning": null
+        },
+        {
+          "metric": "cost_usd",
+          "higher_is_better": false,
+          "kind": "continuous",
+          "n_samples": 40,
+          "n_trials_baseline": 200,
+          "n_trials_candidate": 200,
+          "baseline": {
+            "estimate": 4.3185e-6,
+            "low": 4.1565e-6,
+            "high": 4.4875e-6,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "candidate": {
+            "estimate": 5.544000000000001e-6,
+            "low": 5.3929875e-6,
+            "high": 5.717512500000001e-6,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "delta": 1.2255000000000004e-6,
+          "delta_low": 1.1940000000000003e-6,
+          "delta_high": 1.2570000000000004e-6,
+          "relative_delta": 0.28377908996179235,
+          "test": "paired-permutation",
+          "p_value": 0.00009999000099990002,
+          "p_adjusted": 0.0006999300069993001,
+          "effect_size_name": "cohens_dz",
+          "effect_size": 11.687544969291935,
+          "effect_magnitude": "large",
+          "mde": 4.644766244905939e-8,
+          "alpha": 0.05,
+          "verdict": "regressed",
+          "warning": null
+        }
+      ],
+      "regressions": [
+        {
+          "sample_id": "qa-027",
+          "baseline_score": 0.8,
+          "candidate_score": 0.4,
+          "baseline_output": "178",
+          "candidate_output": "178",
+          "tags": [
+            "math"
+          ]
+        },
+        {
+          "sample_id": "qa-036",
+          "baseline_score": 1.0,
+          "candidate_score": 0.6,
+          "baseline_output": "100",
+          "candidate_output": "100",
+          "tags": [
+            "units"
+          ]
+        },
+        {
+          "sample_id": "qa-013",
+          "baseline_score": 0.8,
+          "candidate_score": 0.6,
+          "baseline_output": "6",
+          "candidate_output": "4",
+          "tags": [
+            "science"
+          ]
+        },
+        {
+          "sample_id": "qa-020",
+          "baseline_score": 0.8,
+          "candidate_score": 0.6,
+          "baseline_output": "56",
+          "candidate_output": "54",
+          "tags": [
+            "math"
+          ]
+        },
+        {
+          "sample_id": "qa-007",
+          "baseline_score": 0.6,
+          "candidate_score": 0.4,
+          "baseline_output": "Amazon",
+          "candidate_output": "several",
+          "tags": [
+            "geography"
+          ]
+        },
+        {
+          "sample_id": "qa-030",
+          "baseline_score": 1.0,
+          "candidate_score": 0.8,
+          "baseline_output": "1989",
+          "candidate_output": "1989",
+          "tags": [
+            "history"
+          ]
+        },
+        {
+          "sample_id": "qa-033",
+          "baseline_score": 1.0,
+          "candidate_score": 0.8,
+          "baseline_output": "Armstrong",
+          "candidate_output": "Neil Armstrong",
+          "tags": [
+            "history"
+          ]
+        },
+        {
+          "sample_id": "qa-034",
+          "baseline_score": 1.0,
+          "candidate_score": 0.8,
+          "baseline_output": "1912",
+          "candidate_output": "1912",
+          "tags": [
+            "history"
+          ]
+        },
+        {
+          "sample_id": "qa-037",
+          "baseline_score": 0.6,
+          "candidate_score": 0.4,
+          "baseline_output": "3600",
+          "candidate_output": "3600",
+          "tags": [
+            "units"
+          ]
+        }
+      ],
+      "improvements": [
+        {
+          "sample_id": "qa-004",
+          "baseline_score": 0.2,
+          "candidate_score": 0.8,
+          "baseline_output": "I am not sure.",
+          "candidate_output": "Ottawa",
+          "tags": [
+            "geography"
+          ]
+        },
+        {
+          "sample_id": "qa-021",
+          "baseline_score": 0.4,
+          "candidate_score": 1.0,
+          "baseline_output": "12",
+          "candidate_output": "12",
+          "tags": [
+            "math"
+          ]
+        },
+        {
+          "sample_id": "qa-017",
+          "baseline_score": 0.6,
+          "candidate_score": 1.0,
+          "baseline_output": "Na",
+          "candidate_output": "Na",
+          "tags": [
+            "science"
+          ]
+        },
+        {
+          "sample_id": "qa-024",
+          "baseline_score": 0.6,
+          "candidate_score": 1.0,
+          "baseline_output": "one thousand twenty-four",
+          "candidate_output": "1024",
+          "tags": [
+            "math"
+          ]
+        },
+        {
+          "sample_id": "qa-025",
+          "baseline_score": 0.0,
+          "candidate_score": 0.4,
+          "baseline_output": "392",
+          "candidate_output": "391",
+          "tags": [
+            "math"
+          ]
+        },
+        {
+          "sample_id": "qa-026",
+          "baseline_score": 0.0,
+          "candidate_score": 0.4,
+          "baseline_output": "6",
+          "candidate_output": "6",
+          "tags": [
+            "math"
+          ]
+        },
+        {
+          "sample_id": "qa-018",
+          "baseline_score": 0.6,
+          "candidate_score": 0.8,
+          "baseline_output": "Neon",
+          "candidate_output": "Ne",
+          "tags": [
+            "science"
+          ]
+        },
+        {
+          "sample_id": "qa-022",
+          "baseline_score": 0.6,
+          "candidate_score": 0.8,
+          "baseline_output": "14",
+          "candidate_output": "thirteen",
+          "tags": [
+            "math"
+          ]
+        },
+        {
+          "sample_id": "qa-008",
+          "baseline_score": 0.2,
+          "candidate_score": 0.4,
+          "baseline_output": "Ulan Bator",
+          "candidate_output": "unknown",
+          "tags": [
+            "geography"
+          ]
+        },
+        {
+          "sample_id": "qa-038",
+          "baseline_score": 0.2,
+          "candidate_score": 0.4,
+          "baseline_output": "999",
+          "candidate_output": "999",
+          "tags": [
+            "units"
+          ]
+        }
+      ],
+      "tags": [
+        {
+          "tag": "geography",
+          "n_samples": 9,
+          "baseline": 0.7333333333333333,
+          "candidate": 0.7999999999999999
+        },
+        {
+          "tag": "history",
+          "n_samples": 8,
+          "baseline": 0.8,
+          "candidate": 0.75
+        },
+        {
+          "tag": "language",
+          "n_samples": 2,
+          "baseline": 0.6,
+          "candidate": 0.6
+        },
+        {
+          "tag": "math",
+          "n_samples": 8,
+          "baseline": 0.5,
+          "candidate": 0.7000000000000001
+        },
+        {
+          "tag": "science",
+          "n_samples": 10,
+          "baseline": 0.8200000000000001,
+          "candidate": 0.9200000000000002
+        },
+        {
+          "tag": "units",
+          "n_samples": 3,
+          "baseline": 0.6,
+          "candidate": 0.4666666666666666
+        }
+      ],
+      "difficulty": [
+        {
+          "tag": "easy",
+          "n_samples": 20,
+          "baseline": 0.8300000000000001,
+          "candidate": 0.8400000000000001
+        },
+        {
+          "tag": "hard",
+          "n_samples": 5,
+          "baseline": 0.36,
+          "candidate": 0.6
+        },
+        {
+          "tag": "medium",
+          "n_samples": 15,
+          "baseline": 0.6533333333333332,
+          "candidate": 0.7200000000000001
+        }
+      ]
+    },
+    {
+      "baseline_config": "mock-fast/v2",
+      "candidate_config": "mock-strong/v2",
+      "metrics": [
+        {
+          "metric": "pass",
+          "higher_is_better": true,
+          "kind": "binary",
+          "n_samples": 40,
+          "n_trials_baseline": 200,
+          "n_trials_candidate": 200,
+          "baseline": {
+            "estimate": 0.765,
+            "low": 0.6700000000000002,
+            "high": 0.8550000000000001,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "candidate": {
+            "estimate": 0.8550000000000001,
+            "low": 0.76,
+            "high": 0.93,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "delta": 0.09000000000000008,
+          "delta_low": -0.014999999999999989,
+          "delta_high": 0.19,
+          "relative_delta": 0.11764705882352951,
+          "test": "paired-permutation",
+          "p_value": 0.11178882111788821,
+          "p_adjusted": 0.496950304969503,
+          "effect_size_name": "cliffs_delta",
+          "effect_size": 0.204375,
+          "effect_magnitude": null,
+          "mde": 0.14598879161995829,
+          "alpha": 0.05,
+          "verdict": "no significant change",
+          "warning": null
+        },
+        {
+          "metric": "f1",
+          "higher_is_better": true,
+          "kind": "continuous",
+          "n_samples": 40,
+          "n_trials_baseline": 200,
+          "n_trials_candidate": 200,
+          "baseline": {
+            "estimate": 0.7675000000000001,
+            "low": 0.675,
+            "high": 0.8575000000000002,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "candidate": {
+            "estimate": 0.8550000000000001,
+            "low": 0.76,
+            "high": 0.93,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "delta": 0.08750000000000002,
+          "delta_low": -0.015000000000000003,
+          "delta_high": 0.185,
+          "relative_delta": 0.11400651465798048,
+          "test": "paired-permutation",
+          "p_value": 0.11178882111788821,
+          "p_adjusted": 0.496950304969503,
+          "effect_size_name": "cohens_dz",
+          "effect_size": 0.26588341863571674,
+          "effect_magnitude": "small",
+          "mde": 0.14577754781655614,
+          "alpha": 0.05,
+          "verdict": "no significant change",
+          "warning": null
+        },
+        {
+          "metric": "llm_judge_correctness",
+          "higher_is_better": true,
+          "kind": "continuous",
+          "n_samples": 40,
+          "n_trials_baseline": 200,
+          "n_trials_candidate": 200,
+          "baseline": {
+            "estimate": 0.66625,
+            "low": 0.56375,
+            "high": 0.7699999999999999,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "candidate": {
+            "estimate": 0.74,
+            "low": 0.6525000000000001,
+            "high": 0.8237500000000001,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "delta": 0.07374999999999998,
+          "delta_low": -0.03003124999999996,
+          "delta_high": 0.17253124999999983,
+          "relative_delta": 0.11069418386491554,
+          "test": "paired-permutation",
+          "p_value": 0.1713828617138286,
+          "p_adjusted": 0.496950304969503,
+          "effect_size_name": "cohens_dz",
+          "effect_size": 0.2208273290674507,
+          "effect_magnitude": "small",
+          "mde": 0.1479391253215996,
+          "alpha": 0.05,
+          "verdict": "no significant change",
+          "warning": null
+        },
+        {
+          "metric": "exact_agreement",
+          "higher_is_better": true,
+          "kind": "continuous",
+          "n_samples": 40,
+          "n_trials_baseline": 40,
+          "n_trials_candidate": 40,
+          "baseline": {
+            "estimate": 0.665,
+            "low": 0.5900000000000001,
+            "high": 0.745,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 40
+          },
+          "candidate": {
+            "estimate": 0.72,
+            "low": 0.6599999999999999,
+            "high": 0.78,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 40
+          },
+          "delta": 0.05499999999999994,
+          "delta_low": -0.05,
+          "delta_high": 0.15,
+          "relative_delta": 0.08270676691729313,
+          "test": "paired-permutation",
+          "p_value": 0.3137686231376862,
+          "p_adjusted": 0.496950304969503,
+          "effect_size_name": "cohens_dz",
+          "effect_size": 0.17530162299815696,
+          "effect_magnitude": "negligible",
+          "mde": 0.13897945176509735,
+          "alpha": 0.05,
+          "verdict": "no significant change",
+          "warning": null
+        },
+        {
+          "metric": "pass_hat_k",
+          "higher_is_better": true,
+          "kind": "continuous",
+          "n_samples": 40,
+          "n_trials_baseline": 40,
+          "n_trials_candidate": 40,
+          "baseline": {
+            "estimate": 0.5425000000000001,
+            "low": 0.41,
+            "high": 0.6824999999999999,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 40
+          },
+          "candidate": {
+            "estimate": 0.7050000000000001,
+            "low": 0.58,
+            "high": 0.8300000000000001,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 40
+          },
+          "delta": 0.16249999999999998,
+          "delta_low": -0.029999999999999992,
+          "delta_high": 0.35,
+          "relative_delta": 0.29953917050691237,
+          "test": "paired-permutation",
+          "p_value": 0.0993900609939006,
+          "p_adjusted": 0.496950304969503,
+          "effect_size_name": "cohens_dz",
+          "effect_size": 0.26917289940806693,
+          "effect_magnitude": "small",
+          "mde": 0.26742122530984846,
+          "alpha": 0.05,
+          "verdict": "no significant change",
+          "warning": null
+        },
+        {
+          "metric": "latency_ms",
+          "higher_is_better": false,
+          "kind": "continuous",
+          "n_samples": 40,
+          "n_trials_baseline": 200,
+          "n_trials_candidate": 200,
+          "baseline": {
+            "estimate": 187.51817999999997,
+            "low": 176.67111025,
+            "high": 198.69805312499997,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "candidate": {
+            "estimate": 675.46708,
+            "low": 626.1840342500001,
+            "high": 725.180376875,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "delta": 487.94890000000004,
+          "delta_low": 448.09411274999997,
+          "delta_high": 530.7022678749998,
+          "relative_delta": 2.6021418296615297,
+          "test": "paired-permutation",
+          "p_value": 0.00009999000099990002,
+          "p_adjusted": 0.0006999300069993001,
+          "effect_size_name": "cohens_dz",
+          "effect_size": 3.6616872839652164,
+          "effect_magnitude": "large",
+          "mde": 59.029204842974316,
+          "alpha": 0.05,
+          "verdict": "regressed",
+          "warning": null
+        },
+        {
+          "metric": "cost_usd",
+          "higher_is_better": false,
+          "kind": "continuous",
+          "n_samples": 40,
+          "n_trials_baseline": 200,
+          "n_trials_candidate": 200,
+          "baseline": {
+            "estimate": 5.544000000000001e-6,
+            "low": 5.3905e-6,
+            "high": 5.7114999999999994e-6,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "candidate": {
+            "estimate": 0.000027764999999999996,
+            "low": 0.000026992375000000004,
+            "high": 0.00002863025,
+            "level": 0.95,
+            "method": "cluster-bootstrap",
+            "n_samples": 40,
+            "n_trials": 200
+          },
+          "delta": 0.000022220999999999996,
+          "delta_low": 0.000021625987500000002,
+          "delta_high": 0.000022867524999999996,
+          "relative_delta": 4.008116883116882,
+          "test": "paired-permutation",
+          "p_value": 0.00009999000099990002,
+          "p_adjusted": 0.0006999300069993001,
+          "effect_size_name": "cohens_dz",
+          "effect_size": 10.693700230437381,
+          "effect_magnitude": "large",
+          "mde": 9.204695694066913e-7,
+          "alpha": 0.05,
+          "verdict": "regressed",
+          "warning": null
+        }
+      ],
+      "regressions": [
+        {
+          "sample_id": "qa-002",
+          "baseline_score": 1.0,
+          "candidate_score": 0.4,
+          "baseline_output": "tokyo",
+          "candidate_output": "I am not sure.",
+          "tags": [
+            "geography"
+          ]
+        },
+        {
+          "sample_id": "qa-035",
+          "baseline_score": 1.0,
+          "candidate_score": 0.4,
+          "baseline_output": "in 1957",
+          "candidate_output": "1956",
+          "tags": [
+            "history"
+          ]
+        },
+        {
+          "sample_id": "qa-015",
+          "baseline_score": 1.0,
+          "candidate_score": 0.6,
+          "baseline_output": "Mars",
+          "candidate_output": "perhaps",
+          "tags": [
+            "science"
+          ]
+        },
+        {
+          "sample_id": "qa-017",
+          "baseline_score": 1.0,
+          "candidate_score": 0.6,
+          "baseline_output": "Na",
+          "candidate_output": "different",
+          "tags": [
+            "science"
+          ]
+        },
+        {
+          "sample_id": "qa-025",
+          "baseline_score": 0.4,
+          "candidate_score": 0.0,
+          "baseline_output": "391",
+          "candidate_output": "389",
+          "tags": [
+            "math"
+          ]
+        },
+        {
+          "sample_id": "qa-001",
+          "baseline_score": 1.0,
+          "candidate_score": 0.8,
+          "baseline_output": "Paris",
+          "candidate_output": "Paris",
+          "tags": [
+            "geography"
+          ]
+        },
+        {
+          "sample_id": "qa-012",
+          "baseline_score": 1.0,
+          "candidate_score": 0.8,
+          "baseline_output": "8",
+          "candidate_output": "8",
+          "tags": [
+            "science"
+          ]
+        },
+        {
+          "sample_id": "qa-014",
+          "baseline_score": 1.0,
+          "candidate_score": 0.8,
+          "baseline_output": "100",
+          "candidate_output": "100",
+          "tags": [
+            "science"
+          ]
+        },
+        {
+          "sample_id": "qa-039",
+          "baseline_score": 1.0,
+          "candidate_score": 0.8,
+          "baseline_output": "mice",
+          "candidate_output": "Mice",
+          "tags": [
+            "language"
+          ]
+        }
+      ],
+      "improvements": [
+        {
+          "sample_id": "qa-028",
+          "baseline_score": 0.2,
+          "candidate_score": 1.0,
+          "baseline_output": "1969",
+          "candidate_output": "1969",
+          "tags": [
+            "history"
+          ]
+        },
+        {
+          "sample_id": "qa-007",
+          "baseline_score": 0.4,
+          "candidate_score": 1.0,
+          "baseline_output": "several",
+          "candidate_output": "Amazon River",
+          "tags": [
+            "geography"
+          ]
+        },
+        {
+          "sample_id": "qa-027",
+          "baseline_score": 0.4,
+          "candidate_score": 1.0,
+          "baseline_output": "178",
+          "candidate_output": "180",
+          "tags": [
+            "math"
+          ]
+        },
+        {
+          "sample_id": "qa-037",
+          "baseline_score": 0.4,
+          "candidate_score": 1.0,
+          "baseline_output": "3600",
+          "candidate_output": "three thousand six hundred",
+          "tags": [
+            "units"
+          ]
+        },
+        {
+          "sample_id": "qa-038",
+          "baseline_score": 0.4,
+          "candidate_score": 1.0,
+          "baseline_output": "999",
+          "candidate_output": "one thousand",
+          "tags": [
+            "units"
+          ]
+        },
+        {
+          "sample_id": "qa-008",
+          "baseline_score": 0.4,
+          "candidate_score": 0.8,
+          "baseline_output": "unknown",
+          "candidate_output": "Ulaanbaatar",
+          "tags": [
+            "geography"
+          ]
+        },
+        {
+          "sample_id": "qa-009",
+          "baseline_score": 0.6,
+          "candidate_score": 1.0,
+          "baseline_output": "unknown",
+          "candidate_output": "Morocco",
+          "tags": [
+            "geography"
+          ]
+        },
+        {
+          "sample_id": "qa-013",
+          "baseline_score": 0.6,
+          "candidate_score": 1.0,
+          "baseline_output": "4",
+          "candidate_output": "6",
+          "tags": [
+            "science"
+          ]
+        },
+        {
+          "sample_id": "qa-036",
+          "baseline_score": 0.6,
+          "candidate_score": 1.0,
+          "baseline_output": "100",
+          "candidate_output": "100",
+          "tags": [
+            "units"
+          ]
+        },
+        {
+          "sample_id": "qa-040",
+          "baseline_score": 0.2,
+          "candidate_score": 0.6,
+          "baseline_output": "I am not sure.",
+          "candidate_output": "another",
+          "tags": [
+            "language"
+          ]
+        }
+      ],
+      "tags": [
+        {
+          "tag": "geography",
+          "n_samples": 9,
+          "baseline": 0.7999999999999999,
+          "candidate": 0.8888888888888888
+        },
+        {
+          "tag": "history",
+          "n_samples": 8,
+          "baseline": 0.75,
+          "candidate": 0.9
+        },
+        {
+          "tag": "language",
+          "n_samples": 2,
+          "baseline": 0.6,
+          "candidate": 0.7
+        },
+        {
+          "tag": "math",
+          "n_samples": 8,
+          "baseline": 0.7000000000000001,
+          "candidate": 0.75
+        },
+        {
+          "tag": "science",
+          "n_samples": 10,
+          "baseline": 0.9200000000000002,
+          "candidate": 0.86
+        },
+        {
+          "tag": "units",
+          "n_samples": 3,
+          "baseline": 0.4666666666666666,
+          "candidate": 1.0
+        }
+      ],
+      "difficulty": [
+        {
+          "tag": "easy",
+          "n_samples": 20,
+          "baseline": 0.8400000000000001,
+          "candidate": 0.89
+        },
+        {
+          "tag": "hard",
+          "n_samples": 5,
+          "baseline": 0.6,
+          "candidate": 0.52
+        },
+        {
+          "tag": "medium",
+          "n_samples": 15,
+          "baseline": 0.7200000000000001,
+          "candidate": 0.92
+        }
+      ]
+    }
+  ],
+  "notes": []
+}

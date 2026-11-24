@@ -1,0 +1,1596 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Reproducible evaluation, benchmarking and regression testing for LLM and RAG systems">
+      
+      
+      
+        <link rel="canonical" href="https://piyushdas-2004.github.io/LLM-Bench/example-report/rag_sweep/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
+    
+    
+      
+        <title>RAG sweep: rag-mini-sweep - LLMBench</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#rag-sweep-rag-mini-sweep" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="LLMBench" class="md-header__button md-logo" aria-label="LLMBench" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLMBench
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              RAG sweep: rag-mini-sweep
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/PiyushDas-2004/LLM-Bench" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    PiyushDas-2004/LLM-Bench
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LLMBench" class="md-nav__button md-logo" aria-label="LLMBench" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LLMBench
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/PiyushDas-2004/LLM-Bench" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    PiyushDas-2004/LLM-Bench
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://piyushdas-2004.github.io/LLM-Bench/app/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dashboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Live demo
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Live demo
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demo/report.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTML report
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demo/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Leaderboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demo/comparison/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demo/gate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Eval gate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demo/safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Safety suite
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demo/rag_sweep/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RAG sweep
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demo/calibration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Judge calibration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../METHODOLOGY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methodology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ARCHITECTURE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../RAG_EVALUATION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RAG evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CI_EVAL_GATE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI eval gate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Example report
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisions (ADRs)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#top-8-settings-by-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Top 8 settings by pass
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#main-effects-mean-metric-at-each-factor-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Main effects (mean metric at each factor level)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Main effects (mean metric at each factor level)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chunk_strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        chunk_strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chunk_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        chunk_size
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chunk_overlap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        chunk_overlap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#top_k" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        top_k
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        retrieval
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reranker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reranker
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-setting-per-metric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Best setting per metric
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="rag-sweep-rag-mini-sweep">RAG sweep: rag-mini-sweep</h1>
+<p>Generator <code>mock/mock-rag</code>, verifier <code>lexical</code>, 25 questions, 96 settings.</p>
+<h2 id="top-8-settings-by-pass">Top 8 settings by <code>pass</code></h2>
+<table>
+<thead>
+<tr>
+<th>setting</th>
+<th>pass</th>
+<th>answer_f1</th>
+<th>context_recall</th>
+<th>mrr</th>
+<th>ndcg_at_k</th>
+<th>faithfulness</th>
+<th>abstention_correct</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fixed/700/80 bm25 k=2 rerank=none emb=hash</code></td>
+<td>0.960 [0.88, 1.00]</td>
+<td>1.000 [1.00, 1.00]</td>
+<td>0.950 [0.88, 1.00]</td>
+<td>0.925 [0.85, 1.00]</td>
+<td>0.906 [0.83, 0.96]</td>
+<td>0.762 [0.57, 0.95]</td>
+<td>0.960 [0.88, 1.00]</td>
+</tr>
+<tr>
+<td><code>fixed/700/80 hybrid k=2 rerank=none emb=hash</code></td>
+<td>0.960 [0.88, 1.00]</td>
+<td>0.950 [0.85, 1.00]</td>
+<td>0.863 [0.71, 0.97]</td>
+<td>0.875 [0.75, 0.97]</td>
+<td>0.844 [0.71, 0.95]</td>
+<td>0.800 [0.60, 0.95]</td>
+<td>1.000 [1.00, 1.00]</td>
+</tr>
+<tr>
+<td><code>fixed/700/80 vector k=5 rerank=none emb=hash</code></td>
+<td>0.960 [0.88, 1.00]</td>
+<td>0.950 [0.85, 1.00]</td>
+<td>0.938 [0.85, 1.00]</td>
+<td>0.672 [0.53, 0.81]</td>
+<td>0.697 [0.58, 0.80]</td>
+<td>0.850 [0.65, 1.00]</td>
+<td>1.000 [1.00, 1.00]</td>
+</tr>
+<tr>
+<td><code>recursive/700/80 hybrid k=5 rerank=none emb=hash</code></td>
+<td>0.960 [0.88, 1.00]</td>
+<td>1.000 [1.00, 1.00]</td>
+<td>1.000 [1.00, 1.00]</td>
+<td>0.778 [0.64, 0.90]</td>
+<td>0.798 [0.69, 0.90]</td>
+<td>0.857 [0.71, 1.00]</td>
+<td>0.960 [0.88, 1.00]</td>
+</tr>
+<tr>
+<td><code>fixed/700/80 bm25 k=5 rerank=none emb=hash</code></td>
+<td>0.920 [0.80, 1.00]</td>
+<td>1.000 [1.00, 1.00]</td>
+<td>0.975 [0.93, 1.00]</td>
+<td>0.925 [0.82, 1.00]</td>
+<td>0.893 [0.82, 0.96]</td>
+<td>0.818 [0.64, 0.95]</td>
+<td>0.920 [0.80, 1.00]</td>
+</tr>
+<tr>
+<td><code>recursive/700/0 bm25 k=5 rerank=none emb=hash</code></td>
+<td>0.920 [0.80, 1.00]</td>
+<td>0.950 [0.85, 1.00]</td>
+<td>0.975 [0.93, 1.00]</td>
+<td>0.927 [0.81, 1.00]</td>
+<td>0.893 [0.80, 0.98]</td>
+<td>0.857 [0.71, 1.00]</td>
+<td>0.960 [0.88, 1.00]</td>
+</tr>
+<tr>
+<td><code>fixed/250/80 bm25 k=5 rerank=none emb=hash</code></td>
+<td>0.880 [0.72, 1.00]</td>
+<td>0.990 [0.97, 1.00]</td>
+<td>0.908 [0.79, 1.00]</td>
+<td>0.804 [0.65, 0.93]</td>
+<td>0.824 [0.70, 0.93]</td>
+<td>0.773 [0.59, 0.95]</td>
+<td>0.920 [0.80, 1.00]</td>
+</tr>
+<tr>
+<td><code>fixed/250/80 vector k=5 rerank=none emb=hash</code></td>
+<td>0.880 [0.76, 1.00]</td>
+<td>0.875 [0.72, 1.00]</td>
+<td>0.796 [0.63, 0.93]</td>
+<td>0.683 [0.52, 0.84]</td>
+<td>0.687 [0.53, 0.83]</td>
+<td>0.778 [0.61, 0.94]</td>
+<td>0.920 [0.80, 1.00]</td>
+</tr>
+</tbody>
+</table>
+<h2 id="main-effects-mean-metric-at-each-factor-level">Main effects (mean metric at each factor level)</h2>
+<h3 id="chunk_strategy">chunk_strategy</h3>
+<table>
+<thead>
+<tr>
+<th>metric</th>
+<th>fixed</th>
+<th>recursive</th>
+<th>spread</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>context_precision</td>
+<td>0.303</td>
+<td>0.315</td>
+<td>0.012</td>
+</tr>
+<tr>
+<td>context_recall</td>
+<td>0.723</td>
+<td>0.746</td>
+<td>0.023</td>
+</tr>
+<tr>
+<td>hit_at_k</td>
+<td>0.790</td>
+<td>0.800</td>
+<td>0.010</td>
+</tr>
+<tr>
+<td>mrr</td>
+<td>0.662</td>
+<td>0.689</td>
+<td>0.027</td>
+</tr>
+<tr>
+<td>ndcg_at_k</td>
+<td>0.655</td>
+<td>0.680</td>
+<td>0.025</td>
+</tr>
+<tr>
+<td>faithfulness</td>
+<td>0.718</td>
+<td>0.712</td>
+<td>0.006</td>
+</tr>
+<tr>
+<td>hallucination</td>
+<td>0.282</td>
+<td>0.288</td>
+<td>0.006</td>
+</tr>
+<tr>
+<td>answer_relevance</td>
+<td>0.092</td>
+<td>0.092</td>
+<td>0.000</td>
+</tr>
+<tr>
+<td>citation_accuracy</td>
+<td>0.590</td>
+<td>0.649</td>
+<td>0.060</td>
+</tr>
+<tr>
+<td>abstention_correct</td>
+<td>0.726</td>
+<td>0.809</td>
+<td>0.083</td>
+</tr>
+<tr>
+<td>answer_f1</td>
+<td>0.674</td>
+<td>0.751</td>
+<td>0.077</td>
+</tr>
+<tr>
+<td>pass</td>
+<td>0.670</td>
+<td>0.728</td>
+<td>0.058</td>
+</tr>
+</tbody>
+</table>
+<h3 id="chunk_size">chunk_size</h3>
+<table>
+<thead>
+<tr>
+<th>metric</th>
+<th>250</th>
+<th>700</th>
+<th>spread</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>context_precision</td>
+<td>0.314</td>
+<td>0.304</td>
+<td>0.010</td>
+</tr>
+<tr>
+<td>context_recall</td>
+<td>0.716</td>
+<td>0.752</td>
+<td>0.036</td>
+</tr>
+<tr>
+<td>hit_at_k</td>
+<td>0.790</td>
+<td>0.800</td>
+<td>0.010</td>
+</tr>
+<tr>
+<td>mrr</td>
+<td>0.668</td>
+<td>0.682</td>
+<td>0.014</td>
+</tr>
+<tr>
+<td>ndcg_at_k</td>
+<td>0.659</td>
+<td>0.675</td>
+<td>0.016</td>
+</tr>
+<tr>
+<td>faithfulness</td>
+<td>0.686</td>
+<td>0.743</td>
+<td>0.057</td>
+</tr>
+<tr>
+<td>hallucination</td>
+<td>0.314</td>
+<td>0.257</td>
+<td>0.057</td>
+</tr>
+<tr>
+<td>answer_relevance</td>
+<td>0.091</td>
+<td>0.094</td>
+<td>0.002</td>
+</tr>
+<tr>
+<td>citation_accuracy</td>
+<td>0.598</td>
+<td>0.640</td>
+<td>0.042</td>
+</tr>
+<tr>
+<td>abstention_correct</td>
+<td>0.739</td>
+<td>0.796</td>
+<td>0.057</td>
+</tr>
+<tr>
+<td>answer_f1</td>
+<td>0.686</td>
+<td>0.738</td>
+<td>0.052</td>
+</tr>
+<tr>
+<td>pass</td>
+<td>0.667</td>
+<td>0.731</td>
+<td>0.063</td>
+</tr>
+</tbody>
+</table>
+<h3 id="chunk_overlap">chunk_overlap</h3>
+<table>
+<thead>
+<tr>
+<th>metric</th>
+<th>0</th>
+<th>80</th>
+<th>spread</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>context_precision</td>
+<td>0.296</td>
+<td>0.322</td>
+<td>0.026</td>
+</tr>
+<tr>
+<td>context_recall</td>
+<td>0.734</td>
+<td>0.734</td>
+<td>0.000</td>
+</tr>
+<tr>
+<td>hit_at_k</td>
+<td>0.794</td>
+<td>0.796</td>
+<td>0.002</td>
+</tr>
+<tr>
+<td>mrr</td>
+<td>0.683</td>
+<td>0.667</td>
+<td>0.016</td>
+</tr>
+<tr>
+<td>ndcg_at_k</td>
+<td>0.671</td>
+<td>0.663</td>
+<td>0.007</td>
+</tr>
+<tr>
+<td>faithfulness</td>
+<td>0.693</td>
+<td>0.736</td>
+<td>0.044</td>
+</tr>
+<tr>
+<td>hallucination</td>
+<td>0.307</td>
+<td>0.264</td>
+<td>0.044</td>
+</tr>
+<tr>
+<td>answer_relevance</td>
+<td>0.092</td>
+<td>0.093</td>
+<td>0.001</td>
+</tr>
+<tr>
+<td>citation_accuracy</td>
+<td>0.604</td>
+<td>0.635</td>
+<td>0.030</td>
+</tr>
+<tr>
+<td>abstention_correct</td>
+<td>0.738</td>
+<td>0.797</td>
+<td>0.058</td>
+</tr>
+<tr>
+<td>answer_f1</td>
+<td>0.657</td>
+<td>0.768</td>
+<td>0.111</td>
+</tr>
+<tr>
+<td>pass</td>
+<td>0.658</td>
+<td>0.740</td>
+<td>0.082</td>
+</tr>
+</tbody>
+</table>
+<h3 id="top_k">top_k</h3>
+<table>
+<thead>
+<tr>
+<th>metric</th>
+<th>2</th>
+<th>5</th>
+<th>spread</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>context_precision</td>
+<td>0.403</td>
+<td>0.216</td>
+<td>0.187</td>
+</tr>
+<tr>
+<td>context_recall</td>
+<td>0.648</td>
+<td>0.821</td>
+<td>0.173</td>
+</tr>
+<tr>
+<td>hit_at_k</td>
+<td>0.715</td>
+<td>0.875</td>
+<td>0.160</td>
+</tr>
+<tr>
+<td>mrr</td>
+<td>0.653</td>
+<td>0.698</td>
+<td>0.045</td>
+</tr>
+<tr>
+<td>ndcg_at_k</td>
+<td>0.633</td>
+<td>0.701</td>
+<td>0.068</td>
+</tr>
+<tr>
+<td>faithfulness</td>
+<td>0.647</td>
+<td>0.783</td>
+<td>0.136</td>
+</tr>
+<tr>
+<td>hallucination</td>
+<td>0.353</td>
+<td>0.217</td>
+<td>0.136</td>
+</tr>
+<tr>
+<td>answer_relevance</td>
+<td>0.093</td>
+<td>0.092</td>
+<td>0.000</td>
+</tr>
+<tr>
+<td>citation_accuracy</td>
+<td>0.589</td>
+<td>0.650</td>
+<td>0.062</td>
+</tr>
+<tr>
+<td>abstention_correct</td>
+<td>0.712</td>
+<td>0.823</td>
+<td>0.112</td>
+</tr>
+<tr>
+<td>answer_f1</td>
+<td>0.626</td>
+<td>0.799</td>
+<td>0.174</td>
+</tr>
+<tr>
+<td>pass</td>
+<td>0.638</td>
+<td>0.761</td>
+<td>0.123</td>
+</tr>
+</tbody>
+</table>
+<h3 id="retrieval">retrieval</h3>
+<table>
+<thead>
+<tr>
+<th>metric</th>
+<th>bm25</th>
+<th>hybrid</th>
+<th>vector</th>
+<th>spread</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>context_precision</td>
+<td>0.341</td>
+<td>0.316</td>
+<td>0.271</td>
+<td>0.070</td>
+</tr>
+<tr>
+<td>context_recall</td>
+<td>0.790</td>
+<td>0.749</td>
+<td>0.664</td>
+<td>0.125</td>
+</tr>
+<tr>
+<td>hit_at_k</td>
+<td>0.839</td>
+<td>0.811</td>
+<td>0.734</td>
+<td>0.105</td>
+</tr>
+<tr>
+<td>mrr</td>
+<td>0.735</td>
+<td>0.690</td>
+<td>0.601</td>
+<td>0.134</td>
+</tr>
+<tr>
+<td>ndcg_at_k</td>
+<td>0.724</td>
+<td>0.684</td>
+<td>0.594</td>
+<td>0.131</td>
+</tr>
+<tr>
+<td>faithfulness</td>
+<td>0.720</td>
+<td>0.734</td>
+<td>0.690</td>
+<td>0.044</td>
+</tr>
+<tr>
+<td>hallucination</td>
+<td>0.280</td>
+<td>0.266</td>
+<td>0.310</td>
+<td>0.044</td>
+</tr>
+<tr>
+<td>answer_relevance</td>
+<td>0.096</td>
+<td>0.092</td>
+<td>0.089</td>
+<td>0.007</td>
+</tr>
+<tr>
+<td>citation_accuracy</td>
+<td>0.624</td>
+<td>0.629</td>
+<td>0.605</td>
+<td>0.025</td>
+</tr>
+<tr>
+<td>abstention_correct</td>
+<td>0.790</td>
+<td>0.786</td>
+<td>0.726</td>
+<td>0.064</td>
+</tr>
+<tr>
+<td>answer_f1</td>
+<td>0.735</td>
+<td>0.741</td>
+<td>0.661</td>
+<td>0.081</td>
+</tr>
+<tr>
+<td>pass</td>
+<td>0.715</td>
+<td>0.719</td>
+<td>0.664</td>
+<td>0.055</td>
+</tr>
+</tbody>
+</table>
+<h3 id="reranker">reranker</h3>
+<table>
+<thead>
+<tr>
+<th>metric</th>
+<th>llm</th>
+<th>none</th>
+<th>spread</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>context_precision</td>
+<td>0.271</td>
+<td>0.348</td>
+<td>0.077</td>
+</tr>
+<tr>
+<td>context_recall</td>
+<td>0.657</td>
+<td>0.811</td>
+<td>0.154</td>
+</tr>
+<tr>
+<td>hit_at_k</td>
+<td>0.719</td>
+<td>0.871</td>
+<td>0.152</td>
+</tr>
+<tr>
+<td>mrr</td>
+<td>0.588</td>
+<td>0.762</td>
+<td>0.174</td>
+</tr>
+<tr>
+<td>ndcg_at_k</td>
+<td>0.586</td>
+<td>0.748</td>
+<td>0.162</td>
+</tr>
+<tr>
+<td>faithfulness</td>
+<td>0.706</td>
+<td>0.724</td>
+<td>0.018</td>
+</tr>
+<tr>
+<td>hallucination</td>
+<td>0.294</td>
+<td>0.276</td>
+<td>0.018</td>
+</tr>
+<tr>
+<td>answer_relevance</td>
+<td>0.096</td>
+<td>0.088</td>
+<td>0.008</td>
+</tr>
+<tr>
+<td>citation_accuracy</td>
+<td>0.609</td>
+<td>0.630</td>
+<td>0.022</td>
+</tr>
+<tr>
+<td>abstention_correct</td>
+<td>0.704</td>
+<td>0.831</td>
+<td>0.127</td>
+</tr>
+<tr>
+<td>answer_f1</td>
+<td>0.634</td>
+<td>0.791</td>
+<td>0.157</td>
+</tr>
+<tr>
+<td>pass</td>
+<td>0.638</td>
+<td>0.761</td>
+<td>0.123</td>
+</tr>
+</tbody>
+</table>
+<h2 id="best-setting-per-metric">Best setting per metric</h2>
+<ul>
+<li><strong>context_precision</strong>: <code>fixed/700/0 bm25 k=2 rerank=none emb=hash</code></li>
+<li><strong>context_recall</strong>: <code>recursive/700/80 hybrid k=5 rerank=none emb=hash</code></li>
+<li><strong>hit_at_k</strong>: <code>fixed/700/0 bm25 k=2 rerank=none emb=hash</code></li>
+<li><strong>mrr</strong>: <code>recursive/700/0 bm25 k=5 rerank=none emb=hash</code></li>
+<li><strong>ndcg_at_k</strong>: <code>fixed/700/0 bm25 k=2 rerank=none emb=hash</code></li>
+<li><strong>faithfulness</strong>: <code>recursive/700/0 hybrid k=5 rerank=llm emb=hash</code></li>
+<li><strong>hallucination</strong>: <code>recursive/700/0 hybrid k=5 rerank=llm emb=hash</code></li>
+<li><strong>answer_relevance</strong>: <code>fixed/700/80 hybrid k=2 rerank=llm emb=hash</code></li>
+<li><strong>citation_accuracy</strong>: <code>recursive/700/0 hybrid k=5 rerank=llm emb=hash</code></li>
+<li><strong>abstention_correct</strong>: <code>fixed/700/80 hybrid k=2 rerank=none emb=hash</code></li>
+<li><strong>answer_f1</strong>: <code>fixed/700/80 bm25 k=2 rerank=none emb=hash</code></li>
+<li><strong>pass</strong>: <code>fixed/700/80 bm25 k=2 rerank=none emb=hash</code></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "content.code.copy"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>

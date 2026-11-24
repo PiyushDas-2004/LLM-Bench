@@ -1,0 +1,18 @@
+  Judge calibration: mock/mock-judge  
+┌────────────────────────────┬───────┐
+│ examples scored            │ 40/40 │
+│ accuracy                   │ 0.650 │
+│ Cohen's kappa              │ 0.333 │
+│ weighted kappa (quadratic) │ 0.584 │
+│ Spearman (scores)          │ 0.734 │
+│ judge self-consistency     │ n/a   │
+└────────────────────────────┴───────┘
+  confusion (rows =   
+ human, cols = judge) 
+┏━━━━━━┳━━━━━━┳━━━━━━┓
+┃      ┃ pass ┃ fail ┃
+┡━━━━━━╇━━━━━━╇━━━━━━┩
+│ pass │    9 │   13 │
+│ fail │    1 │   17 │
+└──────┴──────┴──────┘
+wrote docs/example-report/judge_calibration.json

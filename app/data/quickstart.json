@@ -1,0 +1,2243 @@
+{
+ "run_id": "quickstart-20261124T150617-b188c330",
+ "name": "quickstart",
+ "status": "completed",
+ "task": "qa",
+ "created_at": "2026-11-24T15:06:17.014345",
+ "dataset_name": "qa_basic",
+ "dataset_hash": "31c0e369dbf5847135ce16a4f6f686f968ecfa0fe39041b1afe7db18110df77b",
+ "n_expected": 800,
+ "n_done": 800,
+ "total_cost_usd": 0.011823,
+ "stop_reason": null,
+ "manifest": {
+  "run_id": "quickstart-20261124T150617-b188c330",
+  "created_at": "2026-11-24T15:06:17.008934+00:00",
+  "llmbench_version": "0.1.0",
+  "python": "3.12.16",
+  "platform": "Linux-7.0.0-1020-azure-x86_64-with-glibc2.43",
+  "git_sha": "8b33e7820a3cce69a868ee5aec48faf62217277b",
+  "base_dir": "/home/runner/work/LLM-Bench/LLM-Bench/examples",
+  "config": {
+   "name": "quickstart",
+   "description": "Mock-provider comparison of two models and two prompts on qa_basic.",
+   "dataset": "../datasets/qa_basic.jsonl",
+   "task": "qa",
+   "trials": 5,
+   "seed": 1234,
+   "concurrency": 8,
+   "rate_limit": {
+    "requests_per_minute": 6000.0,
+    "tokens_per_minute": 2000000.0
+   },
+   "budget": {
+    "max_usd": 1.0,
+    "max_requests": 5000
+   },
+   "retry": {
+    "max_attempts": 4,
+    "base_delay_s": 0.5,
+    "max_delay_s": 30.0,
+    "timeout_s": 60.0
+   },
+   "circuit_breaker": {
+    "failure_threshold": 8,
+    "reset_timeout_s": 30.0
+   },
+   "models": [
+    {
+     "id": "mock-strong",
+     "provider": "mock",
+     "model": "mock-strong",
+     "base_url": null,
+     "api_key_env": null,
+     "params": {
+      "temperature": 0.7,
+      "max_tokens": 64,
+      "accuracy": 0.85,
+      "latency_ms": 650,
+      "failure_rate": 0.02,
+      "stream": true
+     },
+     "rate_limit": null
+    },
+    {
+     "id": "mock-fast",
+     "provider": "mock",
+     "model": "mock-fast",
+     "base_url": null,
+     "api_key_env": null,
+     "params": {
+      "temperature": 0.7,
+      "max_tokens": 64,
+      "accuracy": 0.65,
+      "latency_ms": 180,
+      "failure_rate": 0.02,
+      "stream": true
+     },
+     "rate_limit": null
+    }
+   ],
+   "prompts": [
+    {
+     "id": "v1",
+     "template": "../prompts/qa_v1.j2",
+     "text": null,
+     "system": null,
+     "system_template": null
+    },
+    {
+     "id": "v2",
+     "template": "../prompts/qa_v2.j2",
+     "text": null,
+     "system": null,
+     "system_template": null
+    }
+   ],
+   "metrics": [
+    {
+     "name": "exact_match",
+     "params": {}
+    },
+    {
+     "name": "f1",
+     "params": {}
+    },
+    {
+     "name": "rouge_l",
+     "params": {}
+    },
+    {
+     "name": "semantic_similarity",
+     "params": {}
+    },
+    {
+     "name": "llm_judge_correctness",
+     "params": {}
+    },
+    {
+     "name": "consistency",
+     "params": {}
+    },
+    {
+     "name": "latency",
+     "params": {}
+    },
+    {
+     "name": "cost",
+     "params": {}
+    }
+   ],
+   "judge": {
+    "provider": "mock",
+    "model": "mock-judge",
+    "base_url": null,
+    "rubric": "../rubrics/correctness.yaml",
+    "swap_order": true,
+    "samples": 1,
+    "max_repairs": 2,
+    "params": {
+     "temperature": 0.0
+    }
+   },
+   "pricing": "pricing.yaml",
+   "cost_confirm_threshold_usd": 1.0,
+   "sampling": {
+    "n": null,
+    "stratify_by_tag": true,
+    "seed": 0
+   },
+   "cache": true,
+   "tags": {}
+  },
+  "config_hash": "74ee6f08bb1d6e78f1388cd189b5e7518ff5c1ab4df936eea25c987f50be49f3",
+  "task": "qa",
+  "dataset": {
+   "name": "qa_basic",
+   "path": "/home/runner/work/LLM-Bench/LLM-Bench/datasets/qa_basic.jsonl",
+   "full_hash": "31c0e369dbf5847135ce16a4f6f686f968ecfa0fe39041b1afe7db18110df77b",
+   "evaluated_hash": "31c0e369dbf5847135ce16a4f6f686f968ecfa0fe39041b1afe7db18110df77b",
+   "n_total": 40,
+   "n_evaluated": 40,
+   "sample_ids": [
+    "qa-001",
+    "qa-002",
+    "qa-003",
+    "qa-004",
+    "qa-005",
+    "qa-006",
+    "qa-007",
+    "qa-008",
+    "qa-009",
+    "qa-010",
+    "qa-011",
+    "qa-012",
+    "qa-013",
+    "qa-014",
+    "qa-015",
+    "qa-016",
+    "qa-017",
+    "qa-018",
+    "qa-019",
+    "qa-020",
+    "qa-021",
+    "qa-022",
+    "qa-023",
+    "qa-024",
+    "qa-025",
+    "qa-026",
+    "qa-027",
+    "qa-028",
+    "qa-029",
+    "qa-030",
+    "qa-031",
+    "qa-032",
+    "qa-033",
+    "qa-034",
+    "qa-035",
+    "qa-036",
+    "qa-037",
+    "qa-038",
+    "qa-039",
+    "qa-040"
+   ]
+  },
+  "prompts": {
+   "v1": "04f8382798e5657c350f514af2b4294c62071c6e39a83ff258c37a1a22104876",
+   "v2": "a50caf2a05cca06bdf97e26f3f7f5865f757e212fe2508bda6f7226eebb9e50f"
+  },
+  "models": [
+   {
+    "id": "mock-strong",
+    "provider": "mock",
+    "model": "mock-strong",
+    "base_url": null,
+    "params": {
+     "temperature": 0.7,
+     "max_tokens": 64,
+     "accuracy": 0.85,
+     "latency_ms": 650,
+     "failure_rate": 0.02,
+     "stream": true
+    }
+   },
+   {
+    "id": "mock-fast",
+    "provider": "mock",
+    "model": "mock-fast",
+    "base_url": null,
+    "params": {
+     "temperature": 0.7,
+     "max_tokens": 64,
+     "accuracy": 0.65,
+     "latency_ms": 180,
+     "failure_rate": 0.02,
+     "stream": true
+    }
+   }
+  ],
+  "skipped_models": {},
+  "seeds": {
+   "experiment": 1234,
+   "sampling": 0
+  },
+  "pricing": {
+   "path": "pricing.yaml",
+   "as_of": "2026-11-20"
+  },
+  "grid_size": 800,
+  "cache_enabled": true
+ },
+ "quality_metric": "pass",
+ "configs": [
+  {
+   "model_id": "mock-fast",
+   "prompt_id": "v1",
+   "n_samples": 40,
+   "n_trials": 200,
+   "metrics": {
+    "answer_entropy": {
+     "metric": "answer_entropy",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 1.0242010234078975,
+      "low": 0.8261957342885416,
+      "high": 1.226418799264161,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "cost_usd": {
+     "metric": "cost_usd",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 4.3185e-6,
+      "low": 4.158475e-6,
+      "high": 4.496525e-6,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "exact_agreement": {
+     "metric": "exact_agreement",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.665,
+      "low": 0.6,
+      "high": 0.735,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "exact_match": {
+     "metric": "exact_match",
+     "higher_is_better": true,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.7,
+      "low": 0.585,
+      "high": 0.795,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "f1": {
+     "metric": "f1",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.7058333333333333,
+      "low": 0.5900000000000001,
+      "high": 0.803375,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "failed": {
+     "metric": "failed",
+     "higher_is_better": false,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.0,
+      "low": 0.0,
+      "high": 0.0,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "flip_rate": {
+     "metric": "flip_rate",
+     "higher_is_better": false,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.575,
+      "low": 0.425,
+      "high": 0.725,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "latency_ms": {
+     "metric": "latency_ms",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 199.2656,
+      "low": 186.22038425,
+      "high": 213.56268012499999,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "llm_judge_correctness": {
+     "metric": "llm_judge_correctness",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.63375,
+      "low": 0.5236875,
+      "high": 0.7387499999999999,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "malformed": {
+     "metric": "malformed",
+     "higher_is_better": false,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.0,
+      "low": 0.0,
+      "high": 0.0,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "pass": {
+     "metric": "pass",
+     "higher_is_better": true,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.705,
+      "low": 0.5900000000000001,
+      "high": 0.805,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "pass_at_k": {
+     "metric": "pass_at_k",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.8949999999999999,
+      "low": 0.82,
+      "high": 0.96,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "pass_hat_k": {
+     "metric": "pass_hat_k",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.48250000000000004,
+      "low": 0.3425,
+      "high": 0.6125,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "queue_wait_ms": {
+     "metric": "queue_wait_ms",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 62.740885000000006,
+      "low": 57.73472825000001,
+      "high": 68.171254,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "refused": {
+     "metric": "refused",
+     "higher_is_better": false,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.0,
+      "low": 0.0,
+      "high": 0.0,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "retries": {
+     "metric": "retries",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.015000000000000003,
+      "low": 0.0,
+      "high": 0.04,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "rouge_l": {
+     "metric": "rouge_l",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.7058333333333333,
+      "low": 0.5900000000000001,
+      "high": 0.803375,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "semantic_consistency": {
+     "metric": "semantic_consistency",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.5495614942057814,
+      "low": 0.45049794257626224,
+      "high": 0.6445042864428012,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "semantic_similarity": {
+     "metric": "semantic_similarity",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.6487953657511687,
+      "low": 0.5397073673745556,
+      "high": 0.7472432423928593,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "tokens_per_second": {
+     "metric": "tokens_per_second",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 13.490908484029493,
+      "low": 11.03776706676413,
+      "high": 16.15589400450267,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "ttft_ms": {
+     "metric": "ttft_ms",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 51.341265,
+      "low": 47.31157749999999,
+      "high": 55.605903874999996,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    }
+   },
+   "latency": {
+    "n": 200,
+    "mean": 199.2656,
+    "p50": 187.4325,
+    "p90": 316.3875,
+    "p95": 341.15124999999995,
+    "p99": 401.58400999999975,
+    "ttft_p50": 51.492,
+    "ttft_p95": 91.20454999999994,
+    "tokens_per_second": 13.490908484029491,
+    "histogram": [
+     3,
+     4,
+     10,
+     18,
+     28,
+     27,
+     30,
+     17,
+     16,
+     10,
+     5,
+     5,
+     8,
+     5,
+     7,
+     1,
+     3,
+     1,
+     1,
+     1
+    ],
+    "bin_edges": [
+     56.6,
+     76.7004,
+     96.80080000000001,
+     116.9012,
+     137.0016,
+     157.102,
+     177.2024,
+     197.3028,
+     217.4032,
+     237.5036,
+     257.60400000000004,
+     277.7044,
+     297.8048,
+     317.90520000000004,
+     338.0056,
+     358.10600000000005,
+     378.20640000000003,
+     398.3068,
+     418.40720000000005,
+     438.5076,
+     458.608
+    ]
+   },
+   "cost": {
+    "total_usd": 0.0008637,
+    "per_1k_requests_usd": 0.0043185,
+    "per_correct_usd": 6.125531914893617e-6,
+    "quality_per_dollar": 163251.12886418894,
+    "cached_fraction": 0.0
+   },
+   "failures": {},
+   "failure_rate": 0.0,
+   "malformed_rate": 0.0,
+   "refusal_rate": 0.0,
+   "retry_distribution": {
+    "1": 197,
+    "2": 3
+   },
+   "tags": [
+    [
+     "geography",
+     9,
+     0.7333333333333333
+    ],
+    [
+     "history",
+     8,
+     0.8
+    ],
+    [
+     "language",
+     2,
+     0.6
+    ],
+    [
+     "math",
+     8,
+     0.5
+    ],
+    [
+     "science",
+     10,
+     0.8200000000000001
+    ],
+    [
+     "units",
+     3,
+     0.6
+    ]
+   ],
+   "worst": [
+    {
+     "sample_id": "qa-025",
+     "pass_rate": 0.0,
+     "input": "What is 17 multiplied by 23?",
+     "reference": "391",
+     "output": "392",
+     "tags": [
+      "math"
+     ]
+    },
+    {
+     "sample_id": "qa-026",
+     "pass_rate": 0.0,
+     "input": "How many prime numbers are there between 1 and 20?",
+     "reference": "8",
+     "output": "6",
+     "tags": [
+      "math"
+     ]
+    },
+    {
+     "sample_id": "qa-004",
+     "pass_rate": 0.2,
+     "input": "What is the capital of Canada?",
+     "reference": "Ottawa",
+     "output": "I am not sure.",
+     "tags": [
+      "geography"
+     ]
+    },
+    {
+     "sample_id": "qa-008",
+     "pass_rate": 0.2,
+     "input": "What is the capital of Mongolia?",
+     "reference": "Ulaanbaatar",
+     "output": "Ulan Bator",
+     "tags": [
+      "geography"
+     ]
+    },
+    {
+     "sample_id": "qa-028",
+     "pass_rate": 0.2,
+     "input": "In what year did humans first land on the Moon?",
+     "reference": "1969",
+     "output": "in 1969",
+     "tags": [
+      "history"
+     ]
+    },
+    {
+     "sample_id": "qa-038",
+     "pass_rate": 0.2,
+     "input": "How many grams are in one kilogram?",
+     "reference": "1000",
+     "output": "999",
+     "tags": [
+      "units"
+     ]
+    },
+    {
+     "sample_id": "qa-040",
+     "pass_rate": 0.2,
+     "input": "What is the simple past tense of the English verb 'go'?",
+     "reference": "went",
+     "output": "I am not sure.",
+     "tags": [
+      "language"
+     ]
+    },
+    {
+     "sample_id": "qa-021",
+     "pass_rate": 0.4,
+     "input": "What is 144 divided by 12?",
+     "reference": "12",
+     "output": "12",
+     "tags": [
+      "math"
+     ]
+    }
+   ]
+  },
+  {
+   "model_id": "mock-fast",
+   "prompt_id": "v2",
+   "n_samples": 40,
+   "n_trials": 200,
+   "metrics": {
+    "answer_entropy": {
+     "metric": "answer_entropy",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 1.0387994461006176,
+      "low": 0.7928321991010641,
+      "high": 1.2529597653445539,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "cost_usd": {
+     "metric": "cost_usd",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 5.544000000000001e-6,
+      "low": 5.3885e-6,
+      "high": 5.714525e-6,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "exact_agreement": {
+     "metric": "exact_agreement",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.665,
+      "low": 0.5900000000000001,
+      "high": 0.745,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "exact_match": {
+     "metric": "exact_match",
+     "higher_is_better": true,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.765,
+      "low": 0.67,
+      "high": 0.855125,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "f1": {
+     "metric": "f1",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.7675000000000001,
+      "low": 0.6725,
+      "high": 0.86,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "failed": {
+     "metric": "failed",
+     "higher_is_better": false,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.0,
+      "low": 0.0,
+      "high": 0.0,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "flip_rate": {
+     "metric": "flip_rate",
+     "higher_is_better": false,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.55,
+      "low": 0.4,
+      "high": 0.7,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "latency_ms": {
+     "metric": "latency_ms",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 187.51817999999997,
+      "low": 177.5295925,
+      "high": 198.88515825,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "llm_judge_correctness": {
+     "metric": "llm_judge_correctness",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.66625,
+      "low": 0.56875,
+      "high": 0.765,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "malformed": {
+     "metric": "malformed",
+     "higher_is_better": false,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.0,
+      "low": 0.0,
+      "high": 0.0,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "pass": {
+     "metric": "pass",
+     "higher_is_better": true,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.765,
+      "low": 0.67,
+      "high": 0.855125,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "pass_at_k": {
+     "metric": "pass_at_k",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.9625,
+      "low": 0.93,
+      "high": 0.9875,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "pass_hat_k": {
+     "metric": "pass_hat_k",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.5425000000000001,
+      "low": 0.4175,
+      "high": 0.6825625,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "queue_wait_ms": {
+     "metric": "queue_wait_ms",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 62.781085000000004,
+      "low": 57.958511125,
+      "high": 67.445619875,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "refused": {
+     "metric": "refused",
+     "higher_is_better": false,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.0,
+      "low": 0.0,
+      "high": 0.0,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "retries": {
+     "metric": "retries",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.005,
+      "low": 0.0,
+      "high": 0.025,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "rouge_l": {
+     "metric": "rouge_l",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.7675000000000001,
+      "low": 0.6725,
+      "high": 0.86,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "semantic_consistency": {
+     "metric": "semantic_consistency",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.5401874708355445,
+      "low": 0.44104998128476,
+      "high": 0.6500060290788983,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "semantic_similarity": {
+     "metric": "semantic_similarity",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.6782536621928488,
+      "low": 0.5835774846576005,
+      "high": 0.7720962892037498,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "tokens_per_second": {
+     "metric": "tokens_per_second",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 13.311228736781993,
+      "low": 11.198008693865845,
+      "high": 15.660992329894315,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "ttft_ms": {
+     "metric": "ttft_ms",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 47.92339,
+      "low": 44.536841374999995,
+      "high": 51.528301250000005,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    }
+   },
+   "latency": {
+    "n": 200,
+    "mean": 187.51818,
+    "p50": 178.836,
+    "p90": 258.5705,
+    "p95": 299.2007,
+    "p99": 362.57150999999993,
+    "ttft_p50": 44.9175,
+    "ttft_p95": 86.15369999999999,
+    "tokens_per_second": 13.311228736781993,
+    "histogram": [
+     7,
+     4,
+     28,
+     31,
+     23,
+     31,
+     13,
+     19,
+     16,
+     11,
+     6,
+     2,
+     2,
+     3,
+     1,
+     2,
+     0,
+     0,
+     0,
+     1
+    ],
+    "bin_edges": [
+     83.396,
+     101.482,
+     119.568,
+     137.654,
+     155.74,
+     173.826,
+     191.91199999999998,
+     209.998,
+     228.084,
+     246.17000000000002,
+     264.256,
+     282.342,
+     300.428,
+     318.514,
+     336.59999999999997,
+     354.686,
+     372.772,
+     390.858,
+     408.944,
+     427.03,
+     445.116
+    ]
+   },
+   "cost": {
+    "total_usd": 0.0011088,
+    "per_1k_requests_usd": 0.005544,
+    "per_correct_usd": 7.247058823529412e-6,
+    "quality_per_dollar": 137987.01298701297,
+    "cached_fraction": 0.0
+   },
+   "failures": {},
+   "failure_rate": 0.0,
+   "malformed_rate": 0.0,
+   "refusal_rate": 0.0,
+   "retry_distribution": {
+    "1": 199,
+    "2": 1
+   },
+   "tags": [
+    [
+     "geography",
+     9,
+     0.7999999999999999
+    ],
+    [
+     "history",
+     8,
+     0.75
+    ],
+    [
+     "language",
+     2,
+     0.6
+    ],
+    [
+     "math",
+     8,
+     0.7000000000000001
+    ],
+    [
+     "science",
+     10,
+     0.9200000000000002
+    ],
+    [
+     "units",
+     3,
+     0.4666666666666666
+    ]
+   ],
+   "worst": [
+    {
+     "sample_id": "qa-028",
+     "pass_rate": 0.2,
+     "input": "In what year did humans first land on the Moon?",
+     "reference": "1969",
+     "output": "1969",
+     "tags": [
+      "history"
+     ]
+    },
+    {
+     "sample_id": "qa-040",
+     "pass_rate": 0.2,
+     "input": "What is the simple past tense of the English verb 'go'?",
+     "reference": "went",
+     "output": "I am not sure.",
+     "tags": [
+      "language"
+     ]
+    },
+    {
+     "sample_id": "qa-007",
+     "pass_rate": 0.4,
+     "input": "What is the longest river in South America?",
+     "reference": "Amazon",
+     "output": "several",
+     "tags": [
+      "geography"
+     ]
+    },
+    {
+     "sample_id": "qa-008",
+     "pass_rate": 0.4,
+     "input": "What is the capital of Mongolia?",
+     "reference": "Ulaanbaatar",
+     "output": "unknown",
+     "tags": [
+      "geography"
+     ]
+    },
+    {
+     "sample_id": "qa-025",
+     "pass_rate": 0.4,
+     "input": "What is 17 multiplied by 23?",
+     "reference": "391",
+     "output": "391",
+     "tags": [
+      "math"
+     ]
+    },
+    {
+     "sample_id": "qa-026",
+     "pass_rate": 0.4,
+     "input": "How many prime numbers are there between 1 and 20?",
+     "reference": "8",
+     "output": "6",
+     "tags": [
+      "math"
+     ]
+    },
+    {
+     "sample_id": "qa-027",
+     "pass_rate": 0.4,
+     "input": "What is the sum of the interior angles of a triangle, in degrees?",
+     "reference": "180",
+     "output": "178",
+     "tags": [
+      "math"
+     ]
+    },
+    {
+     "sample_id": "qa-037",
+     "pass_rate": 0.4,
+     "input": "How many seconds are in one hour?",
+     "reference": "3600",
+     "output": "3600",
+     "tags": [
+      "units"
+     ]
+    }
+   ]
+  },
+  {
+   "model_id": "mock-strong",
+   "prompt_id": "v1",
+   "n_samples": 40,
+   "n_trials": 200,
+   "metrics": {
+    "answer_entropy": {
+     "metric": "answer_entropy",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.8686039460140789,
+      "low": 0.6907051780834226,
+      "high": 1.0645744219572528,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "cost_usd": {
+     "metric": "cost_usd",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.0000214875,
+      "low": 0.0000207224375,
+      "high": 0.000022349999999999998,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "exact_agreement": {
+     "metric": "exact_agreement",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.71,
+      "low": 0.6398750000000001,
+      "high": 0.77,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "exact_match": {
+     "metric": "exact_match",
+     "higher_is_better": true,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.825,
+      "low": 0.735,
+      "high": 0.905,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "f1": {
+     "metric": "f1",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.825,
+      "low": 0.735,
+      "high": 0.905,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "failed": {
+     "metric": "failed",
+     "higher_is_better": false,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.0,
+      "low": 0.0,
+      "high": 0.0,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "flip_rate": {
+     "metric": "flip_rate",
+     "higher_is_better": false,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.45,
+      "low": 0.3,
+      "high": 0.6,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "latency_ms": {
+     "metric": "latency_ms",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 711.0249200000001,
+      "low": 668.0143905,
+      "high": 760.801275,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "llm_judge_correctness": {
+     "metric": "llm_judge_correctness",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.7125,
+      "low": 0.61746875,
+      "high": 0.805,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "malformed": {
+     "metric": "malformed",
+     "higher_is_better": false,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.0,
+      "low": 0.0,
+      "high": 0.0,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "pass": {
+     "metric": "pass",
+     "higher_is_better": true,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.825,
+      "low": 0.735,
+      "high": 0.905,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "pass_at_k": {
+     "metric": "pass_at_k",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.9574999999999999,
+      "low": 0.9174999999999999,
+      "high": 0.99,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "pass_hat_k": {
+     "metric": "pass_hat_k",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.6575,
+      "low": 0.53,
+      "high": 0.775,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "queue_wait_ms": {
+     "metric": "queue_wait_ms",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 63.61034000000001,
+      "low": 58.556656499999995,
+      "high": 68.61251887499999,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "refused": {
+     "metric": "refused",
+     "higher_is_better": false,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.0,
+      "low": 0.0,
+      "high": 0.0,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "retries": {
+     "metric": "retries",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.025,
+      "low": 0.004875000000000114,
+      "high": 0.05500000000000001,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "rouge_l": {
+     "metric": "rouge_l",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.825,
+      "low": 0.735,
+      "high": 0.905,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "semantic_consistency": {
+     "metric": "semantic_consistency",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.613329463623767,
+      "low": 0.5221460683667543,
+      "high": 0.6978808808021414,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "semantic_similarity": {
+     "metric": "semantic_similarity",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.7276103209837762,
+      "low": 0.6357040079344003,
+      "high": 0.813980041618708,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "tokens_per_second": {
+     "metric": "tokens_per_second",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 3.7167551426328274,
+      "low": 3.1052170802346395,
+      "high": 4.451770951085434,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "ttft_ms": {
+     "metric": "ttft_ms",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 178.376775,
+      "low": 165.949781375,
+      "high": 192.436551875,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    }
+   },
+   "latency": {
+    "n": 200,
+    "mean": 711.02492,
+    "p50": 694.1030000000001,
+    "p90": 1042.679,
+    "p95": 1130.5290999999997,
+    "p99": 1322.839319999998,
+    "ttft_p50": 168.8245,
+    "ttft_p95": 299.26495,
+    "tokens_per_second": 3.716755142632827,
+    "histogram": [
+     4,
+     15,
+     20,
+     27,
+     24,
+     31,
+     23,
+     22,
+     10,
+     11,
+     6,
+     3,
+     2,
+     0,
+     1,
+     0,
+     0,
+     0,
+     0,
+     1
+    ],
+    "bin_edges": [
+     224.192,
+     312.06605,
+     399.94010000000003,
+     487.81415,
+     575.6882,
+     663.56225,
+     751.4363,
+     839.31035,
+     927.1844,
+     1015.05845,
+     1102.9325,
+     1190.80655,
+     1278.6806,
+     1366.55465,
+     1454.4287,
+     1542.30275,
+     1630.1768,
+     1718.0508499999999,
+     1805.9249,
+     1893.7989499999999,
+     1981.673
+    ]
+   },
+   "cost": {
+    "total_usd": 0.0042975,
+    "per_1k_requests_usd": 0.0214875,
+    "per_correct_usd": 0.000026045454545454545,
+    "quality_per_dollar": 38394.41535776614,
+    "cached_fraction": 0.0
+   },
+   "failures": {},
+   "failure_rate": 0.0,
+   "malformed_rate": 0.0,
+   "refusal_rate": 0.0,
+   "retry_distribution": {
+    "1": 195,
+    "2": 5
+   },
+   "tags": [
+    [
+     "geography",
+     9,
+     0.8666666666666667
+    ],
+    [
+     "history",
+     8,
+     0.85
+    ],
+    [
+     "language",
+     2,
+     0.8
+    ],
+    [
+     "math",
+     8,
+     0.7
+    ],
+    [
+     "science",
+     10,
+     0.8600000000000001
+    ],
+    [
+     "units",
+     3,
+     0.8666666666666667
+    ]
+   ],
+   "worst": [
+    {
+     "sample_id": "qa-013",
+     "pass_rate": 0.2,
+     "input": "What is the atomic number of carbon?",
+     "reference": "6",
+     "output": "5",
+     "tags": [
+      "science"
+     ]
+    },
+    {
+     "sample_id": "qa-025",
+     "pass_rate": 0.2,
+     "input": "What is 17 multiplied by 23?",
+     "reference": "391",
+     "output": "394",
+     "tags": [
+      "math"
+     ]
+    },
+    {
+     "sample_id": "qa-026",
+     "pass_rate": 0.2,
+     "input": "How many prime numbers are there between 1 and 20?",
+     "reference": "8",
+     "output": "7",
+     "tags": [
+      "math"
+     ]
+    },
+    {
+     "sample_id": "qa-035",
+     "pass_rate": 0.2,
+     "input": "In what year did the Soviet Union launch Sputnik 1, the first artificial satellite?",
+     "reference": "1957",
+     "output": "1956",
+     "tags": [
+      "history"
+     ]
+    },
+    {
+     "sample_id": "qa-020",
+     "pass_rate": 0.4,
+     "input": "What is 7 multiplied by 8?",
+     "reference": "56",
+     "output": "55",
+     "tags": [
+      "math"
+     ]
+    },
+    {
+     "sample_id": "qa-004",
+     "pass_rate": 0.6,
+     "input": "What is the capital of Canada?",
+     "reference": "Ottawa",
+     "output": "Ottawa",
+     "tags": [
+      "geography"
+     ]
+    },
+    {
+     "sample_id": "qa-008",
+     "pass_rate": 0.6,
+     "input": "What is the capital of Mongolia?",
+     "reference": "Ulaanbaatar",
+     "output": "several",
+     "tags": [
+      "geography"
+     ]
+    },
+    {
+     "sample_id": "qa-015",
+     "pass_rate": 0.6,
+     "input": "Which planet is known as the Red Planet?",
+     "reference": "Mars",
+     "output": "several",
+     "tags": [
+      "science"
+     ]
+    }
+   ]
+  },
+  {
+   "model_id": "mock-strong",
+   "prompt_id": "v2",
+   "n_samples": 40,
+   "n_trials": 200,
+   "metrics": {
+    "answer_entropy": {
+     "metric": "answer_entropy",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.8484747882692645,
+      "low": 0.6775722084996688,
+      "high": 1.0250671478119058,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "cost_usd": {
+     "metric": "cost_usd",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.000027764999999999996,
+      "low": 0.000026974812500000002,
+      "high": 0.0000286775625,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "exact_agreement": {
+     "metric": "exact_agreement",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.72,
+      "low": 0.6599999999999999,
+      "high": 0.78,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "exact_match": {
+     "metric": "exact_match",
+     "higher_is_better": true,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.8550000000000001,
+      "low": 0.77,
+      "high": 0.925,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "f1": {
+     "metric": "f1",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.8550000000000001,
+      "low": 0.77,
+      "high": 0.925,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "failed": {
+     "metric": "failed",
+     "higher_is_better": false,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.0,
+      "low": 0.0,
+      "high": 0.0,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "flip_rate": {
+     "metric": "flip_rate",
+     "higher_is_better": false,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.35,
+      "low": 0.2,
+      "high": 0.5,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "latency_ms": {
+     "metric": "latency_ms",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 675.46708,
+      "low": 628.2693207499999,
+      "high": 722.376891375,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "llm_judge_correctness": {
+     "metric": "llm_judge_correctness",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.74,
+      "low": 0.6499687500000001,
+      "high": 0.8187812499999999,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "malformed": {
+     "metric": "malformed",
+     "higher_is_better": false,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.0,
+      "low": 0.0,
+      "high": 0.0,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "pass": {
+     "metric": "pass",
+     "higher_is_better": true,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.8550000000000001,
+      "low": 0.77,
+      "high": 0.925,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "pass_at_k": {
+     "metric": "pass_at_k",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.9675,
+      "low": 0.9149375000000001,
+      "high": 0.9974999999999999,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "pass_hat_k": {
+     "metric": "pass_hat_k",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.7050000000000001,
+      "low": 0.5775,
+      "high": 0.8175000000000001,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "queue_wait_ms": {
+     "metric": "queue_wait_ms",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 64.25734,
+      "low": 59.05734312500001,
+      "high": 69.89205749999999,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "refused": {
+     "metric": "refused",
+     "higher_is_better": false,
+     "kind": "binary",
+     "ci": {
+      "estimate": 0.0,
+      "low": 0.0,
+      "high": 0.0,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "retries": {
+     "metric": "retries",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.030000000000000006,
+      "low": 0.005,
+      "high": 0.06499999999999999,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "rouge_l": {
+     "metric": "rouge_l",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.8550000000000001,
+      "low": 0.77,
+      "high": 0.925,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "semantic_consistency": {
+     "metric": "semantic_consistency",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.6072532846853125,
+      "low": 0.5218041797469621,
+      "high": 0.6858276118581575,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 40
+     }
+    },
+    "semantic_similarity": {
+     "metric": "semantic_similarity",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 0.749656043492649,
+      "low": 0.6621883772359715,
+      "high": 0.8281536320640385,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "tokens_per_second": {
+     "metric": "tokens_per_second",
+     "higher_is_better": true,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 4.001442933424007,
+      "low": 3.2664806883518995,
+      "high": 4.912528754368117,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    },
+    "ttft_ms": {
+     "metric": "ttft_ms",
+     "higher_is_better": false,
+     "kind": "continuous",
+     "ci": {
+      "estimate": 164.54473,
+      "low": 152.19501925,
+      "high": 177.481385625,
+      "level": 0.95,
+      "method": "cluster-bootstrap",
+      "n_samples": 40,
+      "n_trials": 200
+     }
+    }
+   },
+   "latency": {
+    "n": 200,
+    "mean": 675.4670800000001,
+    "p50": 628.108,
+    "p90": 1050.24,
+    "p95": 1207.9142,
+    "p99": 1350.6014799999998,
+    "ttft_p50": 154.23250000000002,
+    "ttft_p95": 292.4937499999999,
+    "tokens_per_second": 4.001442933424008,
+    "histogram": [
+     3,
+     6,
+     17,
+     15,
+     27,
+     34,
+     28,
+     18,
+     14,
+     8,
+     6,
+     2,
+     6,
+     4,
+     4,
+     2,
+     4,
+     1,
+     0,
+     1
+    ],
+    "bin_edges": [
+     227.214,
+     294.47540000000004,
+     361.7368,
+     428.9982,
+     496.25960000000003,
+     563.521,
+     630.7824,
+     698.0438000000001,
+     765.3052,
+     832.5666000000001,
+     899.828,
+     967.0894000000001,
+     1034.3508000000002,
+     1101.6122,
+     1168.8736000000001,
+     1236.1350000000002,
+     1303.3964,
+     1370.6578000000002,
+     1437.9192,
+     1505.1806000000001,
+     1572.442
+    ]
+   },
+   "cost": {
+    "total_usd": 0.005553,
+    "per_1k_requests_usd": 0.027764999999999998,
+    "per_correct_usd": 0.000032473684210526316,
+    "quality_per_dollar": 30794.165316045382,
+    "cached_fraction": 0.0
+   },
+   "failures": {},
+   "failure_rate": 0.0,
+   "malformed_rate": 0.0,
+   "refusal_rate": 0.0,
+   "retry_distribution": {
+    "1": 194,
+    "2": 6
+   },
+   "tags": [
+    [
+     "geography",
+     9,
+     0.8888888888888888
+    ],
+    [
+     "history",
+     8,
+     0.9
+    ],
+    [
+     "language",
+     2,
+     0.7
+    ],
+    [
+     "math",
+     8,
+     0.75
+    ],
+    [
+     "science",
+     10,
+     0.86
+    ],
+    [
+     "units",
+     3,
+     1.0
+    ]
+   ],
+   "worst": [
+    {
+     "sample_id": "qa-025",
+     "pass_rate": 0.0,
+     "input": "What is 17 multiplied by 23?",
+     "reference": "391",
+     "output": "389",
+     "tags": [
+      "math"
+     ]
+    },
+    {
+     "sample_id": "qa-002",
+     "pass_rate": 0.4,
+     "input": "What is the capital of Japan?",
+     "reference": "Tokyo",
+     "output": "I am not sure.",
+     "tags": [
+      "geography"
+     ]
+    },
+    {
+     "sample_id": "qa-026",
+     "pass_rate": 0.4,
+     "input": "How many prime numbers are there between 1 and 20?",
+     "reference": "8",
+     "output": "11",
+     "tags": [
+      "math"
+     ]
+    },
+    {
+     "sample_id": "qa-035",
+     "pass_rate": 0.4,
+     "input": "In what year did the Soviet Union launch Sputnik 1, the first artificial satellite?",
+     "reference": "1957",
+     "output": "1956",
+     "tags": [
+      "history"
+     ]
+    },
+    {
+     "sample_id": "qa-015",
+     "pass_rate": 0.6,
+     "input": "Which planet is known as the Red Planet?",
+     "reference": "Mars",
+     "output": "perhaps",
+     "tags": [
+      "science"
+     ]
+    },
+    {
+     "sample_id": "qa-017",
+     "pass_rate": 0.6,
+     "input": "What is the chemical symbol for sodium?",
+     "reference": "Na",
+     "output": "different",
+     "tags": [
+      "science"
+     ]
+    },
+    {
+     "sample_id": "qa-020",
+     "pass_rate": 0.6,
+     "input": "What is 7 multiplied by 8?",
+     "reference": "56",
+     "output": "56",
+     "tags": [
+      "math"
+     ]
+    },
+    {
+     "sample_id": "qa-040",
+     "pass_rate": 0.6,
+     "input": "What is the simple past tense of the English verb 'go'?",
+     "reference": "went",
+     "output": "another",
+     "tags": [
+      "language"
+     ]
+    }
+   ]
+  }
+ ],
+ "pareto": [
+  "mock-fast/v1",
+  "mock-fast/v2",
+  "mock-strong/v1",
+  "mock-strong/v2"
+ ],
+ "pareto_objectives": [
+  "pass",
+  "cost_per_1k",
+  "latency_p50"
+ ],
+ "judge": {
+  "model": "mock/mock-judge",
+  "calls": 800,
+  "malformed": 0,
+  "cost_usd": 0.05915840000000001,
+  "candidate_overlap": false,
+  "length_bias_spearman": -0.07227749524511563
+ },
+ "calibration": {
+  "judge": "mock/mock-judge",
+  "rubric": "correctness",
+  "n": 40,
+  "n_scored": 40,
+  "accuracy": 0.65,
+  "cohen_kappa": 0.33333333333333337,
+  "weighted_kappa_quadratic": 0.584070796460177,
+  "spearman_scores": 0.7339468081761932,
+  "confusion": {
+   "pass": {
+    "pass": 9,
+    "fail": 13
+   },
+   "fail": {
+    "pass": 1,
+    "fail": 17
+   }
+  },
+  "mean_self_consistency": null
+ },
+ "skipped_models": {}
+}

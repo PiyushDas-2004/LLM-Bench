@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLMBench report: quickstart</title>
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+  --grid: #e1e0d9; --baseline: #c3c2b7; --series-1: #2a78d6; --good: #006300; --critical: #d03b3b;
+  --warning-bg: #fff4d6; --border: #e1e0d9;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --baseline: #383835; --series-1: #3987e5; --good: #0ca30c; --critical: #e66767;
+    --warning-bg: #3a2f12; --border: #2c2c2a;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781;
+  --grid: #2c2c2a; --baseline: #383835; --series-1: #3987e5; --good: #0ca30c; --critical: #e66767;
+  --warning-bg: #3a2f12; --border: #2c2c2a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 1080px; margin: 0 auto; padding: 24px 16px 64px; }
+h1 { font-size: 26px; margin: 0 0 4px; }
+h2 { font-size: 19px; margin: 36px 0 10px; }
+h3 { font-size: 15px; margin: 18px 0 6px; color: var(--ink-2); }
+p.sub, .muted { color: var(--ink-2); }
+section { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin-top: 14px; overflow-x: auto; }
+.banner { background: var(--warning-bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin: 14px 0; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-top: 14px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+.card .k { color: var(--ink-2); font-size: 13px; }
+.card .v { font-size: 22px; font-variant-numeric: tabular-nums; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; font-size: 14px; }
+th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+th { color: var(--ink-2); font-weight: 600; }
+tbody td:first-child { white-space: nowrap; }
+td.num, th.num { text-align: right; white-space: nowrap; }
+.ci { color: var(--muted); font-size: 12px; }
+.tag { display: inline-block; padding: 0 6px; border-radius: 4px; border: 1px solid var(--border); font-size: 12px; color: var(--ink-2); margin-right: 4px; }
+.front { font-weight: 600; }
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+pre { background: var(--page); padding: 12px; border-radius: 8px; overflow-x: auto; font-size: 12px; max-height: 420px; }
+code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.out { max-width: 340px; white-space: pre-wrap; word-break: break-word; font-size: 13px; }
+svg.chart { width: 100%; height: auto; max-width: 720px; display: block; }
+svg.chart.small { max-width: 320px; }
+svg .grid { stroke: var(--grid); stroke-width: 1; }
+svg .baseline { stroke: var(--baseline); stroke-width: 1; }
+svg .axis { fill: var(--muted); font-size: 11px; }
+svg .axis-title { fill: var(--ink-2); font-size: 12px; }
+svg .label { fill: var(--ink-2); font-size: 12px; }
+svg .value { fill: var(--ink); font-size: 12px; }
+svg .bar { fill: var(--series-1); }
+svg .whisker { stroke: var(--ink); stroke-width: 1.5; }
+svg .marker { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 3 3; }
+svg .frontier { fill: none; stroke: var(--series-1); stroke-width: 2; stroke-dasharray: 5 4; }
+svg .dot.front { fill: var(--series-1); stroke: var(--surface); stroke-width: 2; }
+svg .dot.dominated { fill: var(--muted); stroke: var(--surface); stroke-width: 2; }
+svg .hit { fill: transparent; }
+svg .mark:hover .bar, svg .mark:hover .dot { opacity: .8; }
+.ok { color: var(--good); } .bad { color: var(--critical); }
+footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>quickstart</h1>
+  <p class="sub">Run <code>quickstart-20261121T104455-19da8e05</code> &middot; 2026-11-21 10:44 UTC &middot; task <b>qa</b> &middot; dataset <b>qa_basic</b> <span class="muted">(31c0e369dbf5)</span> &middot; status <b>completed</b></p>
+</header>
+<div class="banner"><b>Mock provider.</b> One or more configurations use LLMBench's deterministic mock provider; their numbers demonstrate the tooling and are illustrative only, not measurements of any real model. Mock costs use fictional prices; no money was spent.</div>
+<div class="cards">
+  <div class="card"><div class="k">Configurations</div><div class="v">4</div></div>
+  <div class="card"><div class="k">Trials</div><div class="v">800 / 800</div></div>
+  <div class="card"><div class="k">Trials per sample</div><div class="v">5</div></div>
+  <div class="card"><div class="k">Total cost</div><div class="v">$0.0118</div></div>
+  <div class="card"><div class="k">Best pass</div><div class="v">mock-strong/v2</div></div>
+</div>
+
+<h2>Leaderboard</h2>
+<section>
+  <p class="muted">Point estimates with 95% cluster-bootstrap confidence intervals (samples resampled, then trials within samples). n = samples &times; trials.</p>
+  <svg class="chart" viewBox="0 0 700 178" role="img" aria-label="pass by configuration"><line x1="190.0" y1="22" x2="190.0" y2="152" class="grid"/><text x="190.0" y="168" class="axis" text-anchor="middle">0</text><line x1="295.0" y1="22" x2="295.0" y2="152" class="grid"/><text x="295.0" y="168" class="axis" text-anchor="middle">0.25</text><line x1="400.0" y1="22" x2="400.0" y2="152" class="grid"/><text x="400.0" y="168" class="axis" text-anchor="middle">0.5</text><line x1="505.0" y1="22" x2="505.0" y2="152" class="grid"/><text x="505.0" y="168" class="axis" text-anchor="middle">0.75</text><line x1="610.0" y1="22" x2="610.0" y2="152" class="grid"/><text x="610.0" y="168" class="axis" text-anchor="middle">1.00</text><text x="180" y="43" class="label" text-anchor="end">mock-strong/v2</text><g class="mark"><title>mock-strong/v2: 0.855 (95% CI 0.77-0.925)</title><rect x="190" y="32" width="359.1" height="16" rx="4" class="bar"/><line x1="513.4" y1="40" x2="578.5" y2="40" class="whisker"/><line x1="513.4" y1="35" x2="513.4" y2="45" class="whisker"/><line x1="578.5" y1="35" x2="578.5" y2="45" class="whisker"/></g><text x="618" y="43" class="value">0.855</text><text x="180" y="73" class="label" text-anchor="end">mock-strong/v1</text><g class="mark"><title>mock-strong/v1: 0.825 (95% CI 0.735-0.905)</title><rect x="190" y="62" width="346.5" height="16" rx="4" class="bar"/><line x1="498.7" y1="70" x2="570.1" y2="70" class="whisker"/><line x1="498.7" y1="65" x2="498.7" y2="75" class="whisker"/><line x1="570.1" y1="65" x2="570.1" y2="75" class="whisker"/></g><text x="618" y="73" class="value">0.825</text><text x="180" y="103" class="label" text-anchor="end">mock-fast/v2</text><g class="mark"><title>mock-fast/v2: 0.765 (95% CI 0.67-0.855)</title><rect x="190" y="92" width="321.3" height="16" rx="4" class="bar"/><line x1="471.4" y1="100" x2="549.2" y2="100" class="whisker"/><line x1="471.4" y1="95" x2="471.4" y2="105" class="whisker"/><line x1="549.2" y1="95" x2="549.2" y2="105" class="whisker"/></g><text x="618" y="103" class="value">0.765</text><text x="180" y="133" class="label" text-anchor="end">mock-fast/v1</text><g class="mark"><title>mock-fast/v1: 0.705 (95% CI 0.59-0.805)</title><rect x="190" y="122" width="296.1" height="16" rx="4" class="bar"/><line x1="437.8" y1="130" x2="528.1" y2="130" class="whisker"/><line x1="437.8" y1="125" x2="437.8" y2="135" class="whisker"/><line x1="528.1" y1="125" x2="528.1" y2="135" class="whisker"/></g><text x="618" y="133" class="value">0.705</text></svg>
+  <table>
+    <thead><tr><th>Configuration</th><th class="num">n</th><th class="num">pass</th><th class="num">exact_match</th><th class="num">f1</th><th class="num">llm_judge_correctness</th><th class="num">p50 latency</th><th class="num">cost / 1k req</th></tr></thead>
+    <tbody>
+      <tr><td class="front">mock-fast/v1 &#9733;</td>
+      <td class="num">40&times;5</td>
+<td class="num">0.705 [0.590, 0.805]</td><td class="num">0.700 [0.585, 0.795]</td><td class="num">0.706 [0.590, 0.803]</td><td class="num">0.634 [0.524, 0.739]</td>      <td class="num">187 ms</td><td class="num">$0.0043</td></tr>
+      <tr><td class="front">mock-fast/v2 &#9733;</td>
+      <td class="num">40&times;5</td>
+<td class="num">0.765 [0.670, 0.855]</td><td class="num">0.765 [0.670, 0.855]</td><td class="num">0.768 [0.672, 0.860]</td><td class="num">0.666 [0.569, 0.765]</td>      <td class="num">179 ms</td><td class="num">$0.0055</td></tr>
+      <tr><td class="front">mock-strong/v1 &#9733;</td>
+      <td class="num">40&times;5</td>
+<td class="num">0.825 [0.735, 0.905]</td><td class="num">0.825 [0.735, 0.905]</td><td class="num">0.825 [0.735, 0.905]</td><td class="num">0.713 [0.617, 0.805]</td>      <td class="num">694 ms</td><td class="num">$0.0215</td></tr>
+      <tr><td class="front">mock-strong/v2 &#9733;</td>
+      <td class="num">40&times;5</td>
+<td class="num">0.855 [0.770, 0.925]</td><td class="num">0.855 [0.770, 0.925]</td><td class="num">0.855 [0.770, 0.925]</td><td class="num">0.740 [0.650, 0.819]</td>      <td class="num">628 ms</td><td class="num">$0.0278</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<h2>Quality vs cost vs latency (Pareto frontier)</h2>
+<section>
+  <p class="muted">&#9733; in the tables marks configurations that are Pareto-optimal on all objectives together (pass, cost_per_1k, latency_p50): no other configuration is at least as good on every objective and strictly better on one. Each chart highlights (blue, dashed line) the frontier of its own two axes; grey points are dominated in that view.</p>
+  <svg class="chart" viewBox="0 0 640 360" role="img" aria-label="Pareto: quality vs cost"><line x1="64" y1="285.8" x2="616" y2="285.8" class="grid"/><text x="56" y="289.8" class="axis" text-anchor="end">0.7</text><line x1="64" y1="210.9" x2="616" y2="210.9" class="grid"/><text x="56" y="214.9" class="axis" text-anchor="end">0.75</text><line x1="64" y1="136.1" x2="616" y2="136.1" class="grid"/><text x="56" y="140.1" class="axis" text-anchor="end">0.8</text><line x1="64" y1="61.2" x2="616" y2="61.2" class="grid"/><text x="56" y="65.2" class="axis" text-anchor="end">0.85</text><text x="225.3" y="330" class="axis" text-anchor="middle">0.01</text><text x="415.2" y="330" class="axis" text-anchor="middle">0.02</text><text x="605.0" y="330" class="axis" text-anchor="middle">0.03</text><line x1="64" y1="312" x2="616" y2="312" class="baseline"/><text x="340.0" y="352" class="axis-title" text-anchor="middle">cost per 1k requests (USD)</text><text transform="translate(16 166.0) rotate(-90)" class="axis-title" text-anchor="middle">pass</text><path d="M117.4,278.3 L140.7,188.5 L443.4,98.6 L562.6,53.7" class="frontier"/><g class="mark"><title>mock-fast/v1: pass 0.705, cost per 1k requests (USD) 0.00432 (Pareto-optimal)</title><circle cx="117.4" cy="278.3" r="6" class="dot front"/><circle cx="117.4" cy="278.3" r="14" class="hit"/></g><text x="127.4" y="269.3" class="label" text-anchor="start">mock-fast/v1</text><g class="mark"><title>mock-fast/v2: pass 0.765, cost per 1k requests (USD) 0.00554 (Pareto-optimal)</title><circle cx="140.7" cy="188.5" r="6" class="dot front"/><circle cx="140.7" cy="188.5" r="14" class="hit"/></g><text x="150.7" y="179.5" class="label" text-anchor="start">mock-fast/v2</text><g class="mark"><title>mock-strong/v1: pass 0.825, cost per 1k requests (USD) 0.0215 (Pareto-optimal)</title><circle cx="443.4" cy="98.6" r="6" class="dot front"/><circle cx="443.4" cy="98.6" r="14" class="hit"/></g><text x="453.4" y="89.6" class="label" text-anchor="start">mock-strong/v1</text><g class="mark"><title>mock-strong/v2: pass 0.855, cost per 1k requests (USD) 0.0278 (Pareto-optimal)</title><circle cx="562.6" cy="53.7" r="6" class="dot front"/><circle cx="562.6" cy="53.7" r="14" class="hit"/></g><text x="552.6" y="44.7" class="label" text-anchor="end">mock-strong/v2</text></svg>
+<h3>Quality vs p50 latency</h3><svg class="chart" viewBox="0 0 640 360" role="img" aria-label="Quality vs latency"><line x1="64" y1="285.8" x2="616" y2="285.8" class="grid"/><text x="56" y="289.8" class="axis" text-anchor="end">0.7</text><line x1="64" y1="210.9" x2="616" y2="210.9" class="grid"/><text x="56" y="214.9" class="axis" text-anchor="end">0.75</text><line x1="64" y1="136.1" x2="616" y2="136.1" class="grid"/><text x="56" y="140.1" class="axis" text-anchor="end">0.8</text><line x1="64" y1="61.2" x2="616" y2="61.2" class="grid"/><text x="56" y="65.2" class="axis" text-anchor="end">0.85</text><text x="135.7" y="330" class="axis" text-anchor="middle">200</text><text x="308.5" y="330" class="axis" text-anchor="middle">400</text><text x="481.3" y="330" class="axis" text-anchor="middle">600</text><line x1="64" y1="312" x2="616" y2="312" class="baseline"/><text x="340.0" y="352" class="axis-title" text-anchor="middle">p50 latency (ms)</text><text transform="translate(16 166.0) rotate(-90)" class="axis-title" text-anchor="middle">pass</text><path d="M117.4,188.5 L505.6,53.7" class="frontier"/><g class="mark"><title>mock-fast/v1: pass 0.705, p50 latency (ms) 187</title><circle cx="124.8" cy="278.3" r="6" class="dot dominated"/><circle cx="124.8" cy="278.3" r="14" class="hit"/></g><text x="134.8" y="269.3" class="label" text-anchor="start">mock-fast/v1</text><g class="mark"><title>mock-strong/v1: pass 0.825, p50 latency (ms) 694</title><circle cx="562.6" cy="98.6" r="6" class="dot dominated"/><circle cx="562.6" cy="98.6" r="14" class="hit"/></g><text x="552.6" y="89.6" class="label" text-anchor="end">mock-strong/v1</text><g class="mark"><title>mock-fast/v2: pass 0.765, p50 latency (ms) 179 (Pareto-optimal)</title><circle cx="117.4" cy="188.5" r="6" class="dot front"/><circle cx="117.4" cy="188.5" r="14" class="hit"/></g><text x="127.4" y="179.5" class="label" text-anchor="start">mock-fast/v2</text><g class="mark"><title>mock-strong/v2: pass 0.855, p50 latency (ms) 628 (Pareto-optimal)</title><circle cx="505.6" cy="53.7" r="6" class="dot front"/><circle cx="505.6" cy="53.7" r="14" class="hit"/></g><text x="495.6" y="44.7" class="label" text-anchor="end">mock-strong/v2</text></svg></section>
+
+<h2>Consistency across trials</h2>
+<section>
+  <p class="muted">How stable are answers when the same input is sent 5 times? Agreement = share of trials matching the modal answer; entropy in bits (0 = deterministic); pass@k / pass^k use the unbiased estimators; flip rate = share of items that both pass and fail.</p>
+  <table>
+    <thead><tr><th>Configuration</th><th class="num">exact_agreement</th><th class="num">semantic_consistency</th><th class="num">answer_entropy</th><th class="num">pass_at_k</th><th class="num">pass_hat_k</th><th class="num">flip_rate</th></tr></thead>
+    <tbody><tr><td>mock-fast/v1</td><td class="num">0.665 [0.600, 0.735]</td><td class="num">0.550 [0.450, 0.645]</td><td class="num">1.024 [0.826, 1.226]</td><td class="num">0.895 [0.820, 0.960]</td><td class="num">0.483 [0.343, 0.613]</td><td class="num">0.575 [0.425, 0.725]</td></tr><tr><td>mock-fast/v2</td><td class="num">0.665 [0.590, 0.745]</td><td class="num">0.540 [0.441, 0.650]</td><td class="num">1.039 [0.793, 1.253]</td><td class="num">0.963 [0.930, 0.988]</td><td class="num">0.543 [0.417, 0.683]</td><td class="num">0.550 [0.400, 0.700]</td></tr><tr><td>mock-strong/v1</td><td class="num">0.710 [0.640, 0.770]</td><td class="num">0.613 [0.522, 0.698]</td><td class="num">0.869 [0.691, 1.065]</td><td class="num">0.957 [0.917, 0.990]</td><td class="num">0.657 [0.530, 0.775]</td><td class="num">0.450 [0.300, 0.600]</td></tr><tr><td>mock-strong/v2</td><td class="num">0.720 [0.660, 0.780]</td><td class="num">0.607 [0.522, 0.686]</td><td class="num">0.848 [0.678, 1.025]</td><td class="num">0.968 [0.915, 0.997]</td><td class="num">0.705 [0.578, 0.818]</td><td class="num">0.350 [0.200, 0.500]</td></tr></tbody>
+  </table>
+</section>
+
+<h2>Latency</h2>
+<section>
+  <div class="grid-2">
+<div><h3>mock-fast/v1</h3><svg class="chart small" viewBox="0 0 300 120" role="img" aria-label="Latency distribution mock-fast/v1"><g class="mark"><title>56.60-76.70 ms: 3 calls</title><rect x="9.0" y="90.0" width="12.2" height="8.0" rx="2" class="bar"/></g><g class="mark"><title>76.70-96.80 ms: 4 calls</title><rect x="23.2" y="87.3" width="12.2" height="10.7" rx="2" class="bar"/></g><g class="mark"><title>96.80-117 ms: 10 calls</title><rect x="37.4" y="71.3" width="12.2" height="26.7" rx="2" class="bar"/></g><g class="mark"><title>117-137 ms: 18 calls</title><rect x="51.6" y="50.0" width="12.2" height="48.0" rx="2" class="bar"/></g><g class="mark"><title>137-157 ms: 28 calls</title><rect x="65.8" y="23.3" width="12.2" height="74.7" rx="2" class="bar"/></g><g class="mark"><title>157-177 ms: 27 calls</title><rect x="80.0" y="26.0" width="12.2" height="72.0" rx="2" class="bar"/></g><g class="mark"><title>177-197 ms: 30 calls</title><rect x="94.2" y="18.0" width="12.2" height="80.0" rx="2" class="bar"/></g><g class="mark"><title>197-217 ms: 17 calls</title><rect x="108.4" y="52.7" width="12.2" height="45.3" rx="2" class="bar"/></g><g class="mark"><title>217-238 ms: 16 calls</title><rect x="122.6" y="55.3" width="12.2" height="42.7" rx="2" class="bar"/></g><g class="mark"><title>238-258 ms: 10 calls</title><rect x="136.8" y="71.3" width="12.2" height="26.7" rx="2" class="bar"/></g><g class="mark"><title>258-278 ms: 5 calls</title><rect x="151.0" y="84.7" width="12.2" height="13.3" rx="2" class="bar"/></g><g class="mark"><title>278-298 ms: 5 calls</title><rect x="165.2" y="84.7" width="12.2" height="13.3" rx="2" class="bar"/></g><g class="mark"><title>298-318 ms: 8 calls</title><rect x="179.4" y="76.7" width="12.2" height="21.3" rx="2" class="bar"/></g><g class="mark"><title>318-338 ms: 5 calls</title><rect x="193.6" y="84.7" width="12.2" height="13.3" rx="2" class="bar"/></g><g class="mark"><title>338-358 ms: 7 calls</title><rect x="207.8" y="79.3" width="12.2" height="18.7" rx="2" class="bar"/></g><g class="mark"><title>358-378 ms: 1 calls</title><rect x="222.0" y="95.3" width="12.2" height="2.7" rx="2" class="bar"/></g><g class="mark"><title>378-398 ms: 3 calls</title><rect x="236.2" y="90.0" width="12.2" height="8.0" rx="2" class="bar"/></g><g class="mark"><title>398-418 ms: 1 calls</title><rect x="250.4" y="95.3" width="12.2" height="2.7" rx="2" class="bar"/></g><g class="mark"><title>418-439 ms: 1 calls</title><rect x="264.6" y="95.3" width="12.2" height="2.7" rx="2" class="bar"/></g><g class="mark"><title>439-459 ms: 1 calls</title><rect x="278.8" y="95.3" width="12.2" height="2.7" rx="2" class="bar"/></g><line x1="8" y1="98" x2="292" y2="98" class="baseline"/><line x1="100.4" y1="14" x2="100.4" y2="98" class="marker"/><text x="100.4" y="12" class="axis" text-anchor="middle">p50</text><line x1="209.0" y1="14" x2="209.0" y2="98" class="marker"/><text x="209.0" y="12" class="axis" text-anchor="middle">p95</text><text x="8" y="114" class="axis">56.60 ms</text><text x="292" y="114" class="axis" text-anchor="end">459 ms</text></svg></div><div><h3>mock-fast/v2</h3><svg class="chart small" viewBox="0 0 300 120" role="img" aria-label="Latency distribution mock-fast/v2"><g class="mark"><title>83.40-101 ms: 7 calls</title><rect x="9.0" y="79.9" width="12.2" height="18.1" rx="2" class="bar"/></g><g class="mark"><title>101-120 ms: 4 calls</title><rect x="23.2" y="87.7" width="12.2" height="10.3" rx="2" class="bar"/></g><g class="mark"><title>120-138 ms: 28 calls</title><rect x="37.4" y="25.7" width="12.2" height="72.3" rx="2" class="bar"/></g><g class="mark"><title>138-156 ms: 31 calls</title><rect x="51.6" y="18.0" width="12.2" height="80.0" rx="2" class="bar"/></g><g class="mark"><title>156-174 ms: 23 calls</title><rect x="65.8" y="38.6" width="12.2" height="59.4" rx="2" class="bar"/></g><g class="mark"><title>174-192 ms: 31 calls</title><rect x="80.0" y="18.0" width="12.2" height="80.0" rx="2" class="bar"/></g><g class="mark"><title>192-210 ms: 13 calls</title><rect x="94.2" y="64.5" width="12.2" height="33.5" rx="2" class="bar"/></g><g class="mark"><title>210-228 ms: 19 calls</title><rect x="108.4" y="49.0" width="12.2" height="49.0" rx="2" class="bar"/></g><g class="mark"><title>228-246 ms: 16 calls</title><rect x="122.6" y="56.7" width="12.2" height="41.3" rx="2" class="bar"/></g><g class="mark"><title>246-264 ms: 11 calls</title><rect x="136.8" y="69.6" width="12.2" height="28.4" rx="2" class="bar"/></g><g class="mark"><title>264-282 ms: 6 calls</title><rect x="151.0" y="82.5" width="12.2" height="15.5" rx="2" class="bar"/></g><g class="mark"><title>282-300 ms: 2 calls</title><rect x="165.2" y="92.8" width="12.2" height="5.2" rx="2" class="bar"/></g><g class="mark"><title>300-319 ms: 2 calls</title><rect x="179.4" y="92.8" width="12.2" height="5.2" rx="2" class="bar"/></g><g class="mark"><title>319-337 ms: 3 calls</title><rect x="193.6" y="90.3" width="12.2" height="7.7" rx="2" class="bar"/></g><g class="mark"><title>337-355 ms: 1 calls</title><rect x="207.8" y="95.4" width="12.2" height="2.6" rx="2" class="bar"/></g><g class="mark"><title>355-373 ms: 2 calls</title><rect x="222.0" y="92.8" width="12.2" height="5.2" rx="2" class="bar"/></g><g class="mark"><title>373-391 ms: 0 calls</title><rect x="236.2" y="98.0" width="12.2" height="0.5" rx="2" class="bar"/></g><g class="mark"><title>391-409 ms: 0 calls</title><rect x="250.4" y="98.0" width="12.2" height="0.5" rx="2" class="bar"/></g><g class="mark"><title>409-427 ms: 0 calls</title><rect x="264.6" y="98.0" width="12.2" height="0.5" rx="2" class="bar"/></g><g class="mark"><title>427-445 ms: 1 calls</title><rect x="278.8" y="95.4" width="12.2" height="2.6" rx="2" class="bar"/></g><line x1="8" y1="98" x2="292" y2="98" class="baseline"/><line x1="82.9" y1="14" x2="82.9" y2="98" class="marker"/><text x="82.9" y="12" class="axis" text-anchor="middle">p50</text><line x1="177.4" y1="14" x2="177.4" y2="98" class="marker"/><text x="177.4" y="12" class="axis" text-anchor="middle">p95</text><text x="8" y="114" class="axis">83.40 ms</text><text x="292" y="114" class="axis" text-anchor="end">445 ms</text></svg></div><div><h3>mock-strong/v1</h3><svg class="chart small" viewBox="0 0 300 120" role="img" aria-label="Latency distribution mock-strong/v1"><g class="mark"><title>224-312 ms: 4 calls</title><rect x="9.0" y="87.7" width="12.2" height="10.3" rx="2" class="bar"/></g><g class="mark"><title>312-400 ms: 15 calls</title><rect x="23.2" y="59.3" width="12.2" height="38.7" rx="2" class="bar"/></g><g class="mark"><title>400-488 ms: 20 calls</title><rect x="37.4" y="46.4" width="12.2" height="51.6" rx="2" class="bar"/></g><g class="mark"><title>488-576 ms: 27 calls</title><rect x="51.6" y="28.3" width="12.2" height="69.7" rx="2" class="bar"/></g><g class="mark"><title>576-664 ms: 24 calls</title><rect x="65.8" y="36.1" width="12.2" height="61.9" rx="2" class="bar"/></g><g class="mark"><title>664-751 ms: 31 calls</title><rect x="80.0" y="18.0" width="12.2" height="80.0" rx="2" class="bar"/></g><g class="mark"><title>751-839 ms: 23 calls</title><rect x="94.2" y="38.6" width="12.2" height="59.4" rx="2" class="bar"/></g><g class="mark"><title>839-927 ms: 22 calls</title><rect x="108.4" y="41.2" width="12.2" height="56.8" rx="2" class="bar"/></g><g class="mark"><title>927-1,015 ms: 10 calls</title><rect x="122.6" y="72.2" width="12.2" height="25.8" rx="2" class="bar"/></g><g class="mark"><title>1,015-1,103 ms: 11 calls</title><rect x="136.8" y="69.6" width="12.2" height="28.4" rx="2" class="bar"/></g><g class="mark"><title>1,103-1,191 ms: 6 calls</title><rect x="151.0" y="82.5" width="12.2" height="15.5" rx="2" class="bar"/></g><g class="mark"><title>1,191-1,279 ms: 3 calls</title><rect x="165.2" y="90.3" width="12.2" height="7.7" rx="2" class="bar"/></g><g class="mark"><title>1,279-1,367 ms: 2 calls</title><rect x="179.4" y="92.8" width="12.2" height="5.2" rx="2" class="bar"/></g><g class="mark"><title>1,367-1,454 ms: 0 calls</title><rect x="193.6" y="98.0" width="12.2" height="0.5" rx="2" class="bar"/></g><g class="mark"><title>1,454-1,542 ms: 1 calls</title><rect x="207.8" y="95.4" width="12.2" height="2.6" rx="2" class="bar"/></g><g class="mark"><title>1,542-1,630 ms: 0 calls</title><rect x="222.0" y="98.0" width="12.2" height="0.5" rx="2" class="bar"/></g><g class="mark"><title>1,630-1,718 ms: 0 calls</title><rect x="236.2" y="98.0" width="12.2" height="0.5" rx="2" class="bar"/></g><g class="mark"><title>1,718-1,806 ms: 0 calls</title><rect x="250.4" y="98.0" width="12.2" height="0.5" rx="2" class="bar"/></g><g class="mark"><title>1,806-1,894 ms: 0 calls</title><rect x="264.6" y="98.0" width="12.2" height="0.5" rx="2" class="bar"/></g><g class="mark"><title>1,894-1,982 ms: 1 calls</title><rect x="278.8" y="95.4" width="12.2" height="2.6" rx="2" class="bar"/></g><line x1="8" y1="98" x2="292" y2="98" class="baseline"/><line x1="83.9" y1="14" x2="83.9" y2="98" class="marker"/><text x="83.9" y="12" class="axis" text-anchor="middle">p50</text><line x1="154.5" y1="14" x2="154.5" y2="98" class="marker"/><text x="154.5" y="12" class="axis" text-anchor="middle">p95</text><text x="8" y="114" class="axis">224 ms</text><text x="292" y="114" class="axis" text-anchor="end">1,982 ms</text></svg></div><div><h3>mock-strong/v2</h3><svg class="chart small" viewBox="0 0 300 120" role="img" aria-label="Latency distribution mock-strong/v2"><g class="mark"><title>227-294 ms: 3 calls</title><rect x="9.0" y="90.9" width="12.2" height="7.1" rx="2" class="bar"/></g><g class="mark"><title>294-362 ms: 6 calls</title><rect x="23.2" y="83.9" width="12.2" height="14.1" rx="2" class="bar"/></g><g class="mark"><title>362-429 ms: 17 calls</title><rect x="37.4" y="58.0" width="12.2" height="40.0" rx="2" class="bar"/></g><g class="mark"><title>429-496 ms: 15 calls</title><rect x="51.6" y="62.7" width="12.2" height="35.3" rx="2" class="bar"/></g><g class="mark"><title>496-564 ms: 27 calls</title><rect x="65.8" y="34.5" width="12.2" height="63.5" rx="2" class="bar"/></g><g class="mark"><title>564-631 ms: 34 calls</title><rect x="80.0" y="18.0" width="12.2" height="80.0" rx="2" class="bar"/></g><g class="mark"><title>631-698 ms: 28 calls</title><rect x="94.2" y="32.1" width="12.2" height="65.9" rx="2" class="bar"/></g><g class="mark"><title>698-765 ms: 18 calls</title><rect x="108.4" y="55.6" width="12.2" height="42.4" rx="2" class="bar"/></g><g class="mark"><title>765-833 ms: 14 calls</title><rect x="122.6" y="65.1" width="12.2" height="32.9" rx="2" class="bar"/></g><g class="mark"><title>833-900 ms: 8 calls</title><rect x="136.8" y="79.2" width="12.2" height="18.8" rx="2" class="bar"/></g><g class="mark"><title>900-967 ms: 6 calls</title><rect x="151.0" y="83.9" width="12.2" height="14.1" rx="2" class="bar"/></g><g class="mark"><title>967-1,034 ms: 2 calls</title><rect x="165.2" y="93.3" width="12.2" height="4.7" rx="2" class="bar"/></g><g class="mark"><title>1,034-1,102 ms: 6 calls</title><rect x="179.4" y="83.9" width="12.2" height="14.1" rx="2" class="bar"/></g><g class="mark"><title>1,102-1,169 ms: 4 calls</title><rect x="193.6" y="88.6" width="12.2" height="9.4" rx="2" class="bar"/></g><g class="mark"><title>1,169-1,236 ms: 4 calls</title><rect x="207.8" y="88.6" width="12.2" height="9.4" rx="2" class="bar"/></g><g class="mark"><title>1,236-1,303 ms: 2 calls</title><rect x="222.0" y="93.3" width="12.2" height="4.7" rx="2" class="bar"/></g><g class="mark"><title>1,303-1,371 ms: 4 calls</title><rect x="236.2" y="88.6" width="12.2" height="9.4" rx="2" class="bar"/></g><g class="mark"><title>1,371-1,438 ms: 1 calls</title><rect x="250.4" y="95.6" width="12.2" height="2.4" rx="2" class="bar"/></g><g class="mark"><title>1,438-1,505 ms: 0 calls</title><rect x="264.6" y="98.0" width="12.2" height="0.5" rx="2" class="bar"/></g><g class="mark"><title>1,505-1,572 ms: 1 calls</title><rect x="278.8" y="95.6" width="12.2" height="2.4" rx="2" class="bar"/></g><line x1="8" y1="98" x2="292" y2="98" class="baseline"/><line x1="92.6" y1="14" x2="92.6" y2="98" class="marker"/><text x="92.6" y="12" class="axis" text-anchor="middle">p50</text><line x1="215.0" y1="14" x2="215.0" y2="98" class="marker"/><text x="215.0" y="12" class="axis" text-anchor="middle">p95</text><text x="8" y="114" class="axis">227 ms</text><text x="292" y="114" class="axis" text-anchor="end">1,572 ms</text></svg></div>  </div>
+  <table>
+    <thead><tr><th>Configuration</th><th class="num">calls</th><th class="num">p50</th><th class="num">p90</th><th class="num">p95</th><th class="num">p99</th><th class="num">TTFT p50</th><th class="num">tokens/s</th></tr></thead>
+    <tbody><tr><td>mock-fast/v1</td><td class="num">200</td><td class="num">187 ms</td><td class="num">316 ms</td><td class="num">341 ms</td><td class="num">402 ms</td><td class="num">51 ms</td><td class="num">13.491</td></tr><tr><td>mock-fast/v2</td><td class="num">200</td><td class="num">179 ms</td><td class="num">259 ms</td><td class="num">299 ms</td><td class="num">363 ms</td><td class="num">45 ms</td><td class="num">13.311</td></tr><tr><td>mock-strong/v1</td><td class="num">200</td><td class="num">694 ms</td><td class="num">1,043 ms</td><td class="num">1,131 ms</td><td class="num">1,323 ms</td><td class="num">169 ms</td><td class="num">3.717</td></tr><tr><td>mock-strong/v2</td><td class="num">200</td><td class="num">628 ms</td><td class="num">1,050 ms</td><td class="num">1,208 ms</td><td class="num">1,351 ms</td><td class="num">154 ms</td><td class="num">4.001</td></tr></tbody>
+  </table>
+</section>
+
+<h2>Reliability and cost</h2>
+<section>
+  <table>
+    <thead><tr><th>Configuration</th><th class="num">failure rate</th><th>failures by class</th><th class="num">malformed</th><th class="num">refusals</th><th>attempts distribution</th><th class="num">cost / correct</th><th class="num">quality per $</th><th class="num">cached</th></tr></thead>
+    <tbody><tr><td>mock-fast/v1</td><td class="num">0.0%</td>
+      <td><span class="muted">none</span></td>
+      <td class="num">0.0%</td><td class="num">0.0%</td>
+      <td><span class="tag">1&times; 197</span><span class="tag">2&times; 3</span></td>
+      <td class="num">$6.1e-06</td><td class="num">163,251.1</td><td class="num">0.0%</td></tr><tr><td>mock-fast/v2</td><td class="num">0.0%</td>
+      <td><span class="muted">none</span></td>
+      <td class="num">0.0%</td><td class="num">0.0%</td>
+      <td><span class="tag">1&times; 199</span><span class="tag">2&times; 1</span></td>
+      <td class="num">$7.2e-06</td><td class="num">137,987.0</td><td class="num">0.0%</td></tr><tr><td>mock-strong/v1</td><td class="num">0.0%</td>
+      <td><span class="muted">none</span></td>
+      <td class="num">0.0%</td><td class="num">0.0%</td>
+      <td><span class="tag">1&times; 195</span><span class="tag">2&times; 5</span></td>
+      <td class="num">$2.6e-05</td><td class="num">38,394.4</td><td class="num">0.0%</td></tr><tr><td>mock-strong/v2</td><td class="num">0.0%</td>
+      <td><span class="muted">none</span></td>
+      <td class="num">0.0%</td><td class="num">0.0%</td>
+      <td><span class="tag">1&times; 194</span><span class="tag">2&times; 6</span></td>
+      <td class="num">$3.2e-05</td><td class="num">30,794.2</td><td class="num">0.0%</td></tr></tbody>
+  </table>
+<p class="muted">Costs use the pricing table dated 2026-11-20; verify prices against the provider before relying on them.</p></section>
+
+<h2>Per-tag breakdown (pass)</h2>
+<section>
+  <table>
+    <thead><tr><th>Tag</th><th class="num">mock-fast/v1</th><th class="num">mock-fast/v2</th><th class="num">mock-strong/v1</th><th class="num">mock-strong/v2</th></tr></thead>
+    <tbody><tr><td>geography</td><td class="num">0.733 (n=9)</td><td class="num">0.800 (n=9)</td><td class="num">0.867 (n=9)</td><td class="num">0.889 (n=9)</td></tr><tr><td>history</td><td class="num">0.800 (n=8)</td><td class="num">0.750 (n=8)</td><td class="num">0.850 (n=8)</td><td class="num">0.900 (n=8)</td></tr><tr><td>language</td><td class="num">0.600 (n=2)</td><td class="num">0.600 (n=2)</td><td class="num">0.800 (n=2)</td><td class="num">0.700 (n=2)</td></tr><tr><td>math</td><td class="num">0.500 (n=8)</td><td class="num">0.700 (n=8)</td><td class="num">0.700 (n=8)</td><td class="num">0.750 (n=8)</td></tr><tr><td>science</td><td class="num">0.820 (n=10)</td><td class="num">0.920 (n=10)</td><td class="num">0.860 (n=10)</td><td class="num">0.860 (n=10)</td></tr><tr><td>units</td><td class="num">0.600 (n=3)</td><td class="num">0.467 (n=3)</td><td class="num">0.867 (n=3)</td><td class="num">1.000 (n=3)</td></tr></tbody>
+  </table>
+</section>
+
+<h2>Worst-performing samples</h2>
+<section>
+  <h3>mock-fast/v1</h3>
+  <table>
+    <thead><tr><th>Sample</th><th class="num">pass rate</th><th>Input</th><th>Reference</th><th>Output (trial 0)</th></tr></thead>
+    <tbody><tr><td>qa-025<br><span class="tag">math</span></td><td class="num">0.0%</td><td class="out">What is 17 multiplied by 23?</td><td class="out">391</td><td class="out">392</td></tr><tr><td>qa-026<br><span class="tag">math</span></td><td class="num">0.0%</td><td class="out">How many prime numbers are there between 1 and 20?</td><td class="out">8</td><td class="out">6</td></tr><tr><td>qa-004<br><span class="tag">geography</span></td><td class="num">20.0%</td><td class="out">What is the capital of Canada?</td><td class="out">Ottawa</td><td class="out">I am not sure.</td></tr><tr><td>qa-008<br><span class="tag">geography</span></td><td class="num">20.0%</td><td class="out">What is the capital of Mongolia?</td><td class="out">Ulaanbaatar</td><td class="out">Ulan Bator</td></tr><tr><td>qa-028<br><span class="tag">history</span></td><td class="num">20.0%</td><td class="out">In what year did humans first land on the Moon?</td><td class="out">1969</td><td class="out">in 1969</td></tr><tr><td>qa-038<br><span class="tag">units</span></td><td class="num">20.0%</td><td class="out">How many grams are in one kilogram?</td><td class="out">1000</td><td class="out">999</td></tr><tr><td>qa-040<br><span class="tag">language</span></td><td class="num">20.0%</td><td class="out">What is the simple past tense of the English verb &#39;go&#39;?</td><td class="out">went</td><td class="out">I am not sure.</td></tr><tr><td>qa-021<br><span class="tag">math</span></td><td class="num">40.0%</td><td class="out">What is 144 divided by 12?</td><td class="out">12</td><td class="out">12</td></tr></tbody>
+  </table>
+  <h3>mock-fast/v2</h3>
+  <table>
+    <thead><tr><th>Sample</th><th class="num">pass rate</th><th>Input</th><th>Reference</th><th>Output (trial 0)</th></tr></thead>
+    <tbody><tr><td>qa-028<br><span class="tag">history</span></td><td class="num">20.0%</td><td class="out">In what year did humans first land on the Moon?</td><td class="out">1969</td><td class="out">1969</td></tr><tr><td>qa-040<br><span class="tag">language</span></td><td class="num">20.0%</td><td class="out">What is the simple past tense of the English verb &#39;go&#39;?</td><td class="out">went</td><td class="out">I am not sure.</td></tr><tr><td>qa-007<br><span class="tag">geography</span></td><td class="num">40.0%</td><td class="out">What is the longest river in South America?</td><td class="out">Amazon</td><td class="out">several</td></tr><tr><td>qa-008<br><span class="tag">geography</span></td><td class="num">40.0%</td><td class="out">What is the capital of Mongolia?</td><td class="out">Ulaanbaatar</td><td class="out">unknown</td></tr><tr><td>qa-025<br><span class="tag">math</span></td><td class="num">40.0%</td><td class="out">What is 17 multiplied by 23?</td><td class="out">391</td><td class="out">391</td></tr><tr><td>qa-026<br><span class="tag">math</span></td><td class="num">40.0%</td><td class="out">How many prime numbers are there between 1 and 20?</td><td class="out">8</td><td class="out">6</td></tr><tr><td>qa-027<br><span class="tag">math</span></td><td class="num">40.0%</td><td class="out">What is the sum of the interior angles of a triangle, in degrees?</td><td class="out">180</td><td class="out">178</td></tr><tr><td>qa-037<br><span class="tag">units</span></td><td class="num">40.0%</td><td class="out">How many seconds are in one hour?</td><td class="out">3600</td><td class="out">3600</td></tr></tbody>
+  </table>
+  <h3>mock-strong/v1</h3>
+  <table>
+    <thead><tr><th>Sample</th><th class="num">pass rate</th><th>Input</th><th>Reference</th><th>Output (trial 0)</th></tr></thead>
+    <tbody><tr><td>qa-013<br><span class="tag">science</span></td><td class="num">20.0%</td><td class="out">What is the atomic number of carbon?</td><td class="out">6</td><td class="out">5</td></tr><tr><td>qa-025<br><span class="tag">math</span></td><td class="num">20.0%</td><td class="out">What is 17 multiplied by 23?</td><td class="out">391</td><td class="out">394</td></tr><tr><td>qa-026<br><span class="tag">math</span></td><td class="num">20.0%</td><td class="out">How many prime numbers are there between 1 and 20?</td><td class="out">8</td><td class="out">7</td></tr><tr><td>qa-035<br><span class="tag">history</span></td><td class="num">20.0%</td><td class="out">In what year did the Soviet Union launch Sputnik 1, the first artificial satellite?</td><td class="out">1957</td><td class="out">1956</td></tr><tr><td>qa-020<br><span class="tag">math</span></td><td class="num">40.0%</td><td class="out">What is 7 multiplied by 8?</td><td class="out">56</td><td class="out">55</td></tr><tr><td>qa-004<br><span class="tag">geography</span></td><td class="num">60.0%</td><td class="out">What is the capital of Canada?</td><td class="out">Ottawa</td><td class="out">Ottawa</td></tr><tr><td>qa-008<br><span class="tag">geography</span></td><td class="num">60.0%</td><td class="out">What is the capital of Mongolia?</td><td class="out">Ulaanbaatar</td><td class="out">several</td></tr><tr><td>qa-015<br><span class="tag">science</span></td><td class="num">60.0%</td><td class="out">Which planet is known as the Red Planet?</td><td class="out">Mars</td><td class="out">several</td></tr></tbody>
+  </table>
+  <h3>mock-strong/v2</h3>
+  <table>
+    <thead><tr><th>Sample</th><th class="num">pass rate</th><th>Input</th><th>Reference</th><th>Output (trial 0)</th></tr></thead>
+    <tbody><tr><td>qa-025<br><span class="tag">math</span></td><td class="num">0.0%</td><td class="out">What is 17 multiplied by 23?</td><td class="out">391</td><td class="out">389</td></tr><tr><td>qa-002<br><span class="tag">geography</span></td><td class="num">40.0%</td><td class="out">What is the capital of Japan?</td><td class="out">Tokyo</td><td class="out">I am not sure.</td></tr><tr><td>qa-026<br><span class="tag">math</span></td><td class="num">40.0%</td><td class="out">How many prime numbers are there between 1 and 20?</td><td class="out">8</td><td class="out">11</td></tr><tr><td>qa-035<br><span class="tag">history</span></td><td class="num">40.0%</td><td class="out">In what year did the Soviet Union launch Sputnik 1, the first artificial satellite?</td><td class="out">1957</td><td class="out">1956</td></tr><tr><td>qa-015<br><span class="tag">science</span></td><td class="num">60.0%</td><td class="out">Which planet is known as the Red Planet?</td><td class="out">Mars</td><td class="out">perhaps</td></tr><tr><td>qa-017<br><span class="tag">science</span></td><td class="num">60.0%</td><td class="out">What is the chemical symbol for sodium?</td><td class="out">Na</td><td class="out">different</td></tr><tr><td>qa-020<br><span class="tag">math</span></td><td class="num">60.0%</td><td class="out">What is 7 multiplied by 8?</td><td class="out">56</td><td class="out">56</td></tr><tr><td>qa-040<br><span class="tag">language</span></td><td class="num">60.0%</td><td class="out">What is the simple past tense of the English verb &#39;go&#39;?</td><td class="out">went</td><td class="out">another</td></tr></tbody>
+  </table>
+</section>
+
+<h2>LLM judge</h2>
+<section>
+  <table><tbody>
+    <tr><th>Judge</th><td><code>mock/mock-judge</code></td></tr>
+    <tr><th>Calls (audited)</th><td>800 (0 malformed, repaired or reported)</td></tr>
+    <tr><th>Judge cost</th><td>$0.0592</td></tr>
+    <tr><th>Length bias</th><td>Spearman &rho;(answer length, score) = -0.072</td></tr>
+  </tbody></table>
+  <h3>Calibration against human labels</h3>
+  <table><tbody>
+    <tr><th>Judge</th><td><code>mock/mock-judge</code>, rubric <code>correctness</code></td></tr>
+    <tr><th>Labelled examples</th><td>40 / 40</td></tr>
+    <tr><th>Accuracy</th><td>65.0%</td></tr>
+    <tr><th>Cohen's &kappa; (pass/fail)</th><td>0.333</td></tr>
+    <tr><th>Weighted &kappa; (1-5, quadratic)</th><td>0.584</td></tr>
+  </tbody></table>
+  <table><thead><tr><th>human \ judge</th><th class="num">pass</th><th class="num">fail</th></tr></thead>
+  <tbody><tr><th>pass</th><td class="num">9</td><td class="num">13</td></tr><tr><th>fail</th><td class="num">1</td><td class="num">17</td></tr></tbody></table>
+</section>
+
+<h2>Run manifest</h2>
+<section>
+  <p class="muted">Everything needed to reproduce this run: full config, dataset and prompt hashes, seeds, package version and git SHA.</p>
+  <pre>{
+  &#34;base_dir&#34;: &#34;/home/user/unvibecode/LLMBench/examples&#34;,
+  &#34;cache_enabled&#34;: true,
+  &#34;config&#34;: {
+    &#34;budget&#34;: {
+      &#34;max_requests&#34;: 5000,
+      &#34;max_usd&#34;: 1.0
+    },
+    &#34;cache&#34;: true,
+    &#34;circuit_breaker&#34;: {
+      &#34;failure_threshold&#34;: 8,
+      &#34;reset_timeout_s&#34;: 30.0
+    },
+    &#34;concurrency&#34;: 8,
+    &#34;cost_confirm_threshold_usd&#34;: 1.0,
+    &#34;dataset&#34;: &#34;../datasets/qa_basic.jsonl&#34;,
+    &#34;description&#34;: &#34;Mock-provider comparison of two models and two prompts on qa_basic.&#34;,
+    &#34;judge&#34;: {
+      &#34;base_url&#34;: null,
+      &#34;max_repairs&#34;: 2,
+      &#34;model&#34;: &#34;mock-judge&#34;,
+      &#34;params&#34;: {
+        &#34;temperature&#34;: 0.0
+      },
+      &#34;provider&#34;: &#34;mock&#34;,
+      &#34;rubric&#34;: &#34;../rubrics/correctness.yaml&#34;,
+      &#34;samples&#34;: 1,
+      &#34;swap_order&#34;: true
+    },
+    &#34;metrics&#34;: [
+      {
+        &#34;name&#34;: &#34;exact_match&#34;,
+        &#34;params&#34;: {}
+      },
+      {
+        &#34;name&#34;: &#34;f1&#34;,
+        &#34;params&#34;: {}
+      },
+      {
+        &#34;name&#34;: &#34;rouge_l&#34;,
+        &#34;params&#34;: {}
+      },
+      {
+        &#34;name&#34;: &#34;semantic_similarity&#34;,
+        &#34;params&#34;: {}
+      },
+      {
+        &#34;name&#34;: &#34;llm_judge_correctness&#34;,
+        &#34;params&#34;: {}
+      },
+      {
+        &#34;name&#34;: &#34;consistency&#34;,
+        &#34;params&#34;: {}
+      },
+      {
+        &#34;name&#34;: &#34;latency&#34;,
+        &#34;params&#34;: {}
+      },
+      {
+        &#34;name&#34;: &#34;cost&#34;,
+        &#34;params&#34;: {}
+      }
+    ],
+    &#34;models&#34;: [
+      {
+        &#34;api_key_env&#34;: null,
+        &#34;base_url&#34;: null,
+        &#34;id&#34;: &#34;mock-strong&#34;,
+        &#34;model&#34;: &#34;mock-strong&#34;,
+        &#34;params&#34;: {
+          &#34;accuracy&#34;: 0.85,
+          &#34;failure_rate&#34;: 0.02,
+          &#34;latency_ms&#34;: 650,
+          &#34;max_tokens&#34;: 64,
+          &#34;stream&#34;: true,
+          &#34;temperature&#34;: 0.7
+        },
+        &#34;provider&#34;: &#34;mock&#34;,
+        &#34;rate_limit&#34;: null
+      },
+      {
+        &#34;api_key_env&#34;: null,
+        &#34;base_url&#34;: null,
+        &#34;id&#34;: &#34;mock-fast&#34;,
+        &#34;model&#34;: &#34;mock-fast&#34;,
+        &#34;params&#34;: {
+          &#34;accuracy&#34;: 0.65,
+          &#34;failure_rate&#34;: 0.02,
+          &#34;latency_ms&#34;: 180,
+          &#34;max_tokens&#34;: 64,
+          &#34;stream&#34;: true,
+          &#34;temperature&#34;: 0.7
+        },
+        &#34;provider&#34;: &#34;mock&#34;,
+        &#34;rate_limit&#34;: null
+      }
+    ],
+    &#34;name&#34;: &#34;quickstart&#34;,
+    &#34;pricing&#34;: &#34;pricing.yaml&#34;,
+    &#34;prompts&#34;: [
+      {
+        &#34;id&#34;: &#34;v1&#34;,
+        &#34;system&#34;: null,
+        &#34;system_template&#34;: null,
+        &#34;template&#34;: &#34;../prompts/qa_v1.j2&#34;,
+        &#34;text&#34;: null
+      },
+      {
+        &#34;id&#34;: &#34;v2&#34;,
+        &#34;system&#34;: null,
+        &#34;system_template&#34;: null,
+        &#34;template&#34;: &#34;../prompts/qa_v2.j2&#34;,
+        &#34;text&#34;: null
+      }
+    ],
+    &#34;rate_limit&#34;: {
+      &#34;requests_per_minute&#34;: 6000.0,
+      &#34;tokens_per_minute&#34;: 2000000.0
+    },
+    &#34;retry&#34;: {
+      &#34;base_delay_s&#34;: 0.5,
+      &#34;max_attempts&#34;: 4,
+      &#34;max_delay_s&#34;: 30.0,
+      &#34;timeout_s&#34;: 60.0
+    },
+    &#34;sampling&#34;: {
+      &#34;n&#34;: null,
+      &#34;seed&#34;: 0,
+      &#34;stratify_by_tag&#34;: true
+    },
+    &#34;seed&#34;: 1234,
+    &#34;tags&#34;: {},
+    &#34;task&#34;: &#34;qa&#34;,
+    &#34;trials&#34;: 5
+  },
+  &#34;config_hash&#34;: &#34;74ee6f08bb1d6e78f1388cd189b5e7518ff5c1ab4df936eea25c987f50be49f3&#34;,
+  &#34;created_at&#34;: &#34;2026-11-21T10:44:55.001424+00:00&#34;,
+  &#34;dataset&#34;: {
+    &#34;evaluated_hash&#34;: &#34;31c0e369dbf5847135ce16a4f6f686f968ecfa0fe39041b1afe7db18110df77b&#34;,
+    &#34;full_hash&#34;: &#34;31c0e369dbf5847135ce16a4f6f686f968ecfa0fe39041b1afe7db18110df77b&#34;,
+    &#34;n_evaluated&#34;: 40,
+    &#34;n_total&#34;: 40,
+    &#34;name&#34;: &#34;qa_basic&#34;,
+    &#34;path&#34;: &#34;/home/user/unvibecode/LLMBench/datasets/qa_basic.jsonl&#34;,
+    &#34;sample_ids&#34;: [
+      &#34;qa-001&#34;,
+      &#34;qa-002&#34;,
+      &#34;qa-003&#34;,
+      &#34;qa-004&#34;,
+      &#34;qa-005&#34;,
+      &#34;qa-006&#34;,
+      &#34;qa-007&#34;,
+      &#34;qa-008&#34;,
+      &#34;qa-009&#34;,
+      &#34;qa-010&#34;,
+      &#34;qa-011&#34;,
+      &#34;qa-012&#34;,
+      &#34;qa-013&#34;,
+      &#34;qa-014&#34;,
+      &#34;qa-015&#34;,
+      &#34;qa-016&#34;,
+      &#34;qa-017&#34;,
+      &#34;qa-018&#34;,
+      &#34;qa-019&#34;,
+      &#34;qa-020&#34;,
+      &#34;qa-021&#34;,
+      &#34;qa-022&#34;,
+      &#34;qa-023&#34;,
+      &#34;qa-024&#34;,
+      &#34;qa-025&#34;,
+      &#34;qa-026&#34;,
+      &#34;qa-027&#34;,
+      &#34;qa-028&#34;,
+      &#34;qa-029&#34;,
+      &#34;qa-030&#34;,
+      &#34;qa-031&#34;,
+      &#34;qa-032&#34;,
+      &#34;qa-033&#34;,
+      &#34;qa-034&#34;,
+      &#34;qa-035&#34;,
+      &#34;qa-036&#34;,
+      &#34;qa-037&#34;,
+      &#34;qa-038&#34;,
+      &#34;qa-039&#34;,
+      &#34;qa-040&#34;
+    ]
+  },
+  &#34;git_sha&#34;: &#34;c9e3413b08b2e20ddb209b2999dba97de3a76cd2&#34;,
+  &#34;grid_size&#34;: 800,
+  &#34;llmbench_version&#34;: &#34;0.1.0&#34;,
+  &#34;models&#34;: [
+    {
+      &#34;base_url&#34;: null,
+      &#34;id&#34;: &#34;mock-strong&#34;,
+      &#34;model&#34;: &#34;mock-strong&#34;,
+      &#34;params&#34;: {
+        &#34;accuracy&#34;: 0.85,
+        &#34;failure_rate&#34;: 0.02,
+        &#34;latency_ms&#34;: 650,
+        &#34;max_tokens&#34;: 64,
+        &#34;stream&#34;: true,
+        &#34;temperature&#34;: 0.7
+      },
+      &#34;provider&#34;: &#34;mock&#34;
+    },
+    {
+      &#34;base_url&#34;: null,
+      &#34;id&#34;: &#34;mock-fast&#34;,
+      &#34;model&#34;: &#34;mock-fast&#34;,
+      &#34;params&#34;: {
+        &#34;accuracy&#34;: 0.65,
+        &#34;failure_rate&#34;: 0.02,
+        &#34;latency_ms&#34;: 180,
+        &#34;max_tokens&#34;: 64,
+        &#34;stream&#34;: true,
+        &#34;temperature&#34;: 0.7
+      },
+      &#34;provider&#34;: &#34;mock&#34;
+    }
+  ],
+  &#34;platform&#34;: &#34;Linux-6.18.44-fc-v726-x86_64-with-glibc2.39&#34;,
+  &#34;pricing&#34;: {
+    &#34;as_of&#34;: &#34;2026-11-20&#34;,
+    &#34;path&#34;: &#34;pricing.yaml&#34;
+  },
+  &#34;prompts&#34;: {
+    &#34;v1&#34;: &#34;04f8382798e5657c350f514af2b4294c62071c6e39a83ff258c37a1a22104876&#34;,
+    &#34;v2&#34;: &#34;a50caf2a05cca06bdf97e26f3f7f5865f757e212fe2508bda6f7226eebb9e50f&#34;
+  },
+  &#34;python&#34;: &#34;3.11.15&#34;,
+  &#34;run_id&#34;: &#34;quickstart-20261121T104455-19da8e05&#34;,
+  &#34;seeds&#34;: {
+    &#34;experiment&#34;: 1234,
+    &#34;sampling&#34;: 0
+  },
+  &#34;skipped_models&#34;: {},
+  &#34;task&#34;: &#34;qa&#34;
+}</pre>
+</section>
+<footer>Generated by LLMBench 0.1.0 on 2026-11-21 11:19 UTC. Self-contained: this file makes no network requests.</footer>
+</main>
+</body>
+</html>

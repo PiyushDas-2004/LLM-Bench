@@ -1,0 +1,343 @@
+{
+  "judge": "mock/mock-judge",
+  "rubric": "correctness",
+  "n": 40,
+  "n_scored": 40,
+  "accuracy": 0.65,
+  "cohen_kappa": 0.33333333333333337,
+  "weighted_kappa_quadratic": 0.584070796460177,
+  "spearman_scores": 0.7339468081761932,
+  "confusion": {
+    "pass": {
+      "pass": 9,
+      "fail": 13
+    },
+    "fail": {
+      "pass": 1,
+      "fail": 17
+    }
+  },
+  "mean_self_consistency": null,
+  "items": [
+    {
+      "id": "cal-001",
+      "human_label": "pass",
+      "judge_label": "pass",
+      "human_score": 5,
+      "judge_score": 4.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-002",
+      "human_label": "fail",
+      "judge_label": "fail",
+      "human_score": 1,
+      "judge_score": 1.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-003",
+      "human_label": "pass",
+      "judge_label": "pass",
+      "human_score": 5,
+      "judge_score": 5.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-004",
+      "human_label": "pass",
+      "judge_label": "fail",
+      "human_score": 4,
+      "judge_score": 1.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-005",
+      "human_label": "pass",
+      "judge_label": "pass",
+      "human_score": 5,
+      "judge_score": 5.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-006",
+      "human_label": "pass",
+      "judge_label": "pass",
+      "human_score": 5,
+      "judge_score": 4.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-007",
+      "human_label": "fail",
+      "judge_label": "fail",
+      "human_score": 1,
+      "judge_score": 1.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-008",
+      "human_label": "pass",
+      "judge_label": "fail",
+      "human_score": 4,
+      "judge_score": 2.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-009",
+      "human_label": "pass",
+      "judge_label": "pass",
+      "human_score": 5,
+      "judge_score": 5.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-010",
+      "human_label": "pass",
+      "judge_label": "fail",
+      "human_score": 5,
+      "judge_score": 2.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-011",
+      "human_label": "fail",
+      "judge_label": "fail",
+      "human_score": 1,
+      "judge_score": 1.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-012",
+      "human_label": "pass",
+      "judge_label": "pass",
+      "human_score": 5,
+      "judge_score": 5.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-013",
+      "human_label": "fail",
+      "judge_label": "fail",
+      "human_score": 1,
+      "judge_score": 1.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-014",
+      "human_label": "pass",
+      "judge_label": "fail",
+      "human_score": 5,
+      "judge_score": 3.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-015",
+      "human_label": "fail",
+      "judge_label": "fail",
+      "human_score": 1,
+      "judge_score": 1.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-016",
+      "human_label": "pass",
+      "judge_label": "fail",
+      "human_score": 4,
+      "judge_score": 2.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-017",
+      "human_label": "fail",
+      "judge_label": "fail",
+      "human_score": 2,
+      "judge_score": 3.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-018",
+      "human_label": "fail",
+      "judge_label": "fail",
+      "human_score": 1,
+      "judge_score": 1.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-019",
+      "human_label": "fail",
+      "judge_label": "pass",
+      "human_score": 2,
+      "judge_score": 4.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-020",
+      "human_label": "fail",
+      "judge_label": "fail",
+      "human_score": 3,
+      "judge_score": 3.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-021",
+      "human_label": "pass",
+      "judge_label": "fail",
+      "human_score": 4,
+      "judge_score": 1.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-022",
+      "human_label": "fail",
+      "judge_label": "fail",
+      "human_score": 1,
+      "judge_score": 1.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-023",
+      "human_label": "pass",
+      "judge_label": "fail",
+      "human_score": 5,
+      "judge_score": 2.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-024",
+      "human_label": "fail",
+      "judge_label": "fail",
+      "human_score": 2,
+      "judge_score": 1.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-025",
+      "human_label": "fail",
+      "judge_label": "fail",
+      "human_score": 1,
+      "judge_score": 1.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-026",
+      "human_label": "pass",
+      "judge_label": "fail",
+      "human_score": 5,
+      "judge_score": 2.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-027",
+      "human_label": "pass",
+      "judge_label": "fail",
+      "human_score": 5,
+      "judge_score": 3.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-028",
+      "human_label": "pass",
+      "judge_label": "fail",
+      "human_score": 5,
+      "judge_score": 3.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-029",
+      "human_label": "fail",
+      "judge_label": "fail",
+      "human_score": 1,
+      "judge_score": 3.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-030",
+      "human_label": "pass",
+      "judge_label": "fail",
+      "human_score": 4,
+      "judge_score": 1.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-031",
+      "human_label": "fail",
+      "judge_label": "fail",
+      "human_score": 1,
+      "judge_score": 1.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-032",
+      "human_label": "fail",
+      "judge_label": "fail",
+      "human_score": 1,
+      "judge_score": 1.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-033",
+      "human_label": "fail",
+      "judge_label": "fail",
+      "human_score": 3,
+      "judge_score": 2.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-034",
+      "human_label": "pass",
+      "judge_label": "fail",
+      "human_score": 5,
+      "judge_score": 3.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-035",
+      "human_label": "fail",
+      "judge_label": "fail",
+      "human_score": 1,
+      "judge_score": 1.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-036",
+      "human_label": "pass",
+      "judge_label": "pass",
+      "human_score": 5,
+      "judge_score": 5.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-037",
+      "human_label": "pass",
+      "judge_label": "pass",
+      "human_score": 5,
+      "judge_score": 4.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-038",
+      "human_label": "fail",
+      "judge_label": "fail",
+      "human_score": 2,
+      "judge_score": 3.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-039",
+      "human_label": "pass",
+      "judge_label": "pass",
+      "human_score": 5,
+      "judge_score": 5.0,
+      "self_consistency": null
+    },
+    {
+      "id": "cal-040",
+      "human_label": "pass",
+      "judge_label": "fail",
+      "human_score": 4,
+      "judge_score": 3.0,
+      "self_consistency": null
+    }
+  ]
+}
