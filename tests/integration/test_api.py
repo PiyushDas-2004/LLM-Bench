@@ -143,3 +143,27 @@ async def test_insecure_mode_allows_requests(tmp_path: Path, repo_root: Path) ->
         httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://t") as c,
     ):
         assert (await c.get("/runs")).status_code == 200
+
+
+async def test_cors_for_hosted_dashboard(tmp_path: Path, repo_root: Path) -> None:
+    origin = "https://example.github.io"
+    settings = Settings(
+        _env_file=None, api_key=SecretStr(KEY), workspace=str(repo_root), cors_origins=origin
+    )  # type: ignore[call-arg]
+    app = create_app(settings, db_url=f"sqlite:///{tmp_path / 'cors.db'}")
+    async with (
+        app.router.lifespan_context(app),
+        httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://t") as c,
+    ):
+        pre = await c.options(
+            "/runs",
+            headers={
+                "Origin": origin,
+                "Access-Control-Request-Method": "GET",
+                "Access-Control-Request-Headers": "x-api-key",
+            },
+        )
+        assert pre.status_code == 200
+        assert pre.headers["access-control-allow-origin"] == origin
+        other = await c.get("/health", headers={"Origin": "https://evil.example"})
+        assert "access-control-allow-origin" not in other.headers

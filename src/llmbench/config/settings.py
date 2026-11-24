@@ -29,6 +29,11 @@ class Settings(BaseSettings):
     otel_enabled: bool = False
     workspace: str = "."
     api_workers: int = Field(default=2, ge=1, le=64)
+    cors_origins: str = Field(
+        default="",
+        description="Comma-separated browser origins allowed to call the API "
+        "(e.g. https://user.github.io for the hosted dashboard). Empty disables CORS.",
+    )
     plugins: str = Field(
         default="",
         description="Comma-separated Python modules to import at startup (custom metrics, "

@@ -12,6 +12,7 @@ from typing import Annotated, Any
 
 import structlog
 from fastapi import Depends, FastAPI, Header, HTTPException, Request, Response, status
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from prometheus_client import CONTENT_TYPE_LATEST
 
@@ -115,6 +116,15 @@ def create_app(
         responses={401: {"model": ErrorResponse}, 404: {"model": ErrorResponse}},
     )
     app.state.store, app.state.queue, app.state.telemetry = store, queue, telemetry
+    origins = [o.strip().rstrip("/") for o in settings.cors_origins.split(",") if o.strip()]
+    if origins:
+        app.add_middleware(
+            CORSMiddleware,
+            allow_origins=origins,
+            allow_methods=["GET", "POST"],
+            allow_headers=["X-API-Key", "Content-Type", "X-Request-ID"],
+            expose_headers=["X-Request-ID"],
+        )
 
     @app.middleware("http")
     async def request_context(

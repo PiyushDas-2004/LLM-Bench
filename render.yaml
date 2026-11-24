@@ -16,3 +16,5 @@ services:
         value: sqlite:////tmp/llmbench.db
       - key: LLMBENCH_LOG_FORMAT
         value: json
+      - key: LLMBENCH_CORS_ORIGINS
+        value: https://piyushdas-2004.github.io
