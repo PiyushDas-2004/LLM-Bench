@@ -1,8 +1,20 @@
 site_name: LLMBench
 site_description: Reproducible evaluation, benchmarking and regression testing for LLM and RAG systems
+site_url: https://piyushdas-2004.github.io/LLM-Bench/
 repo_url: https://github.com/PiyushDas-2004/LLM-Bench
+repo_name: PiyushDas-2004/LLM-Bench
 docs_dir: docs
 nav:
+  - Home: index.md
+  - Live demo:
+      - Overview: demo/index.md
+      - HTML report: demo/report.html
+      - Leaderboard: demo/quickstart.md
+      - Comparison: demo/comparison.md
+      - Eval gate: demo/gate.md
+      - Safety suite: demo/safety.md
+      - RAG sweep: demo/rag_sweep.md
+      - Judge calibration: demo/calibration.md
   - Methodology: METHODOLOGY.md
   - Architecture: ARCHITECTURE.md
   - RAG evaluation: RAG_EVALUATION.md
@@ -11,8 +23,18 @@ nav:
   - Decisions (ADRs): adr/README.md
 theme:
   name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle: {icon: material/brightness-4, name: Switch to dark mode}
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle: {icon: material/brightness-7, name: Switch to light mode}
+  features: [navigation.sections, content.code.copy]
 markdown_extensions:
   - admonition
+  - pymdownx.arithmatex:
+      generic: true
   - tables
   - pymdownx.superfences:
       custom_fences:

@@ -37,8 +37,8 @@ bench: ## Run the offline mock benchmark
 report: ## Render HTML report for the most recent run
 	llmbench report latest --format html --output reports/latest.html
 
-docs: ## Build the mkdocs site (optional dependency)
-	mkdocs build --strict
+docs: ## Build the docs site with a freshly generated live demo (mock provider, $0)
+	scripts/build_site.sh site
 
 docker: ## Build the Docker image
 	docker build -t llmbench:local .

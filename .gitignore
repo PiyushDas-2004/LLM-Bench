@@ -36,3 +36,8 @@ reports/
 .idea/
 .vscode/
 .DS_Store
+
+# Generated documentation site and live demo (built by scripts/build_site.sh)
+site/
+docs/demo/*
+!docs/demo/index.md

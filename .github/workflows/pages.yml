@@ -1,0 +1,32 @@
+# Publishes the documentation site and a freshly generated live demo to GitHub Pages
+# (https://piyushdas-2004.github.io/LLM-Bench/). Runs offline on the mock provider: $0.
+name: Docs & live demo
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --python 3.12 --locked
+      - name: Build site with live demo
+        run: scripts/build_site.sh site
+      - name: Publish to the gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          force_orphan: true
+          commit_message: "docs: publish site for ${{ github.sha }}"
