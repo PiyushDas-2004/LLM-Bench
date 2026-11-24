@@ -79,3 +79,11 @@ jobs:
         run: docker build -t llmbench:ci .
       - name: Benchmark inside the container
         run: docker run --rm llmbench:ci run examples/quickstart.yaml --yes
+      - name: API starts with the image defaults (as on Render, PORT=10000)
+        run: |
+          docker run -d --name api -p 10000:10000 -e PORT=10000 -e LLMBENCH_API_KEY=ci-only-key llmbench:ci
+          for i in $(seq 1 30); do curl -sf localhost:10000/health && break; sleep 1; done
+          curl -sf localhost:10000/health
+          test "$(curl -s -o /dev/null -w '%{http_code}' localhost:10000/runs)" = 401
+          test "$(curl -s -o /dev/null -w '%{http_code}' -H 'X-API-Key: ci-only-key' localhost:10000/runs)" = 200
+          docker rm -f api
