@@ -173,7 +173,7 @@ jobs:
           python-version: "3.12"
       - name: Install LLMBench
         # or, for a vendored copy: pip install "./tools/llmbench[openai]"
-        run: pip install "llmbench[openai] @ git+https://github.com/PiyushDas-2004/LLMBench@<commit-sha>"
+        run: pip install "llmbench[openai] @ git+https://github.com/PiyushDas-2004/LLM-Bench@<commit-sha>"
       - name: Import stored baseline
         run: llmbench import baselines/main.json --as-baseline main
       - name: Run candidate experiment
@@ -214,7 +214,7 @@ eval-gate:
   variables:
     LLMBENCH_DB_URL: "sqlite:///$CI_PROJECT_DIR/.llmbench/ci.db"
   script:
-    - pip install "llmbench[openai] @ git+https://github.com/PiyushDas-2004/LLMBench@<commit-sha>"
+    - pip install "llmbench[openai] @ git+https://github.com/PiyushDas-2004/LLM-Bench@<commit-sha>"
     - llmbench import baselines/main.json --as-baseline main
     - llmbench run evals/experiment.yaml --yes --strict-models
     - llmbench check --baseline main --gates evals/gates.yaml --output gate.md

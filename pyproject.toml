@@ -78,9 +78,9 @@ llmbench = "llmbench.cli:main"
 [project.entry-points."llmbench.tasks"]
 
 [project.urls]
-Homepage = "https://github.com/PiyushDas-2004/LLMBench"
-Repository = "https://github.com/PiyushDas-2004/LLMBench"
-Issues = "https://github.com/PiyushDas-2004/LLMBench/issues"
+Homepage = "https://github.com/PiyushDas-2004/LLM-Bench"
+Repository = "https://github.com/PiyushDas-2004/LLM-Bench"
+Issues = "https://github.com/PiyushDas-2004/LLM-Bench/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/llmbench"]

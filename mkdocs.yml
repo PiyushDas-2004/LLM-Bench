@@ -1,6 +1,6 @@
 site_name: LLMBench
 site_description: Reproducible evaluation, benchmarking and regression testing for LLM and RAG systems
-repo_url: https://github.com/PiyushDas-2004/LLMBench
+repo_url: https://github.com/PiyushDas-2004/LLM-Bench
 docs_dir: docs
 nav:
   - Methodology: METHODOLOGY.md

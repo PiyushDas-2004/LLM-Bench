@@ -45,5 +45,5 @@ All notable changes to this project are documented here. The format follows
 - Docker image (multi-stage, non-root), docker-compose, CI, eval-gate, live-benchmark
   and release workflows.
 
-[Unreleased]: https://github.com/PiyushDas-2004/LLMBench/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/PiyushDas-2004/LLMBench/releases/tag/v0.1.0
+[Unreleased]: https://github.com/PiyushDas-2004/LLM-Bench/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/PiyushDas-2004/LLM-Bench/releases/tag/v0.1.0

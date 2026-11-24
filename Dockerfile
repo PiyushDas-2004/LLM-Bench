@@ -19,7 +19,7 @@ RUN --mount=type=secret,id=ca,required=false \
 FROM python:3.12-slim AS runtime
 LABEL org.opencontainers.image.title="llmbench" \
       org.opencontainers.image.description="Evaluation, benchmarking and regression testing for LLM and RAG systems" \
-      org.opencontainers.image.source="https://github.com/PiyushDas-2004/LLMBench" \
+      org.opencontainers.image.source="https://github.com/PiyushDas-2004/LLM-Bench" \
       org.opencontainers.image.licenses="MIT"
 ENV PATH="/opt/venv/bin:$PATH" \
     PYTHONDONTWRITEBYTECODE=1 \

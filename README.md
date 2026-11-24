@@ -2,8 +2,8 @@
 
 **Reproducible evaluation, benchmarking and regression testing for non-deterministic LLM and RAG systems: repeated trials, real statistics, and a CI gate that fails only on regressions you can trust.**
 
-[![CI](https://github.com/PiyushDas-2004/LLMBench/actions/workflows/ci.yml/badge.svg)](https://github.com/PiyushDas-2004/LLMBench/actions/workflows/ci.yml)
-[![Eval gate](https://github.com/PiyushDas-2004/LLMBench/actions/workflows/eval-gate.yml/badge.svg)](https://github.com/PiyushDas-2004/LLMBench/actions/workflows/eval-gate.yml)
+[![CI](https://github.com/PiyushDas-2004/LLM-Bench/actions/workflows/ci.yml/badge.svg)](https://github.com/PiyushDas-2004/LLM-Bench/actions/workflows/ci.yml)
+[![Eval gate](https://github.com/PiyushDas-2004/LLM-Bench/actions/workflows/eval-gate.yml/badge.svg)](https://github.com/PiyushDas-2004/LLM-Bench/actions/workflows/eval-gate.yml)
 ![coverage](https://img.shields.io/badge/coverage-96%25-brightgreen)
 ![python](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -151,8 +151,8 @@ Core modules never import provider SDKs; only the adapters do (enforced by a ruf
 Requires Python 3.11+ and git.
 
 ```bash
-git clone https://github.com/PiyushDas-2004/LLMBench.git
-cd LLMBench
+git clone https://github.com/PiyushDas-2004/LLM-Bench.git
+cd LLM-Bench
 python -m venv .venv && source .venv/bin/activate
 pip install -e .
 

@@ -5,7 +5,7 @@ Thanks for helping. This guide covers the local workflow and the bar a change mu
 ## Setup
 
 ```bash
-git clone https://github.com/PiyushDas-2004/LLMBench.git && cd LLMBench
+git clone https://github.com/PiyushDas-2004/LLM-Bench.git && cd LLM-Bench
 uv sync                 # or: python -m venv .venv && pip install -e ".[all]" + dev tools (see Makefile)
 uv run pre-commit install
 ```
