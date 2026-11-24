@@ -41,6 +41,8 @@ USER llmbench
 VOLUME ["/data"]
 EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD python -c "import os,urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)" || exit 1
+  CMD python -c "import os, urllib.request; urllib.request.urlopen('http://127.0.0.1:%s/health' % os.environ.get('PORT', '8000'), timeout=3)" || exit 1
 ENTRYPOINT ["llmbench"]
-CMD ["--help"]
+# Default: serve the REST API on 0.0.0.0:$PORT (8000 if unset; requires LLMBENCH_API_KEY).
+# Pass any other command to use the CLI, e.g. `docker run llmbench:local run examples/quickstart.yaml`.
+CMD ["serve", "--host", "0.0.0.0"]

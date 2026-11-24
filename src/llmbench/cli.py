@@ -738,7 +738,7 @@ def cache_clear() -> None:
 @app.command()
 def serve(
     host: Annotated[str, typer.Option(help="Bind address.")] = "127.0.0.1",
-    port: Annotated[int, typer.Option(help="Port.")] = 8000,
+    port: Annotated[int, typer.Option(envvar="PORT", help="Port (or $PORT).")] = 8000,
     insecure_no_auth: Annotated[
         bool,
         typer.Option(
