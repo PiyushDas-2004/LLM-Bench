@@ -41,3 +41,8 @@ reports/
 site/
 docs/demo/*
 !docs/demo/index.md
+
+# Dashboard build artefacts and CI-generated demo data
+frontend/node_modules/
+frontend/dist/
+frontend/public/data/
