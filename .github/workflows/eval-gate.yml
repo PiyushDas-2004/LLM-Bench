@@ -19,7 +19,7 @@ jobs:
       COLUMNS: "160"
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: astral-sh/setup-uv@v7
       - run: uv sync --python 3.12 --locked
       - name: Import stored baseline
         run: uv run llmbench import baselines/gate-demo.json --as-baseline main
